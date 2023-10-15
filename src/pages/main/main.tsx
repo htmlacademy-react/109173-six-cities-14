@@ -1,12 +1,8 @@
 import { locations, offers } from '../../mock/mock';
 
-type LocationItemProps = {
-  itemName: string;
-};
+import { LocationItemProps, MainProps, OfferProps } from './main.props';
 
-type CardPlaceProps = {
-  offerItem: object;
-};
+import CardPlace from '../../components/card-place/card-place';
 
 function LocationItem({itemName}: LocationItemProps): JSX.Element {
   return (
@@ -18,47 +14,7 @@ function LocationItem({itemName}: LocationItemProps): JSX.Element {
   );
 }
 
-function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
-  const {previewImage, price, } = offerItem;
-  return (
-    <article className="cities__card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src={ previewImage } width="260" height="200" alt="Place image"/>
-        </a>
-      </div>
-      <div className="place-card__info">
-        <div className="place-card__price-wrapper">
-          <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{ price }</b>
-            <span className="place-card__price-text">&#47;&nbsp;night</span>
-          </div>
-          <button className="place-card__bookmark-button button" type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
-        </div>
-        <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%', }}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
-        <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
-        </h2>
-        <p className="place-card__type">Apartment</p>
-      </div>
-    </article>
-  );
-}
-
-export default function Main(): JSX.Element {
+export default function Main({ offersCount }: MainProps): JSX.Element {
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -75,7 +31,7 @@ export default function Main(): JSX.Element {
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">312 places to stay in Amsterdam</b>
+            <b className="places__found">{ offersCount } places to stay in Amsterdam</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex={0}>
@@ -93,8 +49,8 @@ export default function Main(): JSX.Element {
             </form>
             <div className="cities__places-list places__list tabs__content">
               {
-                offers.map((offer: object) => {
-                  const offerId: string = offer.id;
+                offers.map((offer: OfferProps): JSX.Element => {
+                  const offerId: number = offer.id;
 
                   return <CardPlace key={ offerId } offerItem={ offer }></CardPlace>;
                 })

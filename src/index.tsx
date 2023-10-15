@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import Main from './pages/main/main';
+import { OFFERS_COUNT } from './const';
+
+import App from './components/card-place/app/app';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -9,6 +11,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Main></Main>
+    <App offersCount = { OFFERS_COUNT }></App>
   </React.StrictMode>
 );
