@@ -53,11 +53,7 @@ function Places({ offersCount }: MainProps): JSX.Element {
       </form>
       <div className="cities__places-list places__list tabs__content">
         {
-          offers.map((offer: OfferProps): JSX.Element => {
-            const offerId: number = offer.id;
-
-            return <CardPlace key={ offerId } offerItem={ offer }></CardPlace>;
-          })
+          offers.map((offer: OfferProps): JSX.Element => <CardPlace key={ offer.id } offerItem={ offer }></CardPlace>)
         }
       </div>
     </section>
