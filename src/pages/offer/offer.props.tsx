@@ -1,10 +1,5 @@
-export type MainProps = {
-  offersCount: number;
-  isMainEmpty?: boolean;
-};
-
-export type LocationItemProps = {
-  itemName: string;
+export type ReviewsProps = {
+  isUserLoggedIn?: boolean;
 };
 
 type LocationProps = {
