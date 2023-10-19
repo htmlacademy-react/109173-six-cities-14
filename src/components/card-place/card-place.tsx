@@ -1,16 +1,19 @@
+import { Link } from 'react-router-dom';
 import { CardPlaceProps } from './card-place.props';
+import { AppRoutes } from '../../const';
 
 export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
-  const { previewImage, price } = offerItem;
+  const { id, previewImage, price } = offerItem;
+
   return (
     <article className="cities__card place-card">
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`${AppRoutes.Offer}/${id}`}>
           <img className="place-card__image" src={ previewImage } width={260} height={200} alt="Place image"/>
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
