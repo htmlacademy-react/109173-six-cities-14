@@ -1,4 +1,5 @@
 // import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { offers } from '../../mock/mock';
 import { NEAREST_OFFERS_COUNT } from '../../const';
 
@@ -107,6 +108,9 @@ export default function Offer(): JSX.Element {
 
   return (
     <>
+      <Helmet>
+        <title>6 cities - Offer</title>
+      </Helmet>
       <section className="offer">
         {/* Галерея */}
         <Gallery></Gallery>

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { locations, offers } from '../../mock/mock';
 
 import { LocationItemProps, MainProps, OfferProps } from './main.props';
@@ -69,6 +70,9 @@ export default function Main({ offersCount, isMainEmpty }: MainProps): JSX.Eleme
 
   return (
     <>
+      <Helmet>
+        <title>6 cities - Main</title>
+      </Helmet>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">

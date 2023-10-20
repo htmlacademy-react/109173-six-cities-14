@@ -1,10 +1,15 @@
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
 
 export default function Page404(): JSX.Element {
   return (
     <div className="page page--gray page--main">
-      <Header></Header>
+      <Helmet>
+        <title>6 cities - 404</title>
+      </Helmet>
+
+      <Header />
 
       <main className="page__main page__main--favorites">
         <div className="container">

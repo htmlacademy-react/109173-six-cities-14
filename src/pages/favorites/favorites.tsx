@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { FavoritesProps, CardPlaceProps, OfferProps } from './favorites.props';
 import { AppRoutes, FAVORITES_COUNT } from '../../const';
@@ -108,6 +109,9 @@ function FavoritesEmpty(): JSX.Element {
 export default function Favorites({ isFavoritesEmpty }: FavoritesProps): JSX.Element {
   return (
     <div className="page__favorites-container container">
+      <Helmet>
+        <title>6 cities - Favorites</title>
+      </Helmet>
       {(isFavoritesEmpty && <FavoritesEmpty />) || <FavoritesCard />}
     </div>
   );

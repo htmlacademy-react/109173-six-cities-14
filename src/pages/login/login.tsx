@@ -1,6 +1,11 @@
+import { Helmet } from 'react-helmet-async';
+
 export default function Login(): JSX.Element {
   return (
     <div className="page__login-container container">
+      <Helmet>
+        <title>6 cities - Login</title>
+      </Helmet>
       <section className="login">
         <h1 className="login__title">Sign in</h1>
         <form className="login__form form" action="#" method="post">
