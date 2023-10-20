@@ -2,6 +2,9 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
 
+// Добавим стилей (просто пощупать typescript-plugin-css-modules)
+import styles from './page-404.module.css';
+
 export default function Page404(): JSX.Element {
   return (
     <div className="page page--gray page--main">
@@ -12,7 +15,7 @@ export default function Page404(): JSX.Element {
       <Header />
 
       <main className="page__main page__main--favorites">
-        <div className="container">
+        <div className={`container ${styles.container}`}>
           <h1>404 Requested page Not Found</h1>
           <Link to="/">{'<- Return to main page'}</Link>
         </div>
