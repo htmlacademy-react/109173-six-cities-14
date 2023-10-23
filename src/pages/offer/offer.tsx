@@ -1,10 +1,11 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { NEAREST_OFFERS_COUNT } from '../../const';
 
-import { ReviewsProps, OffersProps } from './offers.props';
+// import { NEAREST_OFFERS_COUNT } from '../../const';
 
-import CardPlace from '../../components/card-place/card-place';
+import { ReviewsProps, OffersProps } from './offer.props';
+
+import OffersList from '../../components/offers-list/offers-list';
 
 function Gallery(): React.ReactElement {
   return (
@@ -102,9 +103,20 @@ function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
   );
 }
 
-export default function Offer({ offers }: OffersProps): React.ReactElement {
-  const offerItems = offers.slice(NEAREST_OFFERS_COUNT);
+function NearestOffers({ offers }: OffersProps): React.ReactElement {
+  // const offerItems = offers.slice(NEAREST_OFFERS_COUNT);
 
+  return (
+    <section className="near-places places">
+      <h2 className="near-places__title">Other places in the neighbourhood</h2>
+      <div className="near-places__list places__list">
+        <OffersList offers={ offers } ></OffersList>
+      </div>
+    </section>
+  );
+}
+
+export default function Offer({ offers }: OffersProps): React.ReactElement {
   return (
     <>
       <Helmet>
@@ -201,19 +213,8 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
         <section className="offer__map map"></section>
       </section>
       <div className="container">
-        <section className="near-places places">
-          <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <div className="near-places__list places__list">
-            {/* Места поблизости */}
-            {
-              offerItems.map((offer): React.ReactElement => {
-                const offerId: number = offer.id;
-
-                return <CardPlace key={ offerId } offerItem={ offer }></CardPlace>;
-              })
-            }
-          </div>
-        </section>
+        {/* Места поблизости */}
+        <NearestOffers offers={ offers } ></NearestOffers>
       </div>
     </>
   );

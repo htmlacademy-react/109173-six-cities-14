@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import { CardPlaceProps } from './card-place.props';
 import { AppRoutes } from '../../const';
 
-export default function CardPlace({ offerItem }: CardPlaceProps): React.ReactNode {
+export default function CardPlace({ onSelectCard, offerItem }: CardPlaceProps): React.ReactNode {
   const { id, previewImage, price } = offerItem;
 
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" onMouseOver={onSelectCard}>
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
@@ -35,7 +35,7 @@ export default function CardPlace({ offerItem }: CardPlaceProps): React.ReactNod
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
+          <Link to={`${AppRoutes.Offer}/${ id }`}>Beautiful &amp; luxurious apartment at great location</Link>
         </h2>
         <p className="place-card__type">Apartment</p>
       </div>

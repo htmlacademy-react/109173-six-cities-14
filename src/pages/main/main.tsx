@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 import { MainProps, PlacesProps, LocationItemProps } from './main.props';
-import CardPlace from '../../components/card-place/card-place';
+import OffersList from '../../components/offers-list/offers-list';
 
 enum CSSCLasses {
   PlacesContainer = 'cities__places-container container',
@@ -50,9 +50,7 @@ function Places({ offers, offersCount }: PlacesProps): React.ReactNode {
         </ul>
       </form>
       <div className="cities__places-list places__list tabs__content">
-        {
-          offers.map((offer): React.ReactNode => <CardPlace key={ offer.id } offerItem={ offer }></CardPlace>)
-        }
+        <OffersList offers={ offers }></OffersList>
       </div>
     </section>
   );

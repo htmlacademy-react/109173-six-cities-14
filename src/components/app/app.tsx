@@ -8,7 +8,7 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import Main from '../../pages/main/main';
 import Favorites from '../../pages/favorites/favorites';
-import Offer from '../../pages/offers/offers';
+import Offer from '../../pages/offer/offer';
 import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
 
@@ -27,10 +27,7 @@ export default function App({ locations, offers, offersCount }: AppProps): React
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoutes.Offer}>
-              <Route index element={<Offer offers={ offers } />} />
-              <Route path=":id" element={<Offer offers={ offers } />} />
-            </Route>
+            <Route path={`${AppRoutes.Offer}/:id`} element={<Offer offers={ offers } />} />
             <Route path={AppRoutes.Login} element={<Login />} />
           </Route>
           <Route path="*" element={<Page404 />} />
