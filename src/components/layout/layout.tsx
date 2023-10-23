@@ -6,7 +6,7 @@ import { AppRoutes, AuthorizationStatus } from '../../const';
 
 export default function Layout(): JSX.Element {
   const location = useLocation();
-  const isFavoritesPage = (location.pathname === AppRoutes[AppRoutes.Favorites]);
+  const isFavoritesPage = (String(location.pathname) === String(AppRoutes.Favorites));
 
   return (
     // + page page--gray page--login || page page--gray page--main"
