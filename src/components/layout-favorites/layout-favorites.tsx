@@ -3,7 +3,7 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import { AuthorizationStatus } from '../../const';
 
-export default function LayoutFavorites(): JSX.Element {
+export default function LayoutFavorites(): React.ReactElement {
   return (
     <div className="page">
       <Header authStatus={AuthorizationStatus.Auth}></Header>

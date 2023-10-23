@@ -4,7 +4,7 @@ import Footer from '../footer/footer';
 import { AppRoutes, AuthorizationStatus } from '../../const';
 
 
-export default function Layout(): JSX.Element {
+export default function Layout(): React.ReactElement {
   const location = useLocation();
   // const isFavoritesPage = (String(location.pathname) === String(AppRoutes.Favorites));
   const isFavoritesPage = (location.pathname === String(AppRoutes.Favorites));

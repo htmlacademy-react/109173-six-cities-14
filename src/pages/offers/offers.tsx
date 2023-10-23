@@ -1,13 +1,12 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { offers } from '../../mock/mock';
 import { NEAREST_OFFERS_COUNT } from '../../const';
 
-import { ReviewsProps, OfferProps } from './offer.props';
+import { ReviewsProps, OffersProps } from './offers.props';
 
 import CardPlace from '../../components/card-place/card-place';
 
-function Gallery(): JSX.Element {
+function Gallery(): React.ReactElement {
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">
@@ -31,15 +30,15 @@ function Gallery(): JSX.Element {
 }
 
 // TODO: Поправить - консоль ругается на данный компонент по роуту /offer/:id
-function StarsRating(): JSX.Element {
+function StarsRating(): React.ReactElement {
   return (
     <div className="reviews__rating-form form__rating">
       {
         [5, 4, 3, 2, 1].map((star) => (
           <>
-            <input className="form__rating-input visually-hidden" name="rating" defaultValue={star} id={`${star}-stars`} type="radio" />
-            <label htmlFor={`${star}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
-              <svg className="form__star-image" width={37} height={33}>
+            <input className="form__rating-input visually-hidden" name="rating" defaultValue={ star } id={`${ star }-stars`} type="radio" />
+            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
+              <svg className="form__star-image" width={ 37 } height={ 33 }>
                 <use xlinkHref="#icon-star"></use>
               </svg>
             </label>
@@ -50,7 +49,7 @@ function StarsRating(): JSX.Element {
   );
 }
 
-function ReviewsForm(): JSX.Element {
+function ReviewsForm(): React.ReactElement {
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
@@ -68,7 +67,7 @@ function ReviewsForm(): JSX.Element {
   );
 }
 
-function Reviews({ isUserLoggedIn }: ReviewsProps): JSX.Element {
+function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
   return (
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
@@ -76,7 +75,7 @@ function Reviews({ isUserLoggedIn }: ReviewsProps): JSX.Element {
         <li className="reviews__item">
           <div className="reviews__user user">
             <div className="reviews__avatar-wrapper user__avatar-wrapper">
-              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={54} height={54} alt="Reviews avatar" />
+              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={ 54 } height={ 54 } alt="Reviews avatar" />
             </div>
             <span className="reviews__user-name">
               Max
@@ -103,8 +102,8 @@ function Reviews({ isUserLoggedIn }: ReviewsProps): JSX.Element {
   );
 }
 
-export default function Offer(): JSX.Element {
-  // const params = useParams();
+export default function Offer({ offers }: OffersProps): React.ReactElement {
+  const offerItems = offers.slice(NEAREST_OFFERS_COUNT);
 
   return (
     <>
@@ -125,7 +124,7 @@ export default function Offer(): JSX.Element {
                 Beautiful &amp; luxurious studio at great location
               </h1>
               <button className="offer__bookmark-button button" type="button">
-                <svg className="offer__bookmark-icon" width={31} height={33}>
+                <svg className="offer__bookmark-icon" width={ 31 } height={ 33 }>
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>
                 <span className="visually-hidden">To bookmarks</span>
@@ -168,7 +167,7 @@ export default function Offer(): JSX.Element {
                     'Kitchen',
                     'Dishwasher',
                     'Cabel TV',
-                    'Fridge'].map((offerItem) => <li className="offer__inside-item" key={offerItem}>{ offerItem }</li>)
+                    'Fridge'].map((offerItem) => <li className="offer__inside-item" key={ offerItem }>{ offerItem }</li>)
                 }
               </ul>
             </div>
@@ -176,7 +175,7 @@ export default function Offer(): JSX.Element {
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
                 <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={74} height={74} alt="Host avatar" />
+                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
                   Angelina
@@ -207,7 +206,7 @@ export default function Offer(): JSX.Element {
           <div className="near-places__list places__list">
             {/* Места поблизости */}
             {
-              offers.slice(NEAREST_OFFERS_COUNT).map((offer: OfferProps): JSX.Element => {
+              offerItems.map((offer): React.ReactElement => {
                 const offerId: number = offer.id;
 
                 return <CardPlace key={ offerId } offerItem={ offer }></CardPlace>;

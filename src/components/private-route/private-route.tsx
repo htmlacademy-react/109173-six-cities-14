@@ -3,10 +3,10 @@ import { AppRoutes, AuthorizationStatus } from '../../const';
 
 type PrivateRouteProps = {
   authStatus: AuthorizationStatus;
-  children: JSX.Element;
+  children: React.ReactElement;
 }
 
-export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
+export default function PrivateRoute(props: PrivateRouteProps): React.ReactElement {
   const {authStatus, children} = props;
 
   return (

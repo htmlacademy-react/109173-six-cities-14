@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import { locations, offers } from '../../mock/mock';
 
-import { LocationItemProps, MainProps, OfferProps } from './main.props';
+import { MainProps, PlacesProps, LocationItemProps } from './main.props';
 import CardPlace from '../../components/card-place/card-place';
 
 enum CSSCLasses {
@@ -9,17 +8,17 @@ enum CSSCLasses {
   NoPlaces = 'cities__places-container--empty'
 }
 
-function LocationItem({itemName}: LocationItemProps): JSX.Element {
+function LocationItem({ itemName }: LocationItemProps): React.ReactNode {
   return (
     <li className="locations__item">
       <a className="locations__item-link tabs__item" href="#">
-        <span>{itemName}</span>
+        <span>{ itemName }</span>
       </a>
     </li>
   );
 }
 
-function MainEmpty(): JSX.Element {
+function MainEmpty(): React.ReactNode {
   return (
     <section className="cities__no-places">
       <div className="cities__status-wrapper tabs__content">
@@ -30,40 +29,40 @@ function MainEmpty(): JSX.Element {
   );
 }
 
-function Places({ offersCount }: MainProps): JSX.Element {
+function Places({ offers, offersCount }: PlacesProps): React.ReactNode {
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
       <b className="places__found">{ offersCount } places to stay in Amsterdam</b>
       <form className="places__sorting" action="#" method="get">
         <span className="places__sorting-caption">Sort by</span>
-        <span className="places__sorting-type" tabIndex={0}>
+        <span className="places__sorting-type" tabIndex={ 0 }>
           Popular
-          <svg className="places__sorting-arrow" width={7} height={4}>
+          <svg className="places__sorting-arrow" width={ 7 } height={ 4 }>
             <use xlinkHref="#icon-arrow-select"></use>
           </svg>
         </span>
         <ul className="places__options places__options--custom places__options--opened">
-          <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-          <li className="places__option" tabIndex={0}>Price: low to high</li>
-          <li className="places__option" tabIndex={0}>Price: high to low</li>
-          <li className="places__option" tabIndex={0}>Top rated first</li>
+          <li className="places__option places__option--active" tabIndex={ 0 }>Popular</li>
+          <li className="places__option" tabIndex={ 0 }>Price: low to high</li>
+          <li className="places__option" tabIndex={ 0 }>Price: high to low</li>
+          <li className="places__option" tabIndex={ 0 }>Top rated first</li>
         </ul>
       </form>
       <div className="cities__places-list places__list tabs__content">
         {
-          offers.map((offer: OfferProps): JSX.Element => <CardPlace key={ offer.id } offerItem={ offer }></CardPlace>)
+          offers.map((offer): React.ReactNode => <CardPlace key={ offer.id } offerItem={ offer }></CardPlace>)
         }
       </div>
     </section>
   );
 }
 
-function Map(): JSX.Element {
+function Map(): React.ReactNode {
   return <section className="cities__map map"></section>;
 }
 
-export default function Main({ offersCount, isMainEmpty }: MainProps): JSX.Element {
+export default function Main({ locations, offers, offersCount, isMainEmpty }: MainProps): React.ReactNode {
   const placesClassName = (!isMainEmpty)
     ? CSSCLasses.PlacesContainer
     : `${CSSCLasses.PlacesContainer} ${CSSCLasses.NoPlaces}`;
@@ -78,14 +77,14 @@ export default function Main({ offersCount, isMainEmpty }: MainProps): JSX.Eleme
         <section className="locations container">
           <ul className="locations__list tabs__list">
             {
-              locations.map((location: string) => <LocationItem key={location} itemName={location}></LocationItem>)
+              locations.slice().map((location: string) => <LocationItem key={ location } itemName={ location }></LocationItem>)
             }
           </ul>
         </section>
       </div>
       <div className="cities">
-        <div className={placesClassName}>
-          { (isMainEmpty && <MainEmpty />) || <Places offersCount={offersCount}/>}
+        <div className={ placesClassName }>
+          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } offersCount={ offersCount }/>}
 
           <div className="cities__right-section">
             { !isMainEmpty && <Map/>}

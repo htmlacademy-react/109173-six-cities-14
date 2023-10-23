@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { CardPlaceProps } from './card-place.props';
 import { AppRoutes } from '../../const';
 
-export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
+export default function CardPlace({ offerItem }: CardPlaceProps): React.ReactNode {
   const { id, previewImage, price } = offerItem;
 
   return (
@@ -11,8 +11,8 @@ export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoutes.Offer}/${id}`}>
-          <img className="place-card__image" src={ previewImage } width={260} height={200} alt="Place image"/>
+        <Link to={`${AppRoutes.Offer}/${ id }`}>
+          <img className="place-card__image" src={ previewImage } width={ 260 } height={ 200 } alt="Place image"/>
         </Link>
       </div>
       <div className="place-card__info">
@@ -22,7 +22,7 @@ export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
-            <svg className="place-card__bookmark-icon" width={18} height={19}>
+            <svg className="place-card__bookmark-icon" width={ 18 } height={ 19 }>
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
             <span className="visually-hidden">To bookmarks</span>
