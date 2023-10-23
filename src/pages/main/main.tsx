@@ -1,14 +1,13 @@
+import { Helmet } from 'react-helmet-async';
 import { locations, offers } from '../../mock/mock';
 
 import { LocationItemProps, MainProps, OfferProps } from './main.props';
-
-import Header from '../../components/header/header';
 import CardPlace from '../../components/card-place/card-place';
 
-const CSSCLasses = {
-  PLACES_CONTAINER: 'cities__places-container container',
-  NO_PLACES: 'cities__places-container--empty'
-};
+enum CSSCLasses {
+  PlacesContainer = 'cities__places-container container',
+  NoPlaces = 'cities__places-container--empty'
+}
 
 function LocationItem({itemName}: LocationItemProps): JSX.Element {
   return (
@@ -66,34 +65,33 @@ function Map(): JSX.Element {
 
 export default function Main({ offersCount, isMainEmpty }: MainProps): JSX.Element {
   const placesClassName = (!isMainEmpty)
-    ? CSSCLasses.PLACES_CONTAINER
-    : `${CSSCLasses.PLACES_CONTAINER} ${CSSCLasses.NO_PLACES}`;
+    ? CSSCLasses.PlacesContainer
+    : `${CSSCLasses.PlacesContainer} ${CSSCLasses.NoPlaces}`;
 
   return (
-    <div className="page page--gray page--main">
-      <Header isUserLoggedIn></Header>
+    <>
+      <Helmet>
+        <title>6 cities - Main</title>
+      </Helmet>
+      <h1 className="visually-hidden">Cities</h1>
+      <div className="tabs">
+        <section className="locations container">
+          <ul className="locations__list tabs__list">
+            {
+              locations.map((location: string) => <LocationItem key={location} itemName={location}></LocationItem>)
+            }
+          </ul>
+        </section>
+      </div>
+      <div className="cities">
+        <div className={placesClassName}>
+          { (isMainEmpty && <MainEmpty />) || <Places offersCount={offersCount}/>}
 
-      <main className="page__main page__main--index">
-        <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {
-                locations.map((location: string) => <LocationItem key={location} itemName={location}></LocationItem>)
-              }
-            </ul>
-          </section>
-        </div>
-        <div className="cities">
-          <div className={placesClassName}>
-            { (isMainEmpty && <MainEmpty />) || <Places offersCount={offersCount}/>}
-
-            <div className="cities__right-section">
-              { !isMainEmpty && <Map/>}
-            </div>
+          <div className="cities__right-section">
+            { !isMainEmpty && <Map/>}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 }
