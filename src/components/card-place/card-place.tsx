@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import { CardPlaceProps } from './card-place.props';
 import { AppRoutes } from '../../const';
 
-export default function CardPlace({ onSelectCard, offerItem }: CardPlaceProps): React.ReactNode {
+export default function CardPlace({ onMouseOver, offerItem }: CardPlaceProps): React.ReactNode {
   const { id, previewImage, price } = offerItem;
 
   return (
-    <article className="cities__card place-card" onMouseOver={onSelectCard}>
+    <article className="cities__card place-card" onMouseOver={onMouseOver}>
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
