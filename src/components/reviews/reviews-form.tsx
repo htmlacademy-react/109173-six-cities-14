@@ -13,8 +13,14 @@ function StarsRating({ rating }: StartRatingProps): React.ReactElement {
       {
         stars.map((star) => (
           <>
-            <input key={ `star-input-${star}` } className="form__rating-input visually-hidden" name="rating" defaultValue={ star } id={`${ star }-stars`} type="radio" />
-            <label key={ `star-label-${star}` } htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
+            <input
+              className="form__rating-input visually-hidden"
+              name="rating" defaultValue={ star }
+              id={`${ star }-stars`}
+              type="radio"
+              checked={(star <= rating) ? true : false}
+            />
+            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width={ 37 } height={ 33 }>
                 <use xlinkHref="#icon-star"></use>
               </svg>
@@ -68,9 +74,7 @@ export default function ReviewsForm(): React.ReactNode {
         id="review" name="review" minLength={ REVIEW_TEXT_MIN_LENGTH }
         placeholder="Tell how was your stay, what you like and what can be improved"
         defaultValue={ userReview.text }
-      >
-        {/* {Костыль для обхода странного правила линтера на multiline tags} */}
-      </textarea>
+      />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{ REVIEW_TEXT_MIN_LENGTH } characters</b>.
