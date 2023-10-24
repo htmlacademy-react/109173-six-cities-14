@@ -1,7 +1,7 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-// import { NEAREST_OFFERS_COUNT } from '../../const';
+import ReviewsForm from '../../components/reviews/reviews-form';
 
 import { ReviewsProps, OffersProps } from './offer.props';
 
@@ -27,44 +27,6 @@ function Gallery(): React.ReactElement {
         }
       </div>
     </div>
-  );
-}
-
-// TODO: Поправить - консоль ругается на данный компонент по роуту /offer/:id
-function StarsRating(): React.ReactElement {
-  return (
-    <div className="reviews__rating-form form__rating">
-      {
-        [5, 4, 3, 2, 1].map((star) => (
-          <>
-            <input className="form__rating-input visually-hidden" name="rating" defaultValue={ star } id={`${ star }-stars`} type="radio" />
-            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
-              <svg className="form__star-image" width={ 37 } height={ 33 }>
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </>
-        ))
-      }
-    </div>
-  );
-}
-
-function ReviewsForm(): React.ReactElement {
-  return (
-    <form className="reviews__form form" action="#" method="post">
-      <label className="reviews__label form__label" htmlFor="review">Your review</label>
-
-      <StarsRating></StarsRating>
-
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"></textarea>
-      <div className="reviews__button-wrapper">
-        <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
-        </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
-      </div>
-    </form>
   );
 }
 

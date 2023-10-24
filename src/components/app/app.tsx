@@ -12,6 +12,8 @@ import Offer from '../../pages/offer/offer';
 import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
 
+const currentAuthStatus = AuthorizationStatus.Auth;
+
 export default function App({ locations, offers, offersCount }: AppProps): React.ReactElement {
   return (
     <HelmetProvider>
@@ -22,13 +24,20 @@ export default function App({ locations, offers, offersCount }: AppProps): React
             <Route
               path={AppRoutes.Favorites}
               element={
-                <PrivateRoute authStatus={AuthorizationStatus.Auth}>
+                <PrivateRoute redirectTo={AppRoutes.Login} authStatus={currentAuthStatus}>
                   <Favorites offers={ offers } />
                 </PrivateRoute>
               }
             />
             <Route path={`${AppRoutes.Offer}/:id`} element={<Offer offers={ offers } />} />
-            <Route path={AppRoutes.Login} element={<Login />} />
+            <Route
+              path={AppRoutes.Login}
+              element={
+                <PrivateRoute redirectTo={AppRoutes.Main} authStatus={currentAuthStatus}>
+                  <Login />
+                </PrivateRoute>
+              }
+            />
           </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>

@@ -1,6 +1,7 @@
 export const OFFERS_COUNT = 6;
 export const NEAREST_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
+export const REVIEW_TEXT_MIN_LENGTH = 50;
 export enum AppRoutes {
   Main = '/',
   Login = '/login',
