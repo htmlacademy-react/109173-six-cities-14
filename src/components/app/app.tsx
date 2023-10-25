@@ -1,5 +1,15 @@
 import { AppRoutes, AuthorizationStatus } from '../../const';
 import { AppProps } from './app.props';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+
+import PrivateRoute from '../private-route/private-route';
+import Layout from '../layout/layout';
+import Main from '../../pages/main/main';
+import Favorites from '../../pages/favorites/favorites';
+import Offer from '../../pages/offer/offer';
+import Login from '../../pages/login/login';
+import Page404 from '../../pages/page-404/page-404';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
