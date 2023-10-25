@@ -1,6 +1,5 @@
 import { AppRoutes, AuthorizationStatus } from '../../const';
 import { AppProps } from './app.props';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
