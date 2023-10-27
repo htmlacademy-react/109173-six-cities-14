@@ -61,11 +61,12 @@ function FavoriteCards({ offers }: FavoritesProps): React.ReactElement {
           </div>
           <div className="favorites__places">
             {
-              offers.slice(0, FAVORITES_COUNT - 1).map((offer): React.ReactElement => {
-                const offerId: number = offer.id;
+              offers.slice(0, FAVORITES_COUNT - 1)
+                .map((offer): React.ReactElement => {
+                  const offerId: number = offer.id;
 
-                return <FavoriteCardPlace key={ offerId } offerItem={ offer }></FavoriteCardPlace>;
-              })
+                  return <FavoriteCardPlace key={ offerId } offerItem={ offer } />;
+                })
             }
           </div>
         </li>

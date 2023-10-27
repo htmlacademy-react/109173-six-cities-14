@@ -56,7 +56,7 @@ function Places({ offers, offersCount }: PlacesProps): React.ReactNode {
   );
 }
 
-function Map(): React.ReactNode {
+function CardMap(): React.ReactNode {
   return <section className="cities__map map"></section>;
 }
 
@@ -75,7 +75,8 @@ export default function Main({ locations, offers, offersCount, isMainEmpty }: Ma
         <section className="locations container">
           <ul className="locations__list tabs__list">
             {
-              locations.slice().map((location: string) => <LocationItem key={ location } itemName={ location }></LocationItem>)
+              locations.slice()
+                .map((location: string) => <LocationItem key={ location } itemName={ location }></LocationItem>)
             }
           </ul>
         </section>
@@ -85,7 +86,7 @@ export default function Main({ locations, offers, offersCount, isMainEmpty }: Ma
           { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } offersCount={ offersCount }/>}
 
           <div className="cities__right-section">
-            { !isMainEmpty && <Map/>}
+            { !isMainEmpty && <CardMap/>}
           </div>
         </div>
       </div>

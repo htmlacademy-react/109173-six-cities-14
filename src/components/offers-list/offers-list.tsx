@@ -3,21 +3,32 @@ import { OffersListProps, OfferItemProps } from './offers-list.props';
 import CardPlace from '../card-place/card-place';
 
 export default function OffersList({ offers }: OffersListProps): React.ReactElement[] {
-  const [activeCard, setActiveCard] = useState(offers[0]);
+  const [activeCard, setActiveCard] = useState(null);
 
-  const cardMouseOverHandler = (offer: OfferItemProps) => {
-    if(activeCard.id === offer.id) {
+  const cardMouseEnterHandler = (offer: OfferItemProps) => {
+    if(activeCard !== null && activeCard.id === offer.id) {
       return;
     }
 
     setActiveCard(offer);
   };
 
+  const CardMouseLeaveHandler = () => {
+    setActiveCard(null);
+  };
+
   return (
     offers.map((offer): React.ReactElement => {
       const offerId: number = offer.id;
 
-      return <CardPlace onMouseOver={() => cardMouseOverHandler(offer)} key={ offerId } offerItem={ offer }></CardPlace>;
+      return (
+        <CardPlace
+          onMouseEnter={() => cardMouseEnterHandler(offer)}
+          onMouseLeave={CardMouseLeaveHandler}
+          key={ offerId }
+          offerItem={ offer }
+        />
+      );
     })
   );
 }
