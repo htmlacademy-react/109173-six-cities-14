@@ -6,8 +6,8 @@ import ReviewsForm from '../../components/reviews/reviews-form';
 import { ReviewsProps, OffersProps } from './offer.props';
 
 import OffersList from '../../components/offers-list/offers-list';
-import { useParams } from 'react-router-dom';
-// import { AppRoutes } from '../../const';
+import { Navigate, useParams } from 'react-router-dom';
+import { AppRoutes } from '../../const';
 
 type GalleryProps = {
   images?: string[];
@@ -73,14 +73,26 @@ function NearestOffers({ offers }: OffersProps): React.ReactElement {
   );
 }
 
-// TODO: currentOffer?.something - ? т.к. нет тайпгарда и проверки на существование оффера. Поправить и убрать ?
-export default function Offer({ offers }: OffersProps): React.ReactElement {
+// TODO: currentOffer.something - ? т.к. нет тайпгарда и проверки на существование оффера. Поправить и убрать ?
+export default function Offer({ offers }: OffersProps) {
   const offerID = Number(useParams().id);
   const currentOffer = offers.find((item) => offerID === item.id);
 
-  // if(!currentOffer)
-  //   return <Navigate to={AppRoutes.Page404} />;
-  // };
+  if(!currentOffer)
+    <Navigate to={AppRoutes.Page404} />;
+  };
+
+  const {
+    title,
+    description,
+    rating,
+    price,
+    images,
+    goods,
+    isPremium,
+    maxAdults,
+    host
+  } = currentOffer;
 
   return (
     <>
@@ -89,20 +101,20 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
       </Helmet>
       <section className="offer">
         {/* Галерея */}
-        {currentOffer?.images && (
-          <Gallery images={ currentOffer?.images }></Gallery>
+        {images && (
+          <Gallery images={ images }></Gallery>
         )}
 
         <div className="offer__container container">
           <div className="offer__wrapper">
-            {(currentOffer?.isPremium && (
+            {(isPremium && (
               <div className="offer__mark">
                 <span>Premium</span>
               </div>
             ))}
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
-                { currentOffer?.title }
+                { title }
               </h1>
               <button className="offer__bookmark-button button" type="button">
                 <svg className="offer__bookmark-icon" width={ 31 } height={ 33 }>
@@ -116,7 +128,7 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
                 <span style={{ width: '80%' }}></span>
                 <span className="visually-hidden">Rating</span>
               </div>
-              <span className="offer__rating-value rating__value">{ currentOffer?.rating }</span>
+              <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
@@ -126,11 +138,11 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
                 3 Bedrooms
               </li>
               <li className="offer__feature offer__feature--adults">
-                Max { currentOffer?.maxAdults } adults
+                Max { maxAdults } adults
               </li>
             </ul>
             <div className="offer__price">
-              <b className="offer__price-value">&euro;{ currentOffer?.price }</b>
+              <b className="offer__price-value">&euro;{ price }</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
             <div className="offer__inside">
@@ -138,7 +150,7 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
               <ul className="offer__inside-list">
                 {/* Удобства в номере */}
                 {
-                  currentOffer?.goods.map((offerItem) => <li className="offer__inside-item" key={ offerItem }>{ offerItem }</li>)
+                  goods.map((offerItem) => <li className="offer__inside-item" key={ offerItem }>{ offerItem }</li>)
                 }
               </ul>
             </div>
@@ -149,10 +161,10 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
                   <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
-                  {currentOffer?.host.name}
+                  {host.name}
                 </span>
 
-                {currentOffer?.host.isPro && (
+                {host.isPro && (
                   <span className="offer__user-status">
                     Pro
                   </span>
@@ -160,7 +172,7 @@ export default function Offer({ offers }: OffersProps): React.ReactElement {
               </div>
               <div className="offer__description">
                 <p className="offer__text">
-                  { currentOffer?.description }
+                  { description }
                 </p>
               </div>
             </div>
