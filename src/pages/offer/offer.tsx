@@ -13,7 +13,11 @@ type GalleryProps = {
   images?: string[];
 };
 
-function Gallery({ images }: GalleryProps): React.ReactElement {
+function Gallery({ images }: GalleryProps) {
+  if(!images) {
+    return;
+  }
+
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">
@@ -78,9 +82,9 @@ export default function Offer({ offers }: OffersProps) {
   const offerID = Number(useParams().id);
   const currentOffer = offers.find((item) => offerID === item.id);
 
-  if(!currentOffer)
-    <Navigate to={AppRoutes.Page404} />;
-  };
+  if(!currentOffer) {
+    return <Navigate to={AppRoutes.Page404} />;
+  }
 
   const {
     title,
@@ -161,7 +165,7 @@ export default function Offer({ offers }: OffersProps) {
                   <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
-                  {host.name}
+                  { host.name }
                 </span>
 
                 {host.isPro && (

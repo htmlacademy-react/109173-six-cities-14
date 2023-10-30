@@ -3,18 +3,18 @@ import { OffersListProps, OfferItemProps } from './offers-list.props';
 import CardPlace from '../card-place/card-place';
 
 export default function OffersList({ offers }: OffersListProps): React.ReactElement[] {
-  const [activeCard, setActiveCard] = useState(null);
+  const [activeCardId, setActiveCard] = useState(0);
 
   const cardMouseEnterHandler = (offer: OfferItemProps) => {
-    if(activeCard !== null && activeCard.id === offer.id) {
+    if(activeCardId !== null && activeCardId === offer.id) {
       return;
     }
 
-    setActiveCard(offer);
+    setActiveCard(offer.id);
   };
 
   const CardMouseLeaveHandler = () => {
-    setActiveCard(null);
+    setActiveCard(0);
   };
 
   return (
