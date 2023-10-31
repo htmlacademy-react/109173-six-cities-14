@@ -6,7 +6,7 @@ export type MainProps = {
   mapPoints: Points;
   offers: Offer[];
   offersCount: number;
-  isMainEmpty: boolean;
+  isMainEmpty?: boolean;
 };
 
 export type PlacesProps = {

@@ -34,7 +34,9 @@ export default function Map({ city, mapPoints, selectedPoint }: MapProps): React
       const markerLayer = layerGroup().addTo(map);
 
       mapPoints.forEach((point) => {
-        const iconType = (selectedPoint && selectedPoint.id === point.id) ? pinActiveIcon : pinIcon;
+        const iconType = (selectedPoint && selectedPoint.id === point.id)
+          ? pinActiveIcon
+          : pinIcon;
         const marker = new Marker({
           lat: point.lat,
           lng: point.long
