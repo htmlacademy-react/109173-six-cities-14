@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { FavoritesProps, OfferItem } from './favorites.props';
+import { FavoritesProps, OfferItem } from './favorites-props';
 import { AppRoutes, FAVORITES_COUNT } from '../../const';
 
 function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {

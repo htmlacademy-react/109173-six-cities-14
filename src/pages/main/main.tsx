@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet-async';
+import { useState } from 'react';
 
-import { MainProps, PlacesProps, LocationItemProps } from './main.props';
+import { MainProps, PlacesProps, LocationItemProps } from './main-props';
 import OffersList from '../../components/offers-list/offers-list';
+import Map from '../../components/map/map';
+import { Offer } from '../../types/offer';
 
-enum CSSCLasses {
+const enum CSSCLasses {
   PlacesContainer = 'cities__places-container container',
   NoPlaces = 'cities__places-container--empty'
 }
@@ -29,7 +32,7 @@ function MainEmpty(): React.ReactNode {
   );
 }
 
-function Places({ offers, offersCount }: PlacesProps): React.ReactNode {
+function Places({ offers, offersCount, onSelectPoint }: PlacesProps): React.ReactNode {
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
@@ -50,17 +53,14 @@ function Places({ offers, offersCount }: PlacesProps): React.ReactNode {
         </ul>
       </form>
       <div className="cities__places-list places__list tabs__content">
-        <OffersList offers={ offers }></OffersList>
+        <OffersList offers={ offers } onSelectPoint={ onSelectPoint }></OffersList>
       </div>
     </section>
   );
 }
 
-function CardMap(): React.ReactNode {
-  return <section className="cities__map map"></section>;
-}
-
-export default function Main({ locations, offers, offersCount, isMainEmpty }: MainProps): React.ReactNode {
+export default function Main({ locations, mapPoints, offers, offersCount, isMainEmpty }: MainProps): React.ReactNode {
+  const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
   const placesClassName = (!isMainEmpty)
     ? CSSCLasses.PlacesContainer
     : `${CSSCLasses.PlacesContainer} ${CSSCLasses.NoPlaces}`;
@@ -83,10 +83,10 @@ export default function Main({ locations, offers, offersCount, isMainEmpty }: Ma
       </div>
       <div className="cities">
         <div className={ placesClassName }>
-          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } offersCount={ offersCount }/>}
+          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } offersCount={ offersCount } onSelectPoint={ setSelectedPoint }/>}
 
           <div className="cities__right-section">
-            { !isMainEmpty && <CardMap/>}
+            { !isMainEmpty && <Map city={ offers[1].city } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}
           </div>
         </div>
       </div>
