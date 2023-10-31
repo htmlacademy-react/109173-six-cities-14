@@ -1,74 +1,37 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { offers } from '../../mock/mock';
-import { NEAREST_OFFERS_COUNT } from '../../const';
 
-import { ReviewsProps, OfferProps } from './offer.props';
+import ReviewsForm from '../../components/reviews/reviews-form';
 
-import CardPlace from '../../components/card-place/card-place';
+import { ReviewsProps, OffersProps } from './offer.props';
 
-function Gallery(): JSX.Element {
+import OffersList from '../../components/offers-list/offers-list';
+import { Navigate, useParams } from 'react-router-dom';
+import { AppRoutes } from '../../const';
+
+type GalleryProps = {
+  images?: string[];
+};
+
+function Gallery({ images }: GalleryProps) {
+  if(!images) {
+    return;
+  }
+
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">
-        {
-          [
-            'room.jpg',
-            'apartment-01.jpg',
-            'apartment-02.jpg',
-            'apartment-03.jpg',
-            'studio-01.jpg',
-            'apartment-01.jpg',
-          ].map((galleryItem) => (
-            <div className="offer__image-wrapper" key={crypto.randomUUID()}>
-              <img className="offer__image" src={`img/${ galleryItem }`} alt="Photo studio" />
-            </div>
-          ))
-        }
+        {images.map((imageSrc) => (
+          <div className="offer__image-wrapper" key={crypto.randomUUID()}>
+            <img className="offer__image" src={`${ imageSrc }`} alt="Photo studio" />
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-// TODO: Поправить - консоль ругается на данный компонент по роуту /offer/:id
-function StarsRating(): JSX.Element {
-  return (
-    <div className="reviews__rating-form form__rating">
-      {
-        [5, 4, 3, 2, 1].map((star) => (
-          <>
-            <input className="form__rating-input visually-hidden" name="rating" defaultValue={star} id={`${star}-stars`} type="radio" />
-            <label htmlFor={`${star}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </>
-        ))
-      }
-    </div>
-  );
-}
-
-function ReviewsForm(): JSX.Element {
-  return (
-    <form className="reviews__form form" action="#" method="post">
-      <label className="reviews__label form__label" htmlFor="review">Your review</label>
-
-      <StarsRating></StarsRating>
-
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"></textarea>
-      <div className="reviews__button-wrapper">
-        <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
-        </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
-      </div>
-    </form>
-  );
-}
-
-function Reviews({ isUserLoggedIn }: ReviewsProps): JSX.Element {
+function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
   return (
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
@@ -76,7 +39,7 @@ function Reviews({ isUserLoggedIn }: ReviewsProps): JSX.Element {
         <li className="reviews__item">
           <div className="reviews__user user">
             <div className="reviews__avatar-wrapper user__avatar-wrapper">
-              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={54} height={54} alt="Reviews avatar" />
+              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={ 54 } height={ 54 } alt="Reviews avatar" />
             </div>
             <span className="reviews__user-name">
               Max
@@ -103,8 +66,37 @@ function Reviews({ isUserLoggedIn }: ReviewsProps): JSX.Element {
   );
 }
 
-export default function Offer(): JSX.Element {
-  // const params = useParams();
+function NearestOffers({ offers }: OffersProps): React.ReactElement {
+  return (
+    <section className="near-places places">
+      <h2 className="near-places__title">Other places in the neighbourhood</h2>
+      <div className="near-places__list places__list">
+        <OffersList offers={ offers } ></OffersList>
+      </div>
+    </section>
+  );
+}
+
+// TODO: currentOffer.something - ? т.к. нет тайпгарда и проверки на существование оффера. Поправить и убрать ?
+export default function Offer({ offers }: OffersProps) {
+  const offerID = Number(useParams().id);
+  const currentOffer = offers.find((item) => offerID === item.id);
+
+  if(!currentOffer) {
+    return <Navigate to={AppRoutes.Page404} />;
+  }
+
+  const {
+    title,
+    description,
+    rating,
+    price,
+    images,
+    goods,
+    isPremium,
+    maxAdults,
+    host
+  } = currentOffer;
 
   return (
     <>
@@ -113,19 +105,23 @@ export default function Offer(): JSX.Element {
       </Helmet>
       <section className="offer">
         {/* Галерея */}
-        <Gallery></Gallery>
+        {images && (
+          <Gallery images={ images }></Gallery>
+        )}
 
         <div className="offer__container container">
           <div className="offer__wrapper">
-            <div className="offer__mark">
-              <span>Premium</span>
-            </div>
+            {(isPremium && (
+              <div className="offer__mark">
+                <span>Premium</span>
+              </div>
+            ))}
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
-                Beautiful &amp; luxurious studio at great location
+                { title }
               </h1>
               <button className="offer__bookmark-button button" type="button">
-                <svg className="offer__bookmark-icon" width={31} height={33}>
+                <svg className="offer__bookmark-icon" width={ 31 } height={ 33 }>
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>
                 <span className="visually-hidden">To bookmarks</span>
@@ -136,7 +132,7 @@ export default function Offer(): JSX.Element {
                 <span style={{ width: '80%' }}></span>
                 <span className="visually-hidden">Rating</span>
               </div>
-              <span className="offer__rating-value rating__value">4.8</span>
+              <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
@@ -146,11 +142,11 @@ export default function Offer(): JSX.Element {
                 3 Bedrooms
               </li>
               <li className="offer__feature offer__feature--adults">
-                Max 4 adults
+                Max { maxAdults } adults
               </li>
             </ul>
             <div className="offer__price">
-              <b className="offer__price-value">&euro;120</b>
+              <b className="offer__price-value">&euro;{ price }</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
             <div className="offer__inside">
@@ -158,17 +154,7 @@ export default function Offer(): JSX.Element {
               <ul className="offer__inside-list">
                 {/* Удобства в номере */}
                 {
-                  [
-                    'Wi-Fi',
-                    'Washing machine',
-                    'Towels',
-                    'Heating',
-                    'Coffee machine',
-                    'Baby seat',
-                    'Kitchen',
-                    'Dishwasher',
-                    'Cabel TV',
-                    'Fridge'].map((offerItem) => <li className="offer__inside-item" key={offerItem}>{ offerItem }</li>)
+                  goods.map((offerItem) => <li className="offer__inside-item" key={ offerItem }>{ offerItem }</li>)
                 }
               </ul>
             </div>
@@ -176,21 +162,21 @@ export default function Offer(): JSX.Element {
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
                 <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={74} height={74} alt="Host avatar" />
+                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
-                  Angelina
+                  { host.name }
                 </span>
-                <span className="offer__user-status">
-                  Pro
-                </span>
+
+                {host.isPro && (
+                  <span className="offer__user-status">
+                    Pro
+                  </span>
+                )}
               </div>
               <div className="offer__description">
                 <p className="offer__text">
-                  A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                </p>
-                <p className="offer__text">
-                  An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                  { description }
                 </p>
               </div>
             </div>
@@ -202,19 +188,8 @@ export default function Offer(): JSX.Element {
         <section className="offer__map map"></section>
       </section>
       <div className="container">
-        <section className="near-places places">
-          <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <div className="near-places__list places__list">
-            {/* Места поблизости */}
-            {
-              offers.slice(NEAREST_OFFERS_COUNT).map((offer: OfferProps): JSX.Element => {
-                const offerId: number = offer.id;
-
-                return <CardPlace key={ offerId } offerItem={ offer }></CardPlace>;
-              })
-            }
-          </div>
-        </section>
+        {/* Места поблизости */}
+        <NearestOffers offers={ offers } />
       </div>
     </>
   );

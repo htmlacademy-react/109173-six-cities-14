@@ -1,5 +1,4 @@
-const locations = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
-const offers = [
+export const offers = [
   {
     'city': {
       'name': 'Dusseldorf',
@@ -331,5 +330,3 @@ const offers = [
     'id': 6
   },
 ];
-
-export { locations, offers };

@@ -3,17 +3,48 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import { AppRoutes, AuthorizationStatus } from '../../const';
 
+const enum CSSClasses {
+  PageContainer = 'page',
+  MainContainer = 'page__main',
+  Main = 'page--gray page--main',
+  Login = 'page--gray page--login',
+  MainMode = 'page__main--index',
+  OfferMode = 'page__main--offer',
+  LoginMode = 'page__main--login',
+}
 
-export default function Layout(): JSX.Element {
+export default function Layout(): React.ReactElement {
   const location = useLocation();
-  const isFavoritesPage = (String(location.pathname) === String(AppRoutes.Favorites));
+  const isFavoritesPage = (location.pathname === String(AppRoutes.Favorites));
+
+  let pageClassName = String(CSSClasses.PageContainer);
+  let mainClassName = String(CSSClasses.MainContainer);
+
+  switch(location.pathname) {
+    case AppRoutes.Favorites: {
+      mainClassName += CSSClasses.OfferMode;
+      break;
+    }
+
+    case AppRoutes.Main: {
+      pageClassName += CSSClasses.Main;
+      mainClassName += CSSClasses.MainMode;
+      break;
+    }
+
+    case AppRoutes.Login: {
+      pageClassName += CSSClasses.Login;
+      mainClassName += CSSClasses.LoginMode;
+      break;
+    }
+  }
 
   return (
-    // + page page--gray page--login || page page--gray page--main"
-    <div className="page page--gray page--main">
+    // + page page--gray page--login || page page--gray page--main || page__main--offer"
+    <div className={`${pageClassName}`}>
       <Header authStatus={AuthorizationStatus.Auth} />
 
-      <main className="page__main page__main--index">
+      <main className={`${mainClassName}`}>
         <Outlet />
       </main>
 

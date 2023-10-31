@@ -5,7 +5,7 @@ import Header from '../../components/header/header';
 // Добавим стилей (просто пощупать typescript-plugin-css-modules)
 import styles from './page-404.module.css';
 
-export default function Page404(): JSX.Element {
+export default function Page404(): React.ReactElement {
   return (
     <div className="page page--gray page--main">
       <Helmet>

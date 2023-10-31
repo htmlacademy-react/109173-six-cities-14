@@ -2,17 +2,17 @@ import { Link } from 'react-router-dom';
 import { CardPlaceProps } from './card-place.props';
 import { AppRoutes } from '../../const';
 
-export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
+export default function CardPlace({ onMouseEnter, onMouseLeave, offerItem }: CardPlaceProps): React.ReactNode {
   const { id, previewImage, price } = offerItem;
 
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave }>
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoutes.Offer}/${id}`}>
-          <img className="place-card__image" src={ previewImage } width={260} height={200} alt="Place image"/>
+        <Link to={`${AppRoutes.Offer}/${ id }`}>
+          <img className="place-card__image" src={ previewImage } width={ 260 } height={ 200 } alt="Place image"/>
         </Link>
       </div>
       <div className="place-card__info">
@@ -22,7 +22,7 @@ export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
-            <svg className="place-card__bookmark-icon" width={18} height={19}>
+            <svg className="place-card__bookmark-icon" width={ 18 } height={ 19 }>
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
             <span className="visually-hidden">To bookmarks</span>
@@ -35,7 +35,7 @@ export default function CardPlace({ offerItem }: CardPlaceProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
+          <Link to={`${AppRoutes.Offer}/${ id }`}>Beautiful &amp; luxurious apartment at great location</Link>
         </h2>
         <p className="place-card__type">Apartment</p>
       </div>
