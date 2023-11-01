@@ -4,7 +4,7 @@ import { AuthContext } from '../..';
 
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import { AppRoutes } from '../../const';
+import { AppRoute } from '../../const';
 
 const enum CSSClasses {
   PageContainer = 'page',
@@ -18,25 +18,25 @@ const enum CSSClasses {
 
 export default function Layout(): React.ReactElement {
   const location = useLocation();
-  const isFavoritesPage = (location.pathname === String(AppRoutes.Favorites));
+  const isFavoritesPage = (location.pathname === String(AppRoute.Favorites));
   const isUserLoggedIn = useContext(AuthContext);
 
   let pageClassName = String(CSSClasses.PageContainer);
   let mainClassName = String(CSSClasses.MainContainer);
 
   switch(location.pathname) {
-    case AppRoutes.Favorites: {
+    case AppRoute.Favorites: {
       mainClassName += CSSClasses.OfferMode;
       break;
     }
 
-    case AppRoutes.Main: {
+    case AppRoute.Main: {
       pageClassName += CSSClasses.Main;
       mainClassName += CSSClasses.MainMode;
       break;
     }
 
-    case AppRoutes.Login: {
+    case AppRoute.Login: {
       pageClassName += CSSClasses.Login;
       mainClassName += CSSClasses.LoginMode;
       break;

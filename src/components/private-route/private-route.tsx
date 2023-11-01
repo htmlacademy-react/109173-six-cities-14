@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { AppRoutes } from '../../const';
+import { AppRoute } from '../../const';
 
 type PrivateRouteProps = {
   redirectTo: AppRoutes;
@@ -8,13 +8,13 @@ type PrivateRouteProps = {
 }
 
 export default function PrivateRoute({
-  redirectTo = AppRoutes.Page404,
+  redirectTo = AppRoute.Page404,
   isUserLoggedIn = false,
   children
 }: PrivateRouteProps): React.ReactElement {
 
   const location: string = useLocation().pathname;
-  const isLoginPage = (location === String(AppRoutes.Login));
+  const isLoginPage = (location === String(AppRoute.Login));
 
   return (
     (

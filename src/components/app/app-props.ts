@@ -1,3 +1,4 @@
+import { Comment } from '../../types/comment';
 import { Offer } from '../../types/offer';
 import { Points } from '../../types/point';
 
@@ -6,4 +7,5 @@ export type AppProps = {
   mapPoints: Points;
   offers: Offer[];
   offersCount: number;
+  comments: Comment[];
 };

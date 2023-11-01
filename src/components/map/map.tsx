@@ -1,11 +1,15 @@
+import { useLocation } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
-import { Marker, Icon, layerGroup } from 'leaflet';
 import useMap from '../../hooks/useMap';
-import { PIN_ACTIVE_ICON_URL, PIN_ICON_URL } from '../../const';
+import cn from 'classnames';
+import { AppRoute, PIN_ACTIVE_ICON_URL, PIN_ICON_URL } from '../../const';
+
 import { City } from '../../types/city';
-import 'leaflet/dist/leaflet.css';
 import { Points } from '../../types/point';
 import { Offer } from '../../types/offer';
+
+import { Marker, Icon, layerGroup } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   city: City;
@@ -26,6 +30,9 @@ const pinActiveIcon = new Icon({
 });
 
 export default function Map({ city, mapPoints, selectedPoint }: MapProps): React.ReactElement {
+  const location = useLocation().pathname;
+  const isMainPage = (location === AppRoute.MAIN);
+  const isNotMainPage = !isMainPage;
   const mapRef = useRef(null);
   const map = useMap({ city, mapRef });
 
@@ -48,6 +55,13 @@ export default function Map({ city, mapPoints, selectedPoint }: MapProps): React
   });
 
   return (
-    <section className="cities__map map" ref={ mapRef } />
+    <section
+      className={ cn(
+        'map',
+        {'cities__map': isMainPage},
+        {'offer__map': isNotMainPage}
+      ) }
+      ref={ mapRef }
+    />
   );
 }

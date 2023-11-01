@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
+import StarsRating from '../../components/stars-rating/stars-rating';
+
 import { FavoritesProps, OfferItem } from './favorites-props';
-import { AppRoutes, FAVORITES_COUNT } from '../../const';
+import { AppRoute, FAVORITES_COUNT } from '../../const';
+
 
 function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
   const { id, previewImage, price, rating } = offerItem;
-  const currentRatingPercent = (100 / 5) * rating;
 
   return (
     <article className="favorites__card place-card">
@@ -14,7 +16,7 @@ function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
         <span>Premium</span>
       </div>
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoutes.Favorites}/${ id }`}>
+        <Link to={`${AppRoute.FAVORITES}/${ id }`}>
           <img className="place-card__image" src={ previewImage } width={ 150 } height={ 110 } alt="Place image" />
         </Link>
       </div>
@@ -33,12 +35,11 @@ function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: currentRatingPercent }}></span>
-            <span className="visually-hidden">Rating</span>
+            <StarsRating rating={ rating } />
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoutes.Favorites}/${ id }`}>Nice, cozy, warm big bed apartment</Link>
+          <Link to={`${AppRoute.FAVORITES}/${ id }`}>Nice, cozy, warm big bed apartment</Link>
         </h2>
         <p className="place-card__type">Apartment</p>
       </div>
