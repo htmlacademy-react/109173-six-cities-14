@@ -1,8 +1,8 @@
-import { AppRoutes, AuthorizationStatus } from '../../const';
+import { AppRoutes } from '../../const';
 import { Link } from 'react-router-dom';
 
 type HeaderProps = {
-  authStatus?: AuthorizationStatus;
+  isUserLoggedIn?: boolean;
 }
 
 function Navigation(): React.ReactElement {
@@ -27,7 +27,7 @@ function Navigation(): React.ReactElement {
   );
 }
 
-export default function Header({ authStatus }: HeaderProps): React.ReactElement {
+export default function Header({ isUserLoggedIn }: HeaderProps): React.ReactElement {
   return (
     <header className="header">
       <div className="container">
@@ -38,7 +38,7 @@ export default function Header({ authStatus }: HeaderProps): React.ReactElement 
             </Link>
           </div>
 
-          { (authStatus === AuthorizationStatus.Auth) && <Navigation /> }
+          { isUserLoggedIn && <Navigation /> }
         </div>
       </div>
     </header>

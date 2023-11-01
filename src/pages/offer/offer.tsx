@@ -1,13 +1,16 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import ReviewsForm from '../../components/reviews/reviews-form';
+import ReviewsForm from '../../components/reviews-form/reviews-form';
+import ReviewsList from '../../components/reviews-list/reviews-list';
 
-import { ReviewsProps, OffersProps } from './offer-props';
+import { OffersProps } from './offer-props';
 
 import OffersList from '../../components/offers-list/offers-list';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoutes } from '../../const';
+import { useContext } from 'react';
+import { AuthContext } from '../..';
 
 type GalleryProps = {
   images?: string[];
@@ -31,41 +34,6 @@ function Gallery({ images }: GalleryProps) {
   );
 }
 
-function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
-  return (
-    <section className="offer__reviews reviews">
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-      <ul className="reviews__list">
-        <li className="reviews__item">
-          <div className="reviews__user user">
-            <div className="reviews__avatar-wrapper user__avatar-wrapper">
-              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={ 54 } height={ 54 } alt="Reviews avatar" />
-            </div>
-            <span className="reviews__user-name">
-              Max
-            </span>
-          </div>
-          <div className="reviews__info">
-            <div className="reviews__rating rating">
-              <div className="reviews__stars rating__stars">
-                <span style={{ width: '80%' }}></span>
-                <span className="visually-hidden">Rating</span>
-              </div>
-            </div>
-            <p className="reviews__text">
-              A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-            </p>
-            <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-          </div>
-        </li>
-      </ul>
-
-      {/* Форма написания отзыва */}
-      {isUserLoggedIn && <ReviewsForm />}
-    </section>
-  );
-}
-
 function NearestOffers({ offers }: OffersProps): React.ReactElement {
   return (
     <section className="near-places places">
@@ -78,10 +46,10 @@ function NearestOffers({ offers }: OffersProps): React.ReactElement {
   );
 }
 
-// TODO: currentOffer.something - ? т.к. нет тайпгарда и проверки на существование оффера. Поправить и убрать ?
 export default function Offer({ offers }: OffersProps) {
   const offerID = Number(useParams().id);
   const currentOffer = offers.find((item) => offerID === item.id);
+  const isUserLoggedIn = useContext(AuthContext);
 
   if(!currentOffer) {
     return <Navigate to={AppRoutes.Page404} />;
@@ -183,7 +151,12 @@ export default function Offer({ offers }: OffersProps) {
             </div>
 
             {/* Отзывы */}
-            <Reviews isUserLoggedIn></Reviews>
+            <section className="offer__reviews reviews">
+              <ReviewsList />
+
+              {/* Форма написания отзыва */}
+              {isUserLoggedIn && <ReviewsForm />}
+            </section>
           </div>
         </div>
         <section className="offer__map map"></section>

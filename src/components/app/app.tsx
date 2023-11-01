@@ -1,4 +1,4 @@
-import { AppRoutes, AuthorizationStatus } from '../../const';
+import { AppRoutes } from '../../const';
 import { AppProps } from './app-props';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -10,10 +10,12 @@ import Favorites from '../../pages/favorites/favorites';
 import Offer from '../../pages/offer/offer';
 import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
-
-const currentAuthStatus = AuthorizationStatus.Auth;
+import { useContext } from 'react';
+import { AuthContext } from '../..';
 
 export default function App({ locations, mapPoints, offers, offersCount }: AppProps): React.ReactElement {
+  const isUserLoggedIn = useContext(AuthContext);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -31,7 +33,7 @@ export default function App({ locations, mapPoints, offers, offersCount }: AppPr
             <Route
               path={AppRoutes.Favorites}
               element={
-                <PrivateRoute redirectTo={AppRoutes.Login} authStatus={currentAuthStatus}>
+                <PrivateRoute redirectTo={AppRoutes.Login} isUserLoggedIn={ isUserLoggedIn }>
                   <Favorites offers={ offers } />
                 </PrivateRoute>
               }
@@ -40,7 +42,7 @@ export default function App({ locations, mapPoints, offers, offersCount }: AppPr
             <Route
               path={AppRoutes.Login}
               element={
-                <PrivateRoute redirectTo={AppRoutes.Main} authStatus={currentAuthStatus}>
+                <PrivateRoute redirectTo={AppRoutes.Main} isUserLoggedIn={ isUserLoggedIn }>
                   <Login />
                 </PrivateRoute>
               }

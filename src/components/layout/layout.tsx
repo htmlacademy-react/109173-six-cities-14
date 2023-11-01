@@ -1,7 +1,10 @@
 import { Outlet, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../..';
+
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import { AppRoutes, AuthorizationStatus } from '../../const';
+import { AppRoutes } from '../../const';
 
 const enum CSSClasses {
   PageContainer = 'page',
@@ -16,6 +19,7 @@ const enum CSSClasses {
 export default function Layout(): React.ReactElement {
   const location = useLocation();
   const isFavoritesPage = (location.pathname === String(AppRoutes.Favorites));
+  const isUserLoggedIn = useContext(AuthContext);
 
   let pageClassName = String(CSSClasses.PageContainer);
   let mainClassName = String(CSSClasses.MainContainer);
@@ -42,7 +46,7 @@ export default function Layout(): React.ReactElement {
   return (
     // + page page--gray page--login || page page--gray page--main || page__main--offer"
     <div className={`${pageClassName}`}>
-      <Header authStatus={AuthorizationStatus.Auth} />
+      <Header isUserLoggedIn={ isUserLoggedIn } />
 
       <main className={`${mainClassName}`}>
         <Outlet />
