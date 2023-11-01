@@ -51,6 +51,10 @@ export default function Map({ city, mapPoints, selectedPoint }: MapProps): React
         marker.setIcon(iconType);
         marker.addTo(markerLayer);
       });
+
+      return function() {
+        markerLayer.remove();
+      };
     }
   });
 
