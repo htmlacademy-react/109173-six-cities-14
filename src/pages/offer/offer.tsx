@@ -1,7 +1,7 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import ReviewsForm from '../../components/reviews/reviews-form';
+import ReviewsForm from '../../components/reviews-form/reviews-form';
 
 import { ReviewsProps, OffersProps } from './offer-props';
 import OffersList from '../../components/offers-list/offers-list';
