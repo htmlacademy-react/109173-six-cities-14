@@ -1,5 +1,5 @@
 import { AppRoutes, AuthorizationStatus } from '../../const';
-import { AppProps } from './app.props';
+import { AppProps } from './app-props';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -13,13 +13,21 @@ import Page404 from '../../pages/page-404/page-404';
 
 const currentAuthStatus = AuthorizationStatus.Auth;
 
-export default function App({ locations, offers, offersCount }: AppProps): React.ReactElement {
+export default function App({ locations, mapPoints, offers, offersCount }: AppProps): React.ReactElement {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route path={AppRoutes.Main} element={<Layout />}>
-            <Route index element={<Main locations={ locations } offers={ offers } offersCount = { offersCount }></Main>} />
+            <Route index element={
+              <Main
+                locations={ locations }
+                mapPoints={ mapPoints }
+                offers={ offers }
+                offersCount = { offersCount }
+              />
+            }
+            />
             <Route
               path={AppRoutes.Favorites}
               element={

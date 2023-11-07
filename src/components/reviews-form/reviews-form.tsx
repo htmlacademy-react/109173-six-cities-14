@@ -46,11 +46,11 @@ export default function ReviewsForm(): React.ReactNode {
 
   function formSubmitHandler(evt: FormEvent<HTMLFormElement>) {
     const target = evt.target as HTMLFormElement;
-    const formData = new FormData(target); // TODO: Не совсем понятно, что тут не так с таргетом?
+    const formData = new FormData(target);
 
     const review: ReviewProps = {
-      rating: Number(formData.get('rating')), // TODO: Костыль с преобразованием - поправить
-      text: String(formData.get('review')), // TODO: Костыль с преобразованием - поправить
+      rating: Number(formData.get('rating')),
+      text: String(formData.get('review')),
     };
 
     setUserReview(review);

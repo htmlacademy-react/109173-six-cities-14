@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { CardPlaceProps } from './card-place.props';
+import { CardPlaceProps } from './card-place-props';
 import { AppRoutes } from '../../const';
 
 export default function CardPlace({ onMouseEnter, onMouseLeave, offerItem }: CardPlaceProps): React.ReactNode {

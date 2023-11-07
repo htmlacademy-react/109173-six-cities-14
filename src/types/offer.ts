@@ -1,23 +1,9 @@
-type LocationProps = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-};
-
-type CityProps = {
-  name: string;
-  location: LocationProps;
-};
-
-type HostProps = {
-  id: number;
-  name: string;
-  isPro: boolean;
-  avatarUrl: string;
-}
+import { Location } from './location';
+import { City } from './city';
+import { Host } from './host';
 
 export type Offer = {
-  city: CityProps;
+  city: City;
   previewImage: string;
   images: string[];
   title: string;
@@ -29,8 +15,8 @@ export type Offer = {
   maxAdults: number;
   price: number;
   goods: string[];
-  host: HostProps;
+  host: Host;
   description: string;
-  location: LocationProps;
+  location: Location;
   id: number;
 };

@@ -1,10 +1,9 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import ReviewsForm from '../../components/reviews/reviews-form';
+import ReviewsForm from '../../components/reviews-form/reviews-form';
 
-import { ReviewsProps, OffersProps } from './offer.props';
-
+import { ReviewsProps, OffersProps } from './offer-props';
 import OffersList from '../../components/offers-list/offers-list';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoutes } from '../../const';
@@ -71,7 +70,8 @@ function NearestOffers({ offers }: OffersProps): React.ReactElement {
     <section className="near-places places">
       <h2 className="near-places__title">Other places in the neighbourhood</h2>
       <div className="near-places__list places__list">
-        <OffersList offers={ offers } ></OffersList>
+        {/* TODO: Временный костыль с пустой анонимной функцией на onSelectPoint. Убрать */}
+        <OffersList offers={ offers } onSelectPoint={ () => null }/>
       </div>
     </section>
   );
