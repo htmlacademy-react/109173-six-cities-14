@@ -12,7 +12,7 @@ export function getMonthName(monthNum: number): string {
   return monthes[monthNum];
 }
 
-export function getFormattedDate(date: Date, format: keyof typeof DateFormat): string {
+export function getFormattedDate(date: Date, format: typeof DateFormat[keyof typeof DateFormat]): string {
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = date.getDay();
