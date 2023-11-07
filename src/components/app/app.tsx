@@ -42,6 +42,17 @@ export default function App({ locations, mapPoints, offers, offersCount }: AppPr
               element={
                 <PrivateRoute redirectTo={AppRoutes.Main} authStatus={currentAuthStatus}>
                   <Login />
+                <PrivateRoute redirectTo={AppRoutes.Login} authStatus={currentAuthStatus}>
+                  <Favorites offers={ offers } />
+                </PrivateRoute>
+              }
+            />
+            <Route path={`${AppRoutes.Offer}/:id`} element={<Offer offers={ offers } />} />
+            <Route
+              path={AppRoutes.Login}
+              element={
+                <PrivateRoute redirectTo={AppRoutes.Main} authStatus={currentAuthStatus}>
+                  <Login />
                 </PrivateRoute>
               }
             />

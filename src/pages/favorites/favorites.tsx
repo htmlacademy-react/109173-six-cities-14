@@ -5,6 +5,7 @@ import { FavoritesProps, OfferItem } from './favorites-props';
 import { AppRoutes, FAVORITES_COUNT } from '../../const';
 
 function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
+function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
   const { id, previewImage, price, rating } = offerItem;
   const currentRatingPercent = (100 / 5) * rating;
 
@@ -16,15 +17,19 @@ function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={`${AppRoutes.Favorites}/${ id }`}>
           <img className="place-card__image" src={ previewImage } width={ 150 } height={ 110 } alt="Place image" />
+        <Link to={`${AppRoutes.Favorites}/${ id }`}>
+          <img className="place-card__image" src={ previewImage } width={ 150 } height={ 110 } alt="Place image" />
         </Link>
       </div>
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{ price }</b>
+            <b className="place-card__price-value">&euro;{ price }</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+            <svg className="place-card__bookmark-icon" width={ 18 } height={ 19 }>
             <svg className="place-card__bookmark-icon" width={ 18 } height={ 19 }>
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -39,6 +44,7 @@ function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
         </div>
         <h2 className="place-card__name">
           <Link to={`${AppRoutes.Favorites}/${ id }`}>Nice, cozy, warm big bed apartment</Link>
+          <Link to={`${AppRoutes.Favorites}/${ id }`}>Nice, cozy, warm big bed apartment</Link>
         </h2>
         <p className="place-card__type">Apartment</p>
       </div>
@@ -46,6 +52,7 @@ function FavoriteCardPlace({ offerItem }: OfferItem): React.ReactElement {
   );
 }
 
+function FavoriteCards({ offers }: FavoritesProps): React.ReactElement {
 function FavoriteCards({ offers }: FavoritesProps): React.ReactElement {
   return (
     <section className="favorites">
@@ -64,7 +71,12 @@ function FavoriteCards({ offers }: FavoritesProps): React.ReactElement {
               offers.slice(0, FAVORITES_COUNT - 1)
                 .map((offer): React.ReactElement => {
                   const offerId: number = offer.id;
+              offers.slice(0, FAVORITES_COUNT - 1)
+                .map((offer): React.ReactElement => {
+                  const offerId: number = offer.id;
 
+                  return <FavoriteCardPlace key={ offerId } offerItem={ offer } />;
+                })
                   return <FavoriteCardPlace key={ offerId } offerItem={ offer } />;
                 })
             }
@@ -82,6 +94,7 @@ function FavoriteCards({ offers }: FavoritesProps): React.ReactElement {
           <div className="favorites__places">
             {
               offers.slice(FAVORITES_COUNT - 1, FAVORITES_COUNT).map((offer): React.ReactElement => {
+              offers.slice(FAVORITES_COUNT - 1, FAVORITES_COUNT).map((offer): React.ReactElement => {
                 const offerId: number = offer.id;
 
                 return <FavoriteCardPlace key={ offerId } offerItem={ offer }></FavoriteCardPlace>;
@@ -95,6 +108,7 @@ function FavoriteCards({ offers }: FavoritesProps): React.ReactElement {
 }
 
 function FavoritesEmpty(): React.ReactElement {
+function FavoritesEmpty(): React.ReactElement {
   return (
     <section className="favorites favorites--empty">
       <h1 className="visually-hidden">Favorites (empty)</h1>
@@ -107,11 +121,14 @@ function FavoritesEmpty(): React.ReactElement {
 }
 
 export default function Favorites({ offers, isFavoritesEmpty }: FavoritesProps): JSX.Element {
+export default function Favorites({ offers, isFavoritesEmpty }: FavoritesProps): JSX.Element {
   return (
     <div className="page__favorites-container container">
       <Helmet>
         <title>6 cities - Favorites</title>
       </Helmet>
+
+      {(isFavoritesEmpty && <FavoritesEmpty />) || <FavoriteCards offers={ offers } />}
 
       {(isFavoritesEmpty && <FavoritesEmpty />) || <FavoriteCards offers={ offers } />}
     </div>

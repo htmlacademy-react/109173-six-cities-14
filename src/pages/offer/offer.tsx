@@ -3,7 +3,22 @@ import { Helmet } from 'react-helmet-async';
 
 import ReviewsForm from '../../components/reviews/reviews-form';
 
+import ReviewsForm from '../../components/reviews/reviews-form';
+
 import { ReviewsProps, OffersProps } from './offer-props';
+
+import OffersList from '../../components/offers-list/offers-list';
+import { Navigate, useParams } from 'react-router-dom';
+import { AppRoutes } from '../../const';
+
+type GalleryProps = {
+  images?: string[];
+};
+
+function Gallery({ images }: GalleryProps) {
+  if(!images) {
+    return;
+  }
 
 import OffersList from '../../components/offers-list/offers-list';
 import { Navigate, useParams } from 'react-router-dom';
@@ -26,11 +41,17 @@ function Gallery({ images }: GalleryProps) {
             <img className="offer__image" src={`${ imageSrc }`} alt="Photo studio" />
           </div>
         ))}
+        {images.map((imageSrc) => (
+          <div className="offer__image-wrapper" key={crypto.randomUUID()}>
+            <img className="offer__image" src={`${ imageSrc }`} alt="Photo studio" />
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
+function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
 function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
   return (
     <section className="offer__reviews reviews">
@@ -39,6 +60,7 @@ function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
         <li className="reviews__item">
           <div className="reviews__user user">
             <div className="reviews__avatar-wrapper user__avatar-wrapper">
+              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={ 54 } height={ 54 } alt="Reviews avatar" />
               <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={ 54 } height={ 54 } alt="Reviews avatar" />
             </div>
             <span className="reviews__user-name">
@@ -109,6 +131,9 @@ export default function Offer({ offers }: OffersProps) {
         {images && (
           <Gallery images={ images }></Gallery>
         )}
+        {images && (
+          <Gallery images={ images }></Gallery>
+        )}
 
         <div className="offer__container container">
           <div className="offer__wrapper">
@@ -117,11 +142,18 @@ export default function Offer({ offers }: OffersProps) {
                 <span>Premium</span>
               </div>
             ))}
+            {(isPremium && (
+              <div className="offer__mark">
+                <span>Premium</span>
+              </div>
+            ))}
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
                 { title }
+                { title }
               </h1>
               <button className="offer__bookmark-button button" type="button">
+                <svg className="offer__bookmark-icon" width={ 31 } height={ 33 }>
                 <svg className="offer__bookmark-icon" width={ 31 } height={ 33 }>
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>
@@ -134,6 +166,7 @@ export default function Offer({ offers }: OffersProps) {
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{ rating }</span>
+              <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
@@ -144,9 +177,11 @@ export default function Offer({ offers }: OffersProps) {
               </li>
               <li className="offer__feature offer__feature--adults">
                 Max { maxAdults } adults
+                Max { maxAdults } adults
               </li>
             </ul>
             <div className="offer__price">
+              <b className="offer__price-value">&euro;{ price }</b>
               <b className="offer__price-value">&euro;{ price }</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
@@ -156,6 +191,7 @@ export default function Offer({ offers }: OffersProps) {
                 {/* Удобства в номере */}
                 {
                   goods.map((offerItem) => <li className="offer__inside-item" key={ offerItem }>{ offerItem }</li>)
+                  goods.map((offerItem) => <li className="offer__inside-item" key={ offerItem }>{ offerItem }</li>)
                 }
               </ul>
             </div>
@@ -164,10 +200,18 @@ export default function Offer({ offers }: OffersProps) {
               <div className="offer__host-user user">
                 <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                   <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" />
+                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
                   { host.name }
+                  { host.name }
                 </span>
+
+                {host.isPro && (
+                  <span className="offer__user-status">
+                    Pro
+                  </span>
+                )}
 
                 {host.isPro && (
                   <span className="offer__user-status">
@@ -177,6 +221,7 @@ export default function Offer({ offers }: OffersProps) {
               </div>
               <div className="offer__description">
                 <p className="offer__text">
+                  { description }
                   { description }
                 </p>
               </div>
@@ -189,6 +234,8 @@ export default function Offer({ offers }: OffersProps) {
         <section className="offer__map map"></section>
       </section>
       <div className="container">
+        {/* Места поблизости */}
+        <NearestOffers offers={ offers } />
         {/* Места поблизости */}
         <NearestOffers offers={ offers } />
       </div>
