@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 import ReviewsForm from '../../components/reviews/reviews-form';
 
 import { ReviewsProps, OffersProps } from './offer-props';
-
 import OffersList from '../../components/offers-list/offers-list';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoutes } from '../../const';
