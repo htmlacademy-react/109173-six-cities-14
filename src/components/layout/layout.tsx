@@ -6,39 +6,39 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import { AppRoute } from '../../const';
 
-const enum CSSClasses {
-  PageContainer = 'page',
-  MainContainer = 'page__main',
-  Main = 'page--gray page--main',
-  Login = 'page--gray page--login',
-  MainMode = 'page__main--index',
-  OfferMode = 'page__main--offer',
-  LoginMode = 'page__main--login',
-}
+const CSSClasses = {
+  'PAGE_CONTAINER': 'page',
+  'MAIN_CONTAINER': 'page__main',
+  'MAIN': 'page--gray page--main',
+  'LOGIN': 'page--gray page--login',
+  'MAIN_MODE': 'page__main--index',
+  'OFFER_MODE': 'page__main--offer',
+  'LOGIN_MODE': 'page__main--login',
+};
 
 export default function Layout(): React.ReactElement {
   const location = useLocation();
-  const isFavoritesPage = (location.pathname === String(AppRoute.Favorites));
+  const isFavoritesPage = (location.pathname === String(AppRoute.FAVORITES));
   const isUserLoggedIn = useContext(AuthContext);
 
-  let pageClassName = String(CSSClasses.PageContainer);
-  let mainClassName = String(CSSClasses.MainContainer);
+  let pageClassName = String(CSSClasses.PAGE_CONTAINER);
+  let mainClassName = String(CSSClasses.MAIN_CONTAINER);
 
   switch(location.pathname) {
-    case AppRoute.Favorites: {
-      mainClassName += CSSClasses.OfferMode;
+    case AppRoute.FAVORITES: {
+      mainClassName += CSSClasses.OFFER_MODE;
       break;
     }
 
-    case AppRoute.Main: {
-      pageClassName += CSSClasses.Main;
-      mainClassName += CSSClasses.MainMode;
+    case AppRoute.MAIN: {
+      pageClassName += CSSClasses.MAIN;
+      mainClassName += CSSClasses.MAIN_MODE;
       break;
     }
 
-    case AppRoute.Login: {
-      pageClassName += CSSClasses.Login;
-      mainClassName += CSSClasses.LoginMode;
+    case AppRoute.LOGIN: {
+      pageClassName += CSSClasses.LOGIN;
+      mainClassName += CSSClasses.LOGIN_MODE;
       break;
     }
   }
