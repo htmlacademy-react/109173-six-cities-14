@@ -45,7 +45,7 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
       </Helmet>
       <section className="offer">
         {/* Галерея */}
-        {images && (
+        {images?.length > 0 && (
           <Gallery images={ images }></Gallery>
         )}
 

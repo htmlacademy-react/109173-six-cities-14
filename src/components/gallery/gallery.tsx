@@ -1,12 +1,8 @@
 type GalleryProps = {
-  images?: string[];
+  images: string[];
 };
 
 export default function Gallery({ images }: GalleryProps) {
-  if(!images) {
-    return;
-  }
-
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">
