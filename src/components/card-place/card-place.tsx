@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import { CardPlaceProps } from './card-place-props';
-import { AppRoutes } from '../../const';
+import StarsRating from '../stars-rating/stars-rating';
 
 export default function CardPlace({ onMouseEnter, onMouseLeave, offerItem }: CardPlaceProps): React.ReactNode {
-  const { id, previewImage, price } = offerItem;
+  const { id, previewImage, price, rating } = offerItem;
 
   return (
     <article className="cities__card place-card" onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave }>
@@ -11,7 +12,7 @@ export default function CardPlace({ onMouseEnter, onMouseLeave, offerItem }: Car
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoutes.Offer}/${ id }`}>
+        <Link to={`${AppRoute.OFFER}/${ id }`}>
           <img className="place-card__image" src={ previewImage } width={ 260 } height={ 200 } alt="Place image"/>
         </Link>
       </div>
@@ -30,12 +31,11 @@ export default function CardPlace({ onMouseEnter, onMouseLeave, offerItem }: Car
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%', }}></span>
-            <span className="visually-hidden">Rating</span>
+            <StarsRating rating={ rating } />
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoutes.Offer}/${ id }`}>Beautiful &amp; luxurious apartment at great location</Link>
+          <Link to={`${AppRoute.OFFER}/${ id }`}>Beautiful &amp; luxurious apartment at great location</Link>
         </h2>
         <p className="place-card__type">Apartment</p>
       </div>

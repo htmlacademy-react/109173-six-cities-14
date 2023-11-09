@@ -9,11 +9,11 @@ export type MainProps = {
   isMainEmpty?: boolean;
 };
 
+type Places = Pick<MainProps, 'offers' | 'offersCount'>;
+
 export type PlacesProps = {
-  offers: Offer[];
-  offersCount: number;
   onSelectPoint: (offer: Offer | null) => void;
-};
+} & Places;
 
 export type LocationItemProps = {
   itemName: string;

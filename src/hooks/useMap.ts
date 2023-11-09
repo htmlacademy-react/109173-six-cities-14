@@ -29,6 +29,11 @@ export default function useMap({ city, mapRef }: MapProps): Map | null {
       mapInstance.addLayer(tileLayer);
       setMap(mapInstance);
       isMapRendered.current = true;
+
+      return function() {
+        mapInstance.remove();
+        isMapRendered.current = false;
+      };
     }
   }, [city, mapRef]);
 

@@ -1,21 +1,25 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { AppRoutes, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 
 type PrivateRouteProps = {
-  redirectTo: AppRoutes;
-  authStatus: AuthorizationStatus;
+  redirectTo: typeof AppRoute[keyof typeof AppRoute];
+  isUserLoggedIn: boolean;
   children: React.ReactElement;
 }
 
-export default function PrivateRoute({ redirectTo = AppRoutes.Page404, authStatus, children }: PrivateRouteProps): React.ReactElement {
-  const isAuthorizedUser = (authStatus === AuthorizationStatus.Auth);
+export default function PrivateRoute({
+  redirectTo = AppRoute.PAGE_404,
+  isUserLoggedIn = false,
+  children
+}: PrivateRouteProps): React.ReactElement {
+
   const location: string = useLocation().pathname;
-  const isLoginPage = (location === String(AppRoutes.Login));
+  const isLoginPage = (location === String(AppRoute.LOGIN));
 
   return (
     (
-      (isAuthorizedUser && !isLoginPage) || // Авторизованного пользователя с login редиректим на main
-      (!isAuthorizedUser && isLoginPage) // Неавторизованному - показываем Login page
+      (isUserLoggedIn && !isLoginPage) || // Авторизованного пользователя с login редиректим на main
+      (!isUserLoggedIn && isLoginPage) // Неавторизованному - показываем Login page
     )
       ? children
       : <Navigate to={redirectTo} />

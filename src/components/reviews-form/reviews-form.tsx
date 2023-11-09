@@ -1,44 +1,15 @@
-import { Fragment, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { REVIEW_TEXT_MIN_LENGTH } from '../../const';
+import StarsRatingForm from '../stars-rating-form/stars-rating-form';
 
-type StartRatingProps = {
-  rating: number;
-};
 
-function StarsRating({ rating }: StartRatingProps): React.ReactElement {
-  const stars = [5, 4, 3, 2, 1];
-
-  return (
-    <div className="reviews__rating-form form__rating">
-      {
-        stars.map((star) => (
-          <Fragment key={ star } >
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating" defaultValue={ star }
-              id={`${ star }-stars`}
-              type="radio"
-              defaultChecked={star <= rating}
-            />
-            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
-              <svg className="form__star-image" width={ 37 } height={ 33 }>
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </Fragment>
-        ))
-      }
-    </div>
-  );
-}
-
-type ReviewProps = {
+type ReviewState = {
   rating: number;
   text: string;
 }
 
 export default function ReviewsForm(): React.ReactNode {
-  const reviewState: ReviewProps = {
+  const reviewState: ReviewState = {
     rating: 0,
     text: '',
   };
@@ -48,7 +19,7 @@ export default function ReviewsForm(): React.ReactNode {
     const target = evt.target as HTMLFormElement;
     const formData = new FormData(target);
 
-    const review: ReviewProps = {
+    const review: ReviewState = {
       rating: Number(formData.get('rating')),
       text: String(formData.get('review')),
     };
@@ -67,7 +38,7 @@ export default function ReviewsForm(): React.ReactNode {
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
-      <StarsRating rating={ userReview.rating }></StarsRating>
+      <StarsRatingForm rating={ userReview.rating } />
 
       <textarea
         className="reviews__textarea form__textarea"
@@ -77,7 +48,8 @@ export default function ReviewsForm(): React.ReactNode {
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{ REVIEW_TEXT_MIN_LENGTH } characters</b>.
+          To submit review please make sure to set
+          <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{ REVIEW_TEXT_MIN_LENGTH } characters</b>.
         </p>
         <button className="reviews__submit form__submit button" type="submit">Submit</button>
       </div>

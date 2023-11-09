@@ -1,89 +1,29 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { AppRoute, NEAREST_OFFERS_COUNT } from '../../const';
+import { Navigate, useParams } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../..';
 
 import ReviewsForm from '../../components/reviews-form/reviews-form';
+import ReviewsList from '../../components/reviews-list/reviews-list';
+import NearestOffers from '../../components/nearest-offers/nearest-offers';
+import Gallery from '../../components/gallery/gallery';
+import StarsRating from '../../components/stars-rating/stars-rating';
+import Map from '../../components/map/map';
 
-import { ReviewsProps, OffersProps } from './offer-props';
-import OffersList from '../../components/offers-list/offers-list';
-import { Navigate, useParams } from 'react-router-dom';
-import { AppRoutes } from '../../const';
+import { Offer } from '../../types/offer';
+import { OffersProps } from './offers-item-props';
 
-type GalleryProps = {
-  images?: string[];
-};
 
-function Gallery({ images }: GalleryProps) {
-  if(!images) {
-    return;
-  }
-
-  return (
-    <div className="offer__gallery-container container">
-      <div className="offer__gallery">
-        {images.map((imageSrc) => (
-          <div className="offer__image-wrapper" key={crypto.randomUUID()}>
-            <img className="offer__image" src={`${ imageSrc }`} alt="Photo studio" />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Reviews({ isUserLoggedIn }: ReviewsProps): React.ReactElement {
-  return (
-    <section className="offer__reviews reviews">
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-      <ul className="reviews__list">
-        <li className="reviews__item">
-          <div className="reviews__user user">
-            <div className="reviews__avatar-wrapper user__avatar-wrapper">
-              <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width={ 54 } height={ 54 } alt="Reviews avatar" />
-            </div>
-            <span className="reviews__user-name">
-              Max
-            </span>
-          </div>
-          <div className="reviews__info">
-            <div className="reviews__rating rating">
-              <div className="reviews__stars rating__stars">
-                <span style={{ width: '80%' }}></span>
-                <span className="visually-hidden">Rating</span>
-              </div>
-            </div>
-            <p className="reviews__text">
-              A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-            </p>
-            <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-          </div>
-        </li>
-      </ul>
-
-      {/* Форма написания отзыва */}
-      {isUserLoggedIn && <ReviewsForm />}
-    </section>
-  );
-}
-
-function NearestOffers({ offers }: OffersProps): React.ReactElement {
-  return (
-    <section className="near-places places">
-      <h2 className="near-places__title">Other places in the neighbourhood</h2>
-      <div className="near-places__list places__list">
-        {/* TODO: Временный костыль с пустой анонимной функцией на onSelectPoint. Убрать */}
-        <OffersList offers={ offers } onSelectPoint={ () => null }/>
-      </div>
-    </section>
-  );
-}
-
-// TODO: currentOffer.something - ? т.к. нет тайпгарда и проверки на существование оффера. Поправить и убрать ?
-export default function Offer({ offers }: OffersProps) {
+export default function OffersItem({ offers, comments, mapPoints }: OffersProps) {
+  const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
   const offerID = Number(useParams().id);
   const currentOffer = offers.find((item) => offerID === item.id);
+  const isUserLoggedIn = useContext(AuthContext);
 
   if(!currentOffer) {
-    return <Navigate to={AppRoutes.Page404} />;
+    return <Navigate to={AppRoute.PAGE_404} />;
   }
 
   const {
@@ -105,7 +45,7 @@ export default function Offer({ offers }: OffersProps) {
       </Helmet>
       <section className="offer">
         {/* Галерея */}
-        {images && (
+        {images?.length > 0 && (
           <Gallery images={ images }></Gallery>
         )}
 
@@ -129,8 +69,7 @@ export default function Offer({ offers }: OffersProps) {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{ width: '80%' }}></span>
-                <span className="visually-hidden">Rating</span>
+                <StarsRating rating={ rating } />
               </div>
               <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
@@ -182,14 +121,20 @@ export default function Offer({ offers }: OffersProps) {
             </div>
 
             {/* Отзывы */}
-            <Reviews isUserLoggedIn></Reviews>
+            <section className="offer__reviews reviews">
+              { comments && <ReviewsList comments={ comments }/>}
+
+              {/* Форма написания отзыва */}
+              {isUserLoggedIn && <ReviewsForm />}
+            </section>
           </div>
         </div>
-        <section className="offer__map map"></section>
+        {/* Карта */}
+        { <Map city={ offers[1].city } mapPoints={ mapPoints.slice(0, NEAREST_OFFERS_COUNT) } selectedPoint={ selectedPoint }/> }
       </section>
       <div className="container">
         {/* Места поблизости */}
-        <NearestOffers offers={ offers } />
+        <NearestOffers offers={ offers } onSelectPoint={ setSelectedPoint }/>
       </div>
     </>
   );

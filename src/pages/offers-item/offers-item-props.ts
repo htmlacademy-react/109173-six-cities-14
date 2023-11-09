@@ -2,10 +2,8 @@ import { Comment } from '../../types/comment';
 import { Offer } from '../../types/offer';
 import { Points } from '../../types/point';
 
-export type AppProps = {
-  locations: string[];
-  mapPoints: Points;
+export type OffersProps = {
   offers: Offer[];
-  offersCount: number;
   comments: Comment[];
+  mapPoints: Points;
 };
