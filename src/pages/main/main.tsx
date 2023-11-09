@@ -4,13 +4,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import cn from 'classnames';
 
 import { MainProps, PlacesProps } from './main-props';
+import { changeCityAction } from '../../store/action';
+import { getRightPluralForm } from '../../utils/common';
 import { Offer } from '../../types/offer';
 
 import OffersList from '../../components/offers-list/offers-list';
-import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
-import { changeCityAction } from '../../store/action';
-import { getRightPluralForm } from '../../utils/common';
+import Sort from '../../components/sort/sort';
+import Map from '../../components/map/map';
 
 const enum CSSCLasses {
   PlacesContainer = 'cities__places-container container',
@@ -29,25 +30,19 @@ function MainEmpty(): React.ReactNode {
 }
 
 function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
+
+  function sortChangeHandler(currentSort: string) {
+    /* КОД РЕАЛИЗАЦИИ СОРТИРОВКИ */
+    console.log('Sort changed!', currentSort);
+  }
+
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
       <b className="places__found">{ offers.length } { getRightPluralForm('place', offers.length) } to stay in Amsterdam</b>
-      <form className="places__sorting" action="#" method="get">
-        <span className="places__sorting-caption">Sort by</span>
-        <span className="places__sorting-type" tabIndex={ 0 }>
-          Popular
-          <svg className="places__sorting-arrow" width={ 7 } height={ 4 }>
-            <use xlinkHref="#icon-arrow-select"></use>
-          </svg>
-        </span>
-        <ul className="places__options places__options--custom places__options--opened">
-          <li className="places__option places__option--active" tabIndex={ 0 }>Popular</li>
-          <li className="places__option" tabIndex={ 0 }>Price: low to high</li>
-          <li className="places__option" tabIndex={ 0 }>Price: high to low</li>
-          <li className="places__option" tabIndex={ 0 }>Top rated first</li>
-        </ul>
-      </form>
+
+      <Sort onSortChange={ sortChangeHandler } />
+
       <div className="cities__places-list places__list tabs__content">
         <OffersList offers={ offers } onSelectPoint={ onSelectPoint }></OffersList>
       </div>
@@ -92,7 +87,8 @@ export default function Main({
           {[CSSCLasses.NoPlaces]: isMainEmpty}
         ) }
         >
-          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } onSelectPoint={ setSelectedPoint }/>}
+          { (isMainEmpty && <MainEmpty />)
+            || <Places offers={ offers } onSelectPoint={ setSelectedPoint }/> }
 
           <div className="cities__right-section">
             { !isMainEmpty && <Map city={ currentCity } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}
