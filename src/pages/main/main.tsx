@@ -66,7 +66,7 @@ export default function Main({
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
 
   function selectCityHandler(evt: React.MouseEvent<HTMLElement, MouseEvent>) {
-    const target: HTMLElement = evt.target;
+    const target = (evt.target as HTMLElement);
     const targetCity = target.textContent;
     const selectedCity = cities.find((city) => city.name === targetCity);
 

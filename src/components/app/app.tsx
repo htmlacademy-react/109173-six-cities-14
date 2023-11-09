@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { useAppSelector } from '../../hooks';
-import { adaptOffersToPoints, getNearestOffersPoint } from '../../utils/offer';
+import { adaptOffersToPoints, getNearestOffers } from '../../utils/offer';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import Main from '../../pages/main/main';
@@ -24,8 +24,8 @@ export default function App({
 }: AppProps): React.ReactElement {
 
   const isUserLoggedIn = useContext(AuthContext);
-  const currentCity = useAppSelector((store) => store.city);
-  const nearestOffers = getNearestOffersPoint(currentCity, offers).slice(0, offersCount);
+  const currentCity = useAppSelector((state) => state.city);
+  const nearestOffers = getNearestOffers(currentCity, offers).slice(0, offersCount);
   const mapPoints = adaptOffersToPoints(nearestOffers);
 
   return (

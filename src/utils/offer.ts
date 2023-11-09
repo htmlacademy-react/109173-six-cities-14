@@ -1,10 +1,10 @@
 import { City } from '../types/city';
 import { Offers } from '../types/offer';
 
-export function getNearestOffersPoint(currentCity: City, offers: Offers) {
-  const nearestOffersPoint = offers.slice().filter((offer) => (currentCity.name === offer.city.name));
+export function getNearestOffers(currentCity: City, offers: Offers) {
+  const nearestOffers = offers.slice().filter((offer) => (currentCity.name === offer.city.name));
 
-  return nearestOffersPoint;
+  return nearestOffers;
 }
 
 export function adaptOffersToPoints(offers: Offers) {

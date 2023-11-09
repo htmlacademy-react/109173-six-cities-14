@@ -4,9 +4,10 @@ import { changeCityAction, setOffersAction } from './action';
 import { cities } from '../mocks/cities';
 import { offers } from '../mocks/offers';
 
+
 const initialState = {
-  city: cities[3],
-  offers: offers
+  city: cities[0],
+  offers: offers,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
