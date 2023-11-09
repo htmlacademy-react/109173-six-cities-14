@@ -14,6 +14,7 @@ import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
 import { useContext } from 'react';
 import { AuthContext } from '../..';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 export default function App({
   cities,
@@ -30,6 +31,7 @@ export default function App({
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path={AppRoute.MAIN} element={<Layout />}>
             <Route index element={
