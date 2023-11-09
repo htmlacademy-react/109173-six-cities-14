@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import cn from 'classnames';
 
 import { MainProps, PlacesProps } from './main-props';
 import { Offer } from '../../types/offer';
@@ -9,6 +10,7 @@ import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import { changeCityAction } from '../../store/action';
+import { getRightPluralForm } from '../../utils/common';
 
 const enum CSSCLasses {
   PlacesContainer = 'cities__places-container container',
@@ -26,11 +28,11 @@ function MainEmpty(): React.ReactNode {
   );
 }
 
-function Places({ offers, offersCount, onSelectPoint }: PlacesProps): React.ReactNode {
+function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
-      <b className="places__found">{ offersCount } places to stay in Amsterdam</b>
+      <b className="places__found">{ offers.length } { getRightPluralForm('place', offers.length) } to stay in Amsterdam</b>
       <form className="places__sorting" action="#" method="get">
         <span className="places__sorting-caption">Sort by</span>
         <span className="places__sorting-type" tabIndex={ 0 }>
@@ -57,15 +59,11 @@ export default function Main({
   cities,
   mapPoints,
   offers,
-  offersCount,
   isMainEmpty
 }: MainProps): React.ReactNode {
   const dispatch = useAppDispatch();
   const currentCity = useAppSelector((state) => state.city);
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-  const placesClassName = (!isMainEmpty)
-    ? CSSCLasses.PlacesContainer
-    : `${CSSCLasses.PlacesContainer} ${CSSCLasses.NoPlaces}`;
 
   function selectCityHandler(evt: React.MouseEvent<HTMLElement, MouseEvent>) {
     const target: HTMLElement = evt.target;
@@ -89,8 +87,12 @@ export default function Main({
         </section>
       </div>
       <div className="cities">
-        <div className={ placesClassName }>
-          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } offersCount={ offersCount } onSelectPoint={ setSelectedPoint }/>}
+        <div className={ cn(
+          CSSCLasses.PlacesContainer,
+          {[CSSCLasses.NoPlaces]: isMainEmpty}
+        ) }
+        >
+          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } onSelectPoint={ setSelectedPoint }/>}
 
           <div className="cities__right-section">
             { !isMainEmpty && <Map city={ currentCity } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}

@@ -6,11 +6,10 @@ export type MainProps = {
   cities: Cities;
   mapPoints: Points;
   offers: Offers;
-  offersCount: number;
   isMainEmpty?: boolean;
 };
 
-type Places = Pick<MainProps, 'offers' | 'offersCount'>;
+type Places = Pick<MainProps, 'offers'>;
 
 export type PlacesProps = {
   onSelectPoint: (offer: Offer | null) => void;

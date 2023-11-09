@@ -6,7 +6,6 @@ import { store } from './store';
 import { offers } from './mocks/offers';
 import { comments } from './mocks/comments';
 import { cities } from './mocks/cities';
-import { mapPoints } from './mocks/map-points';
 import { AuthorizationStatus, OFFERS_COUNT } from './const';
 
 import App from './components/app/app';
@@ -25,7 +24,6 @@ root.render(
       <AuthContext.Provider value={ isUserLoggedIn }>
         <App
           cities={ cities }
-          mapPoints={ mapPoints }
           offers={ offers }
           offersCount={ OFFERS_COUNT }
           comments={ comments }

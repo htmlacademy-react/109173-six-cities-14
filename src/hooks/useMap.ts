@@ -9,6 +9,7 @@ type MapProps = {
 };
 
 export default function useMap({ city, mapRef }: MapProps): Map | null {
+  const [currentCity, setCurrentCity] = useState('');
   const [map, setMap] = useState<Map | null>(null);
   const isMapRendered = useRef<boolean>(false);
 
@@ -29,11 +30,13 @@ export default function useMap({ city, mapRef }: MapProps): Map | null {
       mapInstance.addLayer(tileLayer);
       setMap(mapInstance);
       isMapRendered.current = true;
+    }
 
-      return function() {
-        mapInstance.remove();
-        isMapRendered.current = false;
-      };
+    if(currentCity !== city.name && map) {
+      const {latitude: lat, longitude: lng, zoom} = city.location;
+
+      map.setView({lat, lng}, zoom);
+      setCurrentCity(city.name);
     }
   }, [city, mapRef]);
 

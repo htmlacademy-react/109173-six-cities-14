@@ -55,7 +55,7 @@ export default function Map({ city, mapPoints, selectedPoint }: MapProps): React
         });
 
         marker.setIcon(iconType);
-        // marker.addTo(markerLayer); // TODO: Возникает ошибка при переключении городов
+        marker.addTo(markerLayer); // TODO: Возникает ошибка при переключении городов
       });
 
       return function() {
