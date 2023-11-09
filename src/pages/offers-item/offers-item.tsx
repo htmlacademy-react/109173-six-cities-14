@@ -12,8 +12,7 @@ import Gallery from '../../components/gallery/gallery';
 import StarsRating from '../../components/stars-rating/stars-rating';
 import Map from '../../components/map/map';
 
-import { Offer } from '../../types/offer';
-import { OffersProps } from './offers-item-props';
+import { Offer, OffersProps } from '../../types/offer';
 
 
 export default function OffersItem({ offers, comments, mapPoints }: OffersProps) {

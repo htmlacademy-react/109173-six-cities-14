@@ -1,9 +1,11 @@
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 import { offers } from './mocks/offers';
 import { comments } from './mocks/comments';
-import { locations } from './mocks/locations';
+import { cities } from './mocks/cities';
 import { mapPoints } from './mocks/map-points';
 import { AuthorizationStatus, OFFERS_COUNT } from './const';
 
@@ -19,14 +21,16 @@ export const AuthContext = createContext(isUserLoggedIn);
 
 root.render(
   <React.StrictMode>
-    <AuthContext.Provider value={ isUserLoggedIn }>
-      <App
-        locations={ locations }
-        mapPoints={ mapPoints }
-        offers={ offers }
-        offersCount={ OFFERS_COUNT }
-        comments={ comments }
-      />
-    </AuthContext.Provider>
+    <Provider store={ store }>
+      <AuthContext.Provider value={ isUserLoggedIn }>
+        <App
+          cities={ cities }
+          mapPoints={ mapPoints }
+          offers={ offers }
+          offersCount={ OFFERS_COUNT }
+          comments={ comments }
+        />
+      </AuthContext.Provider>
+    </Provider>
   </React.StrictMode>
 );

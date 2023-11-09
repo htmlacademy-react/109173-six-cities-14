@@ -14,7 +14,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../..';
 
 export default function App({
-  locations,
+  cities,
   mapPoints,
   offers,
   offersCount,
@@ -30,7 +30,7 @@ export default function App({
           <Route path={AppRoute.MAIN} element={<Layout />}>
             <Route index element={
               <Main
-                locations={ locations }
+                cities={ cities }
                 mapPoints={ mapPoints }
                 offers={ offers }
                 offersCount = { offersCount }

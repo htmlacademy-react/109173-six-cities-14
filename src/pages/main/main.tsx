@@ -1,24 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { MainProps, PlacesProps, LocationItemProps } from './main-props';
+import { MainProps, PlacesProps } from './main-props';
+import { Offer } from '../../types/offer';
+
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
-import { Offer } from '../../types/offer';
+import CitiesList from '../../components/cities-list/cities-list';
+import { changeCityAction } from '../../store/action';
 
 const enum CSSCLasses {
   PlacesContainer = 'cities__places-container container',
   NoPlaces = 'cities__places-container--empty'
-}
-
-function LocationItem({ itemName }: LocationItemProps): React.ReactNode {
-  return (
-    <li className="locations__item">
-      <a className="locations__item-link tabs__item" href="#">
-        <span>{ itemName }</span>
-      </a>
-    </li>
-  );
 }
 
 function MainEmpty(): React.ReactNode {
@@ -59,11 +53,29 @@ function Places({ offers, offersCount, onSelectPoint }: PlacesProps): React.Reac
   );
 }
 
-export default function Main({ locations, mapPoints, offers, offersCount, isMainEmpty }: MainProps): React.ReactNode {
+export default function Main({
+  cities,
+  mapPoints,
+  offers,
+  offersCount,
+  isMainEmpty
+}: MainProps): React.ReactNode {
+  const dispatch = useAppDispatch();
+  const currentCity = useAppSelector((state) => state.city);
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
   const placesClassName = (!isMainEmpty)
     ? CSSCLasses.PlacesContainer
     : `${CSSCLasses.PlacesContainer} ${CSSCLasses.NoPlaces}`;
+
+  function selectCityHandler(evt: React.MouseEvent<HTMLElement, MouseEvent>) {
+    const target: HTMLElement = evt.target;
+    const targetCity = target.textContent;
+    const selectedCity = cities.find((city) => city.name === targetCity);
+
+    if(selectedCity !== undefined) {
+      dispatch(changeCityAction({ city: selectedCity }));
+    }
+  }
 
   return (
     <>
@@ -73,12 +85,7 @@ export default function Main({ locations, mapPoints, offers, offersCount, isMain
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
-          <ul className="locations__list tabs__list">
-            {
-              locations.slice()
-                .map((location: string) => <LocationItem key={ location } itemName={ location }></LocationItem>)
-            }
-          </ul>
+          { cities && <CitiesList cities={ cities } onSelectCity={ selectCityHandler } /> }
         </section>
       </div>
       <div className="cities">
@@ -86,7 +93,7 @@ export default function Main({ locations, mapPoints, offers, offersCount, isMain
           { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } offersCount={ offersCount } onSelectPoint={ setSelectedPoint }/>}
 
           <div className="cities__right-section">
-            { !isMainEmpty && <Map city={ offers[1].city } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}
+            { !isMainEmpty && <Map city={ currentCity } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}
           </div>
         </div>
       </div>

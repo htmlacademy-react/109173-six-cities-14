@@ -1,7 +1,7 @@
-import { Offer } from '../../types/offer';
+import { Offer, Offers } from '../../types/offer';
 
 export type FavoritesProps = {
-  offers: Offer[];
+  offers: Offers;
   isFavoritesEmpty?: boolean;
 };
 

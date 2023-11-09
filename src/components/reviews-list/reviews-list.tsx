@@ -1,8 +1,8 @@
-import { Comment } from '../../types/comment';
+import { Comments } from '../../types/comment';
 import ReviewsItem from '../reviews-item/reviews-item';
 
 type ReviewListProps = {
-  comments: Comment[];
+  comments: Comments;
 };
 
 export default function ReviewsList({ comments }: ReviewListProps): React.ReactElement {
