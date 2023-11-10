@@ -3,8 +3,8 @@ import { City } from '../types/city';
 import { Offers } from '../types/offer';
 
 export const Action = {
-  'CHANGE_CITY': 'CHANGE_CITY',
-  'SET_OFFERS': 'SET_OFFERS'
+  'CHANGE_CITY': 'city/change',
+  'SET_OFFERS': 'offers/set'
 };
 
 export const changeCityAction = createAction<{ city: City }>(Action.CHANGE_CITY);

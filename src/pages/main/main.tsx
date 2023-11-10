@@ -1,7 +1,18 @@
+
+/**
+ * TODO:
+ * Сортировка работает, но с запазданием на 1 действие
+ * (т.е. при нажатии на фильтр, срабатывет предыдущий выбранны фильтр) - поправить
+ * При наведении на карточку - сбрасывается вся сортировка
+ * (т.к. весь компонент main перерисовывается, а отсортированные офферы хранятся в его детях) - поправить
+ */
+
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import cn from 'classnames';
+
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import useSort from '../../hooks/useSort';
 
 import { MainProps, PlacesProps } from './main-props';
 import { changeCityAction } from '../../store/action';
@@ -13,10 +24,12 @@ import CitiesList from '../../components/cities-list/cities-list';
 import Sort from '../../components/sort/sort';
 import Map from '../../components/map/map';
 
-const enum CSSCLasses {
-  PlacesContainer = 'cities__places-container container',
-  NoPlaces = 'cities__places-container--empty'
-}
+const DEFAULT_SORT = 'POPULAR';
+
+const CSSCLasses = {
+  PlacesContainer: 'cities__places-container container',
+  NoPlaces: 'cities__places-container--empty'
+};
 
 function MainEmpty(): React.ReactNode {
   return (
@@ -30,10 +43,13 @@ function MainEmpty(): React.ReactNode {
 }
 
 function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
+  const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
+  const sortedOffers = useSort(offers, currentSort);
 
-  function sortChangeHandler(currentSort: string) {
-    /* КОД РЕАЛИЗАЦИИ СОРТИРОВКИ */
-    console.log('Sort changed!', currentSort);
+  function sortChangeHandler(selectedSort: string) {
+    if(selectedSort && selectedSort !== currentSort) {
+      setCurrentSort(selectedSort);
+    }
   }
 
   return (
@@ -44,7 +60,7 @@ function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
       <Sort onSortChange={ sortChangeHandler } />
 
       <div className="cities__places-list places__list tabs__content">
-        <OffersList offers={ offers } onSelectPoint={ onSelectPoint }></OffersList>
+        <OffersList offers={ sortedOffers } onSelectPoint={ onSelectPoint } />
       </div>
     </section>
   );
