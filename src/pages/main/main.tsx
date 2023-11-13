@@ -1,8 +1,5 @@
-
 /**
  * TODO:
- * Сортировка работает, но с запазданием на 1 действие
- * (т.е. при нажатии на фильтр, срабатывет предыдущий выбранны фильтр) - поправить
  * При наведении на карточку - сбрасывается вся сортировка
  * (т.к. весь компонент main перерисовывается, а отсортированные офферы хранятся в его детях) - поправить
  */
@@ -24,6 +21,7 @@ import CitiesList from '../../components/cities-list/cities-list';
 import Sort from '../../components/sort/sort';
 import Map from '../../components/map/map';
 import { cities } from '../../const';
+import { adaptOffersToPoints, getOffersByCity } from '../../utils/offer';
 
 const DEFAULT_SORT = 'POPULAR';
 
@@ -59,18 +57,19 @@ function Places({ city, offers, onSelectPoint, onSortChange }: PlacesProps): Rea
 }
 
 export default function Main({
-  mapPoints,
-  offers,
   isMainEmpty
 }: MainProps): React.ReactNode {
   const dispatch = useAppDispatch();
+  const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
+  const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
 
   const currentCity = useAppSelector((state) => state.city);
-  const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-  const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
+  const offers = useAppSelector((state) => state.offers);
+  const cityOffers = getOffersByCity(currentCity, offers);
+  const sortedOffers = useSort(cityOffers, currentSort);
+  const mapPoints = adaptOffersToPoints(cityOffers);
 
   const cityInfo = offers[0]?.city;
-  const sortedOffers = useSort(offers, currentSort);
 
   function sortChangeHandler(selectedSort: string) {
     if(selectedSort && selectedSort !== currentSort) {

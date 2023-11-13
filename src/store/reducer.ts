@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { loadOffersAction, setOffersAction } from './action';
+import { setCityAction, loadOffersAction, setOffersAction } from './action';
 import { Offers } from '../types/offer';
 
 export const DEFAULT_CITY = 'Paris';
@@ -17,6 +17,9 @@ const initialState: initialState = {
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(setCityAction, (state, action) => {
+      state.city = action.payload.city;
+    })
     .addCase(setOffersAction, (state, action) => {
       state.offers = action.payload.offers;
     })

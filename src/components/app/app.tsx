@@ -39,10 +39,7 @@ export default function App({
         <Routes>
           <Route path={AppRoute.MAIN} element={<Layout />}>
             <Route index element={
-              <Main
-                mapPoints={ mapPoints }
-                offers={ cityOffers }
-              />
+              <Main />
             }
             />
             <Route
