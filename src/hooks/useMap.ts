@@ -38,7 +38,7 @@ export default function useMap({ city, mapRef }: MapProps): Map | null {
       map.setView({lat, lng}, zoom);
       setCurrentCity(city.name);
     }
-  }, [city, mapRef]);
+  }, [city, currentCity, map, mapRef]);
 
   return map;
 }
