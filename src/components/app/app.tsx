@@ -15,15 +15,22 @@ import Page404 from '../../pages/page-404/page-404';
 import { useContext } from 'react';
 import { AuthContext } from '../..';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
+import Spinner from '../spinner/spinner';
 
 export default function App({
   comments
 }: AppProps): React.ReactElement {
   const offers = useAppSelector((state) => state.offers);
   const currentCity = useAppSelector((state) => state.city);
-  const isUserLoggedIn = useContext(AuthContext);
-  const cityOffers = getOffersByCity(currentCity, offers);
+  const cityOffers = getOffersByCity(currentCity, offers); // < -- Переделать на хук?
+
   const mapPoints = adaptOffersToPoints(cityOffers);
+
+  const isUserLoggedIn = useContext(AuthContext);
+
+  if(offers.length <= 0) {
+    return <Spinner />;
+  }
 
   return (
     <HelmetProvider>
@@ -46,6 +53,7 @@ export default function App({
                 </PrivateRoute>
               }
             />
+            {/* TODO: Урбать передачу офферов - дергать только в момент открытия конкретного оффера, чтобы получить места поблизости */}
             <Route path={`${AppRoute.OFFER}/:id`} element={<OffersItem offers={ cityOffers } comments={ comments } mapPoints={ mapPoints } />} />
             <Route
               path={AppRoute.LOGIN}

@@ -38,7 +38,7 @@ export const DateFormat = {
 
 export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
-export const monthes = [
+export const months = [
   'January',
   'February',
   'March',

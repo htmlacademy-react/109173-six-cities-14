@@ -1,4 +1,4 @@
-import { DateFormat, monthes } from '../const';
+import { DateFormat, months } from '../const';
 
 export function getRatingPercent(rating: number) {
   return (100 / 5) * rating;
@@ -9,7 +9,7 @@ export function getPaddedNum(num: number): string | number {
 }
 
 export function getMonthName(monthNum: number): string {
-  return monthes[monthNum];
+  return months[monthNum];
 }
 
 export function getFormattedDate(date: Date, format: typeof DateFormat[keyof typeof DateFormat]): string {

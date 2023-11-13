@@ -8,12 +8,12 @@ type CitiesListProps = {
 };
 
 type CityProps = {
-  cityName: string;
+  city: string;
 } & Pick<CitiesListProps, 'onSelectCity'>;
 
-function CityItem({ cityName, onSelectCity }: CityProps): React.ReactNode {
+function CityItem({ city, onSelectCity }: CityProps): React.ReactNode {
   const selectedCity = useAppSelector((state) => state.city);
-  const isSelectedCity = (selectedCity === cityName);
+  const isSelectedCity = (selectedCity === city);
 
   return (
     <li className="locations__item" onClick={ (evt: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -27,7 +27,7 @@ function CityItem({ cityName, onSelectCity }: CityProps): React.ReactNode {
         {'tabs__item tabs__item--active': isSelectedCity}
       )} href="#"
       >
-        <span>{ cityName }</span>
+        <span>{ city }</span>
       </a>
     </li>
   );
@@ -38,7 +38,7 @@ export default function CitiesList({ onSelectCity }: CitiesListProps): React.Rea
     <ul className="locations__list tabs__list">
       {
         cities && cities.slice()
-          .map((city: string) => <CityItem key={ city } cityName={ city } onSelectCity={ onSelectCity }/>)
+          .map((city: string) => <CityItem key={ city } city={ city } onSelectCity={ onSelectCity }/>)
       }
     </ul>
   );
