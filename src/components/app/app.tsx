@@ -17,14 +17,12 @@ import { AuthContext } from '../..';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 export default function App({
-  cities,
-  offersCount,
   comments
 }: AppProps): React.ReactElement {
   const offers = useAppSelector((state) => state.offers);
   const currentCity = useAppSelector((state) => state.city);
   const isUserLoggedIn = useContext(AuthContext);
-  const cityOffers = getOffersByCity(currentCity, offers).slice(0, offersCount);
+  const cityOffers = getOffersByCity(currentCity, offers);
   const mapPoints = adaptOffersToPoints(cityOffers);
 
   return (
@@ -35,7 +33,6 @@ export default function App({
           <Route path={AppRoute.MAIN} element={<Layout />}>
             <Route index element={
               <Main
-                cities={ cities }
                 mapPoints={ mapPoints }
                 offers={ cityOffers }
               />

@@ -1,9 +1,7 @@
-import { Cities } from '../../types/city';
 import { Offer, Offers } from '../../types/offer';
 import { Points } from '../../types/point';
 
 export type MainProps = {
-  cities: Cities;
   mapPoints: Points;
   offers: Offers;
   isMainEmpty?: boolean;
@@ -12,5 +10,6 @@ export type MainProps = {
 type Places = Pick<MainProps, 'offers'>;
 
 export type PlacesProps = {
+  city: string;
   onSelectPoint: (offer: Offer | null) => void;
 } & Places;

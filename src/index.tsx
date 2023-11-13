@@ -6,11 +6,11 @@ import { store } from './store';
 import { fetchOffersAction } from './store/api-actions';
 
 import { comments } from './mocks/comments';
-import { cities } from './mocks/cities';
-import { AuthorizationStatus, OFFERS_COUNT } from './const';
+import { AuthorizationStatus } from './const';
 
 import App from './components/app/app';
 
+// Префетчинг данных
 store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
@@ -26,8 +26,6 @@ root.render(
     <Provider store={ store }>
       <AuthContext.Provider value={ isUserLoggedIn }>
         <App
-          cities={ cities }
-          offersCount={ OFFERS_COUNT }
           comments={ comments }
         />
       </AuthContext.Provider>

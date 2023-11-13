@@ -4,11 +4,11 @@ import { City } from '../types/city';
 import { MAP_COPYRIGHT, TILE_LAYER_URL } from '../const';
 
 type MapProps = {
-  city: City;
+  cityInfo: City;
   mapRef: React.MutableRefObject<HTMLElement | null>;
 };
 
-export default function useMap({ city, mapRef }: MapProps): Map | null {
+export default function useMap({ cityInfo, mapRef }: MapProps): Map | null {
   const [currentCity, setCurrentCity] = useState('');
   const [map, setMap] = useState<Map | null>(null);
   const isMapRendered = useRef<boolean>(false);
@@ -17,10 +17,10 @@ export default function useMap({ city, mapRef }: MapProps): Map | null {
     if(mapRef.current !== null && !isMapRendered.current) {
       const mapInstance = new Map(mapRef.current, {
         center: {
-          lat: city.location.latitude,
-          lng: city.location.longitude
+          lat: cityInfo.location.latitude,
+          lng: cityInfo.location.longitude
         },
-        zoom: city.location.zoom
+        zoom: cityInfo.location.zoom
       });
 
       const tileLayer = new TileLayer(TILE_LAYER_URL, {
@@ -32,13 +32,13 @@ export default function useMap({ city, mapRef }: MapProps): Map | null {
       isMapRendered.current = true;
     }
 
-    if(currentCity !== city.name && map) {
-      const {latitude: lat, longitude: lng, zoom} = city.location;
+    if(currentCity !== cityInfo.name && map) {
+      const {latitude: lat, longitude: lng, zoom} = cityInfo.location;
 
       map.setView({lat, lng}, zoom);
-      setCurrentCity(city.name);
+      setCurrentCity(cityInfo.name);
     }
-  }, [city, currentCity, map, mapRef]);
+  }, [cityInfo, currentCity, map, mapRef]);
 
   return map;
 }

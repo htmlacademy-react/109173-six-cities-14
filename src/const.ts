@@ -1,5 +1,4 @@
 // MAIN
-export const OFFERS_COUNT = 6;
 export const NEAREST_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
 export const REVIEW_TEXT_MIN_LENGTH = 50;
@@ -36,6 +35,8 @@ export const DateFormat = {
   MONTH_YEAR: 'MONTH_YEAR',
   DATE_TIME: 'DATE_TIME'
 };
+
+export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const monthes = [
   'January',

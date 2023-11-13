@@ -12,7 +12,7 @@ import { Marker, Icon, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  city: City;
+  cityInfo: City;
   mapPoints: Points;
   selectedPoint: Offer | null;
 };
@@ -34,12 +34,12 @@ const pinActiveIcon = new Icon({
   iconAnchor: [13.5, 39],
 });
 
-export default function Map({ city, mapPoints, selectedPoint }: MapProps): React.ReactElement {
+export default function Map({ cityInfo, mapPoints, selectedPoint }: MapProps): React.ReactElement {
   const location = useLocation().pathname;
   const isMainPage = (location === AppRoute.MAIN);
   const isNotMainPage = !isMainPage;
   const mapRef = useRef(null);
-  const map = useMap({ city, mapRef });
+  const map = useMap({ cityInfo, mapRef });
 
   useEffect(() => {
     if(map) {

@@ -1,8 +1,7 @@
-import { City } from '../types/city';
 import { Offers } from '../types/offer';
 
-export function getOffersByCity(currentCity: City, offers: Offers) {
-  const offersByCity = offers.slice().filter((offer) => (currentCity.name === offer.city.name));
+export function getOffersByCity(currentCity: string, offers: Offers) {
+  const offersByCity = offers.slice().filter((offer) => (currentCity === offer.city.name));
 
   return offersByCity;
 }
