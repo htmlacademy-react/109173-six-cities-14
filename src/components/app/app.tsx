@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { useAppSelector } from '../../hooks';
-import { adaptOffersToPoints, getNearestOffers } from '../../utils/offer';
+import { adaptOffersToPoints, getOffersByCity } from '../../utils/offer';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import Main from '../../pages/main/main';
@@ -18,15 +18,14 @@ import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 export default function App({
   cities,
-  offers,
   offersCount,
   comments
 }: AppProps): React.ReactElement {
-
-  const isUserLoggedIn = useContext(AuthContext);
+  const offers = useAppSelector((state) => state.offers);
   const currentCity = useAppSelector((state) => state.city);
-  const nearestOffers = getNearestOffers(currentCity, offers).slice(0, offersCount);
-  const mapPoints = adaptOffersToPoints(nearestOffers);
+  const isUserLoggedIn = useContext(AuthContext);
+  const cityOffers = getOffersByCity(currentCity, offers).slice(0, offersCount);
+  const mapPoints = adaptOffersToPoints(cityOffers);
 
   return (
     <HelmetProvider>
@@ -38,7 +37,7 @@ export default function App({
               <Main
                 cities={ cities }
                 mapPoints={ mapPoints }
-                offers={ nearestOffers }
+                offers={ cityOffers }
               />
             }
             />
@@ -50,7 +49,7 @@ export default function App({
                 </PrivateRoute>
               }
             />
-            <Route path={`${AppRoute.OFFER}/:id`} element={<OffersItem offers={ nearestOffers } comments={ comments } mapPoints={ mapPoints } />} />
+            <Route path={`${AppRoute.OFFER}/:id`} element={<OffersItem offers={ cityOffers } comments={ comments } mapPoints={ mapPoints } />} />
             <Route
               path={AppRoute.LOGIN}
               element={

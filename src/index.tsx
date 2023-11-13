@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-import { offers } from './mocks/offers';
+import { fetchOffersAction } from './store/api-actions';
+
 import { comments } from './mocks/comments';
 import { cities } from './mocks/cities';
 import { AuthorizationStatus, OFFERS_COUNT } from './const';
 
 import App from './components/app/app';
+
+store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,7 +27,6 @@ root.render(
       <AuthContext.Provider value={ isUserLoggedIn }>
         <App
           cities={ cities }
-          offers={ offers }
           offersCount={ OFFERS_COUNT }
           comments={ comments }
         />
