@@ -12,4 +12,5 @@ type Places = Pick<MainProps, 'offers'>;
 export type PlacesProps = {
   city: string;
   onSelectPoint: (offer: Offer | null) => void;
+  onSortChange: (currentSort: string) => void;
 } & Places;

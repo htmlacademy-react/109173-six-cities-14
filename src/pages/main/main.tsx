@@ -43,25 +43,16 @@ function MainEmpty(): React.ReactNode {
   );
 }
 
-function Places({ city, offers, onSelectPoint }: PlacesProps): React.ReactNode {
-  const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
-  const sortedOffers = useSort(offers, currentSort);
-
-  function sortChangeHandler(selectedSort: string) {
-    if(selectedSort && selectedSort !== currentSort) {
-      setCurrentSort(selectedSort);
-    }
-  }
-
+function Places({ city, offers, onSelectPoint, onSortChange }: PlacesProps): React.ReactNode {
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
       <b className="places__found">{ offers.length } { getRightPluralForm('place', offers.length) } to stay in { city }</b>
 
-      <Sort onSortChange={ sortChangeHandler } />
+      <Sort onSortChange={ onSortChange } />
 
       <div className="cities__places-list places__list tabs__content">
-        <OffersList offers={ sortedOffers } onSelectPoint={ onSelectPoint } />
+        <OffersList offers={ offers } onSelectPoint={ onSelectPoint } />
       </div>
     </section>
   );
@@ -73,9 +64,19 @@ export default function Main({
   isMainEmpty
 }: MainProps): React.ReactNode {
   const dispatch = useAppDispatch();
+
   const currentCity = useAppSelector((state) => state.city);
-  const cityInfo = offers[0]?.city;
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
+  const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
+
+  const cityInfo = offers[0]?.city;
+  const sortedOffers = useSort(offers, currentSort);
+
+  function sortChangeHandler(selectedSort: string) {
+    if(selectedSort && selectedSort !== currentSort) {
+      setCurrentSort(selectedSort);
+    }
+  }
 
   function selectCityHandler(evt: React.MouseEvent<HTMLElement, MouseEvent>) {
     const target = (evt.target as HTMLElement);
@@ -105,7 +106,7 @@ export default function Main({
         ) }
         >
           { (isMainEmpty && <MainEmpty />)
-            || (cityInfo && <Places city={ currentCity } offers={ offers } onSelectPoint={ setSelectedPoint }/>) }
+            || (cityInfo && <Places city={ currentCity } offers={ sortedOffers } onSelectPoint={ setSelectedPoint } onSortChange={ sortChangeHandler }/>) }
 
           <div className="cities__right-section">
             { !isMainEmpty && cityInfo &&
