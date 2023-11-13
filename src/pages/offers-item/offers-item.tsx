@@ -12,14 +12,16 @@ import Gallery from '../../components/gallery/gallery';
 import StarsRating from '../../components/stars-rating/stars-rating';
 import Map from '../../components/map/map';
 
-import { Offer } from '../../types/offer';
-import { OffersProps } from './offers-item-props';
+import { Offer, OffersProps } from '../../types/offer';
+import { useAppSelector } from '../../hooks';
 
 
 export default function OffersItem({ offers, comments, mapPoints }: OffersProps) {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
   const offerID = Number(useParams().id);
+  const currentCity = useAppSelector((state) => state.city);
   const currentOffer = offers.find((item) => offerID === item.id);
+  const slicedPoints = mapPoints.slice(0, NEAREST_OFFERS_COUNT);
   const isUserLoggedIn = useContext(AuthContext);
 
   if(!currentOffer) {
@@ -130,11 +132,11 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
           </div>
         </div>
         {/* Карта */}
-        { <Map city={ offers[1].city } mapPoints={ mapPoints.slice(0, NEAREST_OFFERS_COUNT) } selectedPoint={ selectedPoint }/> }
+        { <Map city={ currentCity } mapPoints={ slicedPoints } selectedPoint={ selectedPoint }/> }
       </section>
       <div className="container">
         {/* Места поблизости */}
-        <NearestOffers offers={ offers } onSelectPoint={ setSelectedPoint }/>
+        <NearestOffers offerID={ offerID } offers={ offers } onSelectPoint={ setSelectedPoint }/>
       </div>
     </>
   );

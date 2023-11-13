@@ -17,6 +17,11 @@ type MapProps = {
   selectedPoint: Offer | null;
 };
 
+const CSSClasses = {
+  'CITIES_MAP': 'cities__map',
+  'OFFER_MAP': 'offer__map'
+};
+
 const pinIcon = new Icon({
   iconUrl: PIN_ICON_URL,
   iconSize: [27, 39],
@@ -48,8 +53,9 @@ export default function Map({ city, mapPoints, selectedPoint }: MapProps): React
           lat: point.lat,
           lng: point.long
         });
+
         marker.setIcon(iconType);
-        marker.addTo(markerLayer);
+        marker.addTo(markerLayer); // TODO: Возникает ошибка при переключении городов
       });
 
       return function() {
@@ -62,8 +68,8 @@ export default function Map({ city, mapPoints, selectedPoint }: MapProps): React
     <section
       className={ cn(
         'map',
-        {'cities__map': isMainPage},
-        {'offer__map': isNotMainPage}
+        {[CSSClasses.CITIES_MAP]: isMainPage},
+        {[CSSClasses.OFFER_MAP]: isNotMainPage}
       ) }
       ref={ mapRef }
     />

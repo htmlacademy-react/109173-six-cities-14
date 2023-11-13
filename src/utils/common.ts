@@ -32,3 +32,7 @@ export function getFormattedDate(date: Date, format: typeof DateFormat[keyof typ
 
   return String(formattedDate);
 }
+
+export function getRightPluralForm(phrase: string, itemsCount: number) {
+  return (itemsCount <= 1) ? phrase : `${phrase}s`;
+}

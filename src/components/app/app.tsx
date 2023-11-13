@@ -3,6 +3,8 @@ import { AppProps } from './app-props';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
+import { useAppSelector } from '../../hooks';
+import { adaptOffersToPoints, getNearestOffers } from '../../utils/offer';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import Main from '../../pages/main/main';
@@ -12,28 +14,31 @@ import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
 import { useContext } from 'react';
 import { AuthContext } from '../..';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 export default function App({
-  locations,
-  mapPoints,
+  cities,
   offers,
   offersCount,
   comments
 }: AppProps): React.ReactElement {
 
   const isUserLoggedIn = useContext(AuthContext);
+  const currentCity = useAppSelector((state) => state.city);
+  const nearestOffers = getNearestOffers(currentCity, offers).slice(0, offersCount);
+  const mapPoints = adaptOffersToPoints(nearestOffers);
 
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path={AppRoute.MAIN} element={<Layout />}>
             <Route index element={
               <Main
-                locations={ locations }
+                cities={ cities }
                 mapPoints={ mapPoints }
-                offers={ offers }
-                offersCount = { offersCount }
+                offers={ nearestOffers }
               />
             }
             />
@@ -45,7 +50,7 @@ export default function App({
                 </PrivateRoute>
               }
             />
-            <Route path={`${AppRoute.OFFER}/:id`} element={<OffersItem offers={ offers } comments={ comments } mapPoints={ mapPoints } />} />
+            <Route path={`${AppRoute.OFFER}/:id`} element={<OffersItem offers={ nearestOffers } comments={ comments } mapPoints={ mapPoints } />} />
             <Route
               path={AppRoute.LOGIN}
               element={

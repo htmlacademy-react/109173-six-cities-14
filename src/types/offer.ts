@@ -1,6 +1,8 @@
 import { Location } from './location';
 import { City } from './city';
 import { Host } from './host';
+import { Comments } from './comment';
+import { Points } from './point';
 
 export type Offer = {
   city: City;
@@ -20,3 +22,11 @@ export type Offer = {
   location: Location;
   id: number;
 };
+
+export type Offers = Offer[];
+
+export type OffersProps = {
+  offers: Offers;
+  comments: Comments;
+  mapPoints: Points;
+}
