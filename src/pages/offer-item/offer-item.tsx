@@ -1,30 +1,41 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, NEAREST_OFFERS_COUNT } from '../../const';
+import { AppRoute, NEARBY_OFFERS_COUNT } from '../../const';
 import { Navigate, useParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../..';
 
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { Offer } from '../../types/offer';
+import { adaptOffersToPoints } from '../../utils/offer';
+
+import { fetchOfferItemAction } from '../../store/api-action';
+
+import Spinner from '../../components/spinner/spinner';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import NearestOffers from '../../components/nearest-offers/nearest-offers';
+import NearbyOffers from '../../components/nearby-offers/nearby-offers';
 import Gallery from '../../components/gallery/gallery';
 import StarsRating from '../../components/stars-rating/stars-rating';
 import Map from '../../components/map/map';
 
-import { Offer, OffersProps } from '../../types/offer';
-import { useAppSelector } from '../../hooks';
+type CurrentOfferPtops = {
+  offer: Offer;
+};
 
-
-export default function OffersItem({ offers, comments, mapPoints }: OffersProps) {
+function CurrentOffer({ offer }: CurrentOfferPtops): React.ReactElement {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-  const offerID = Number(useParams().id);
-  const currentCity = useAppSelector((state) => state.city);
-  const currentOffer = offers.find((item) => offerID === item.id);
-  const slicedPoints = mapPoints.slice(0, NEAREST_OFFERS_COUNT);
+
+  const offers = useAppSelector((state) => state.offers);
+  const comments = useAppSelector((state) => state.comments);
+
+  const mapPoints = adaptOffersToPoints(offers);
+  const slicedPoints = mapPoints.slice(0, NEARBY_OFFERS_COUNT);
+  const cityInfo = offers[0]?.city;
+
   const isUserLoggedIn = useContext(AuthContext);
 
-  if(!currentOffer) {
+  if(!offer) {
     return <Navigate to={AppRoute.PAGE_404} />;
   }
 
@@ -38,7 +49,7 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
     isPremium,
     maxAdults,
     host
-  } = currentOffer;
+  } = offer;
 
   return (
     <>
@@ -132,12 +143,29 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
           </div>
         </div>
         {/* Карта */}
-        { <Map city={ currentCity } mapPoints={ slicedPoints } selectedPoint={ selectedPoint }/> }
+        { <Map cityInfo={ cityInfo } mapPoints={ slicedPoints } selectedPoint={ selectedPoint }/> }
       </section>
       <div className="container">
         {/* Места поблизости */}
-        <NearestOffers offerID={ offerID } offers={ offers } onSelectPoint={ setSelectedPoint }/>
+        <NearbyOffers offerID={ offer.id } offers={ offers } onSelectPoint={ setSelectedPoint }/>
       </div>
     </>
   );
+}
+
+export default function OfferItem(): React.ReactElement {
+  const dispatch = useAppDispatch();
+  const offerID = useParams().id;
+  const currentOffer = useAppSelector((state) => state.offer);
+
+  if(offerID && !currentOffer) {
+    dispatch(fetchOfferItemAction({ offerID }));
+  }
+
+
+  if(!currentOffer) {
+    return <Spinner />;
+  }
+
+  return <CurrentOffer offer={ currentOffer } />;
 }

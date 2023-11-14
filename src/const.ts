@@ -1,5 +1,5 @@
 // MAIN
-export const NEAREST_OFFERS_COUNT = 3;
+export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
 export const REVIEW_TEXT_MIN_LENGTH = 50;
 
@@ -19,6 +19,7 @@ export const AppRoute = {
 };
 export const APIRoute = {
   OFFERS: '/six-cities/offers',
+  NEAREST: '/nearby',
   FAVORITE: '/six-cities/favorite',
   COMMENTS: '/six-cities/comments/',
   LOGIN: '/six-cities/login',

@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-import { fetchOffersAction } from './store/api-actions';
+import { fetchOffersAction } from './store/api-action';
 
-import { comments } from './mocks/comments';
 import { AuthorizationStatus } from './const';
 
 import App from './components/app/app';
@@ -25,9 +24,7 @@ root.render(
   <React.StrictMode>
     <Provider store={ store }>
       <AuthContext.Provider value={ isUserLoggedIn }>
-        <App
-          comments={ comments }
-        />
+        <App />
       </AuthContext.Provider>
     </Provider>
   </React.StrictMode>

@@ -1,15 +1,13 @@
 import { AppRoute } from '../../const';
-import { AppProps } from './app-props';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { useAppSelector } from '../../hooks';
-import { adaptOffersToPoints, getOffersByCity } from '../../utils/offer';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import Main from '../../pages/main/main';
 import Favorites from '../../pages/favorites/favorites';
-import OffersItem from '../../pages/offers-item/offers-item';
+import OfferItem from '../../pages/offer-item/offer-item';
 import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
 import { useContext } from 'react';
@@ -17,15 +15,8 @@ import { AuthContext } from '../..';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import Spinner from '../spinner/spinner';
 
-export default function App({
-  comments
-}: AppProps): React.ReactElement {
+export default function App(): React.ReactElement {
   const offers = useAppSelector((state) => state.offers);
-  const currentCity = useAppSelector((state) => state.city);
-  const cityOffers = getOffersByCity(currentCity, offers); // < -- Переделать на хук?
-
-  const mapPoints = adaptOffersToPoints(cityOffers);
-
   const isUserLoggedIn = useContext(AuthContext);
 
   if(offers.length <= 0) {
@@ -51,7 +42,7 @@ export default function App({
               }
             />
             {/* TODO: Урбать передачу офферов - дергать только в момент открытия конкретного оффера, чтобы получить места поблизости */}
-            <Route path={`${AppRoute.OFFER}/:id`} element={<OffersItem offers={ cityOffers } comments={ comments } mapPoints={ mapPoints } />} />
+            <Route path={`${AppRoute.OFFER}/:id`} element={<OfferItem />} />
             <Route
               path={AppRoute.LOGIN}
               element={
