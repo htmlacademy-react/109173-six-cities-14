@@ -5,7 +5,6 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../..';
 
-import { useAppSelector } from '../../hooks';
 import { Offer, Offers } from '../../types/offer';
 import { Comments } from '../../types/comment';
 
@@ -18,6 +17,7 @@ import StarsRating from '../../components/stars-rating/stars-rating';
 import Map from '../../components/map/map';
 import useOfferItem from '../../hooks/useOfferItem';
 import useReview from '../../hooks/useReview';
+import useNearbyOffer from '../../hooks/useNearbyOffer';
 
 type CurrentOfferPtops = {
   offer: Offer;
@@ -152,7 +152,7 @@ export default function OfferItem(): React.ReactElement {
   const offerID = String(useParams().id);
   const currentOffer = useOfferItem({ offerID });
   const comments = useReview({ offerID });
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const nearbyOffers = useNearbyOffer({ offerID });
 
   if(!currentOffer) {
     return <Spinner />;
