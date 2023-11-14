@@ -1,15 +1,13 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, NEARBY_OFFERS_COUNT } from '../../const';
+import { AppRoute } from '../../const';
 import { Navigate, useParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../..';
 
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Offer } from '../../types/offer';
-import { adaptOffersToPoints } from '../../utils/offer';
-
-import { fetchOfferItemAction } from '../../store/api-action';
+import { useAppSelector } from '../../hooks';
+import { Offer, Offers } from '../../types/offer';
+import { Comments } from '../../types/comment';
 
 import Spinner from '../../components/spinner/spinner';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
@@ -18,22 +16,19 @@ import NearbyOffers from '../../components/nearby-offers/nearby-offers';
 import Gallery from '../../components/gallery/gallery';
 import StarsRating from '../../components/stars-rating/stars-rating';
 import Map from '../../components/map/map';
+import useOfferItem from '../../hooks/useOfferItem';
+import useReview from '../../hooks/useReview';
 
 type CurrentOfferPtops = {
   offer: Offer;
+  comments: Comments;
+  nearby: Offers;
 };
 
-function CurrentOffer({ offer }: CurrentOfferPtops): React.ReactElement {
+function CurrentOffer({ offer, comments, nearby }: CurrentOfferPtops): React.ReactElement {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-
-  const offers = useAppSelector((state) => state.offers);
-  const comments = useAppSelector((state) => state.comments);
-
-  const mapPoints = adaptOffersToPoints(offers);
-  const slicedPoints = mapPoints.slice(0, NEARBY_OFFERS_COUNT);
-  const cityInfo = offers[0]?.city;
-
   const isUserLoggedIn = useContext(AuthContext);
+  const itHasNearbyOffers = (nearby?.length > 0);
 
   if(!offer) {
     return <Navigate to={AppRoute.PAGE_404} />;
@@ -135,7 +130,7 @@ function CurrentOffer({ offer }: CurrentOfferPtops): React.ReactElement {
 
             {/* Отзывы */}
             <section className="offer__reviews reviews">
-              { comments && <ReviewsList comments={ comments }/>}
+              { <ReviewsList comments={ comments }/> }
 
               {/* Форма написания отзыва */}
               {isUserLoggedIn && <ReviewsForm />}
@@ -143,29 +138,25 @@ function CurrentOffer({ offer }: CurrentOfferPtops): React.ReactElement {
           </div>
         </div>
         {/* Карта */}
-        { <Map cityInfo={ cityInfo } mapPoints={ slicedPoints } selectedPoint={ selectedPoint }/> }
+        { itHasNearbyOffers && <Map offers={ nearby } selectedPoint={ selectedPoint }/> }
       </section>
       <div className="container">
         {/* Места поблизости */}
-        <NearbyOffers offerID={ offer.id } offers={ offers } onSelectPoint={ setSelectedPoint }/>
+        { itHasNearbyOffers && <NearbyOffers offers={ nearby } onSelectPoint={ setSelectedPoint }/> }
       </div>
     </>
   );
 }
 
 export default function OfferItem(): React.ReactElement {
-  const dispatch = useAppDispatch();
-  const offerID = useParams().id;
-  const currentOffer = useAppSelector((state) => state.offer);
-
-  if(offerID && !currentOffer) {
-    dispatch(fetchOfferItemAction({ offerID }));
-  }
-
+  const offerID = String(useParams().id);
+  const currentOffer = useOfferItem({ offerID });
+  const comments = useReview({ offerID });
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
 
   if(!currentOffer) {
     return <Spinner />;
   }
 
-  return <CurrentOffer offer={ currentOffer } />;
+  return <CurrentOffer offer={ currentOffer } comments={ comments } nearby={ nearbyOffers }/>;
 }

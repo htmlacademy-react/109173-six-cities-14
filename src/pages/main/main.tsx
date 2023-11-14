@@ -12,16 +12,18 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import useSort from '../../hooks/useSort';
 
 import { MainProps, PlacesProps } from './main-props';
+
 import { setCityAction } from '../../store/action';
 import { getRightPluralForm } from '../../utils/common';
 import { Offer } from '../../types/offer';
+
+import { getOffersByCity } from '../../utils/offer';
 
 import OffersList from '../../components/offers-list/offers-list';
 import CitiesList from '../../components/cities-list/cities-list';
 import Sort from '../../components/sort/sort';
 import Map from '../../components/map/map';
 import { cities } from '../../const';
-import { adaptOffersToPoints, getOffersByCity } from '../../utils/offer';
 
 const DEFAULT_SORT = 'POPULAR';
 
@@ -67,9 +69,6 @@ export default function Main({
   const offers = useAppSelector((state) => state.offers);
   const cityOffers = getOffersByCity(currentCity, offers);
   const sortedOffers = useSort(cityOffers, currentSort);
-  const mapPoints = adaptOffersToPoints(cityOffers);
-
-  const cityInfo = offers[0]?.city;
 
   function sortChangeHandler(selectedSort: string) {
     if(selectedSort && selectedSort !== currentSort) {
@@ -105,11 +104,11 @@ export default function Main({
         ) }
         >
           { (isMainEmpty && <MainEmpty />)
-            || (cityInfo && <Places city={ currentCity } offers={ sortedOffers } onSelectPoint={ setSelectedPoint } onSortChange={ sortChangeHandler }/>) }
+            || <Places city={ currentCity } offers={ sortedOffers } onSelectPoint={ setSelectedPoint } onSortChange={ sortChangeHandler }/> }
 
           <div className="cities__right-section">
-            { !isMainEmpty && cityInfo &&
-              <Map cityInfo={ cityInfo } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}
+            { !isMainEmpty &&
+              <Map offers={ cityOffers } selectedPoint={ selectedPoint }/>}
           </div>
         </div>
       </div>

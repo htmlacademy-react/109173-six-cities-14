@@ -1,6 +1,6 @@
-import { Offer, OffersProps } from '../../types/offer';
+import { Offer, Offers } from '../../types/offer';
 
 export type NearbyOffersProps = {
-  offerID: string;
+  offers: Offers;
   onSelectPoint: (offer: Offer | null) => void;
-} & Pick<OffersProps, 'offers'>;
+};

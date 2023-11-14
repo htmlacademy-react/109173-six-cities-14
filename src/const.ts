@@ -21,7 +21,7 @@ export const APIRoute = {
   OFFERS: '/six-cities/offers',
   NEAREST: '/nearby',
   FAVORITE: '/six-cities/favorite',
-  COMMENTS: '/six-cities/comments/',
+  COMMENTS: '/six-cities/comments',
   LOGIN: '/six-cities/login',
   LOGUOT: '/six-cities/logout',
 };

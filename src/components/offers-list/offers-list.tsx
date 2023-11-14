@@ -4,7 +4,7 @@ import CardPlace from '../card-place/card-place';
 export default function OffersList({ offers, onSelectPoint }: OffersListProps): React.ReactElement[] {
   return (
     offers.map((offer): React.ReactElement => {
-      const offerId: number = offer.id;
+      const offerId = offer.id;
 
       return (
         <CardPlace

@@ -7,7 +7,9 @@ import {
   loadOffersAction,
   setOffersAction,
   loadNearbyAction,
-  loadOfferItemAction
+  loadOfferItemAction,
+  loadComments,
+  setCommentsLoadedStatus
 } from './action';
 import { Comments } from '../types/comment';
 
@@ -17,6 +19,7 @@ type initialState = {
   city: string;
   offers: Offers;
   comments: Comments;
+  isCommentsLoaded: boolean;
   offer: Offer | null;
   nearbyOffers: Offers;
 };
@@ -25,6 +28,7 @@ const initialState: initialState = {
   city: DEFAULT_CITY,
   offer: null,
   comments: [],
+  isCommentsLoaded: false,
   offers: [],
   nearbyOffers: [],
 };
@@ -45,6 +49,12 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadOfferItemAction, (state, action) => {
       state.offer = action.payload.offer;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload.comments;
+    })
+    .addCase(setCommentsLoadedStatus, (state, action) => {
+      state.isCommentsLoaded = action.payload;
     })
     .addCase(loadNearbyAction, (state, action) => {
       state.nearbyOffers = action.payload.nearbyOffers;

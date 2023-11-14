@@ -1,12 +1,13 @@
 import { Offers } from '../types/offer';
+import { Points } from '../types/point';
 
-export function getOffersByCity(currentCity: string, offers: Offers) {
+export function getOffersByCity(currentCity: string, offers: Offers): Offers {
   const offersByCity = offers.slice().filter((offer) => (currentCity === offer.city.name));
 
   return offersByCity;
 }
 
-export function adaptOffersToPoints(offers: Offers) {
+export function adaptOffersToPoints(offers: Offers): Points {
   const points = offers.slice().map((offer) => {
     const {latitude, longitude} = offer.location;
 

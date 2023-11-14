@@ -2,20 +2,12 @@ import { useLocation } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/useMap';
 import cn from 'classnames';
-import { AppRoute, PIN_ACTIVE_ICON_URL, PIN_ICON_URL } from '../../const';
-
-import { City } from '../../types/city';
-import { Points } from '../../types/point';
-import { Offer } from '../../types/offer';
+import { AppRoute, NEARBY_OFFERS_COUNT, PIN_ACTIVE_ICON_URL, PIN_ICON_URL } from '../../const';
+import { Offer, Offers } from '../../types/offer';
 
 import { Marker, Icon, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-type MapProps = {
-  cityInfo: City;
-  mapPoints: Points;
-  selectedPoint: Offer | null;
-};
+import { adaptOffersToPoints } from '../../utils/offer';
 
 const CSSClasses = {
   'CITIES_MAP': 'cities__map',
@@ -34,10 +26,20 @@ const pinActiveIcon = new Icon({
   iconAnchor: [13.5, 39],
 });
 
-export default function Map({ cityInfo, mapPoints, selectedPoint }: MapProps): React.ReactElement {
+type MapProps = {
+  offers: Offers;
+  selectedPoint: Offer | null;
+};
+
+export default function Map({ offers, selectedPoint }: MapProps): React.ReactElement {
   const location = useLocation().pathname;
   const isMainPage = (location === AppRoute.MAIN);
   const isNotMainPage = !isMainPage;
+
+  const cityInfo = offers[0].city;
+  const mapPoints = adaptOffersToPoints(offers);
+  const slicedMapPoints = mapPoints.slice(0, NEARBY_OFFERS_COUNT);
+
   const mapRef = useRef(null);
   const map = useMap({ cityInfo, mapRef });
 
@@ -45,7 +47,7 @@ export default function Map({ cityInfo, mapPoints, selectedPoint }: MapProps): R
     if(map) {
       const markerLayer = layerGroup().addTo(map);
 
-      mapPoints.forEach((point) => {
+      slicedMapPoints.forEach((point) => {
         const iconType = (selectedPoint && selectedPoint.id === point.id)
           ? pinActiveIcon
           : pinIcon;
