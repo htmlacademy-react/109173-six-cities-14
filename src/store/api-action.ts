@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute } from '../const';
+import { APIRoute, AuthorizationStatus } from '../const';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
@@ -12,8 +12,12 @@ import {
   loadOfferItemAction,
   loadComments,
   setCommentsLoadedStatus,
+  setAuthorizationStatus,
 } from './action';
 import { Comments } from '../types/comment';
+import { AuthData } from '../types/auth-data';
+import { setToken } from '../services/token';
+import { UserData } from '../types/user-data';
 
 type AsyncOptions = {
   dispatch: AppDispatch;
@@ -26,9 +30,31 @@ const APIAction = {
   DATA_FETCH_OFFER_ITEM: 'data/fetchOfferItem',
   DATA_FETCH_NEARBY: 'data/fetchNearbyOffers',
   DATA_FETCH_COMMENTS: 'data/fetchComments',
+  USER_LOGIN: 'user/login',
+  USER_CHECK_AUTH: 'user/checkAuth',
 };
 
 // TODO: Много шаблонного кода - вынести во вспомогательную функцию
+
+export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
+  APIAction.USER_LOGIN,
+  async ({ email, password }, { dispatch, extra: api }) => {
+    const { data } = await api.post<UserData>(APIRoute.LOGIN, { email, password });
+    const { token } = data;
+
+    if(token) {
+      setToken(token);
+      dispatch(setAuthorizationStatus(AuthorizationStatus.AUTH));
+    }
+  }
+);
+
+export const checkAuthAction = createAsyncThunk<void, void, AsyncOptions>(
+  APIAction.USER_CHECK_AUTH,
+  async (_arg, { extra: api }) => {
+    await api.get<UserData>(APIRoute.LOGIN);
+  }
+);
 
 export const fetchOffersAction = createAsyncThunk<void, void, AsyncOptions>(
   APIAction.DATA_FETCH_OFFERS,

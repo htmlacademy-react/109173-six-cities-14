@@ -9,9 +9,11 @@ import {
   loadNearbyAction,
   loadOfferItemAction,
   loadComments,
-  setCommentsLoadedStatus
+  setCommentsLoadedStatus,
+  setAuthorizationStatus
 } from './action';
 import { Comments } from '../types/comment';
+import { AuthorizationStatus } from '../const';
 
 export const DEFAULT_CITY = 'Paris';
 
@@ -22,6 +24,7 @@ type initialState = {
   isCommentsLoaded: boolean;
   offer: Offer | null;
   nearbyOffers: Offers;
+  authorizationStatus: string;
 };
 
 const initialState: initialState = {
@@ -31,6 +34,7 @@ const initialState: initialState = {
   isCommentsLoaded: false,
   offers: [],
   nearbyOffers: [],
+  authorizationStatus: AuthorizationStatus.UNKNOWN,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -58,5 +62,8 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadNearbyAction, (state, action) => {
       state.nearbyOffers = action.payload.nearbyOffers;
+    })
+    .addCase(setAuthorizationStatus, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
