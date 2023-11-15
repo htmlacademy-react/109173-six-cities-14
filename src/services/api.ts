@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
+import { getToken } from './token';
 
 const BASE_URL = 'https://14.design.pages.academy';
 const TIMEOUT = 5000;
@@ -22,6 +23,18 @@ export function createAPI(): AxiosInstance {
     baseURL: BASE_URL,
     timeout: TIMEOUT
   });
+
+  api.interceptors.request.use(
+    (request) => {
+      const token = getToken();
+
+      if(token) {
+        request.headers['X-Token'] = token;
+      }
+
+      return request;
+    }
+  );
 
   api.interceptors.response.use(
     (response) => response,

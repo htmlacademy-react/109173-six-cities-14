@@ -35,10 +35,11 @@ export default function Map({ offers, selectedPoint }: MapProps): React.ReactEle
   const location = useLocation().pathname;
   const isMainPage = (location === AppRoute.MAIN);
   const isNotMainPage = !isMainPage;
+  const pointsToShowCount = isMainPage ? offers.length : NEARBY_OFFERS_COUNT;
 
   const cityInfo = offers[0].city;
   const mapPoints = adaptOffersToPoints(offers);
-  const slicedMapPoints = mapPoints.slice(0, NEARBY_OFFERS_COUNT);
+  const slicedMapPoints = mapPoints.slice(0, pointsToShowCount);
 
   const mapRef = useRef(null);
   const map = useMap({ cityInfo, mapRef });

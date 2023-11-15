@@ -23,7 +23,7 @@ export const APIRoute = {
   FAVORITE: '/six-cities/favorite',
   COMMENTS: '/six-cities/comments',
   LOGIN: '/six-cities/login',
-  LOGUOT: '/six-cities/logout',
+  LOGOUT: '/six-cities/logout',
 };
 
 export const AuthorizationStatus = {

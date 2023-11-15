@@ -16,7 +16,7 @@ import {
 } from './action';
 import { Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';
-import { setToken } from '../services/token';
+import { deleteToken, setToken } from '../services/token';
 import { UserData } from '../types/user-data';
 
 type AsyncOptions = {
@@ -31,6 +31,7 @@ const APIAction = {
   DATA_FETCH_NEARBY: 'data/fetchNearbyOffers',
   DATA_FETCH_COMMENTS: 'data/fetchComments',
   USER_LOGIN: 'user/login',
+  USER_LOGOUT: 'user/logout',
   USER_CHECK_AUTH: 'user/checkAuth',
 };
 
@@ -49,10 +50,24 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
   }
 );
 
+export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
+  APIAction.USER_LOGOUT,
+  async (_arg, { dispatch, extra: api }) => {
+    await api.delete(APIRoute.LOGOUT);
+    deleteToken();
+    dispatch(setAuthorizationStatus(AuthorizationStatus.NO_AUTH));
+  }
+);
+
 export const checkAuthAction = createAsyncThunk<void, void, AsyncOptions>(
   APIAction.USER_CHECK_AUTH,
-  async (_arg, { extra: api }) => {
-    await api.get<UserData>(APIRoute.LOGIN);
+  async (_arg, { dispatch, extra: api }) => {
+    try {
+      await api.get<UserData>(APIRoute.LOGIN);
+      dispatch(setAuthorizationStatus(AuthorizationStatus.AUTH));
+    } catch(error) {
+      dispatch(setAuthorizationStatus(AuthorizationStatus.NO_AUTH));
+    }
   }
 );
 
