@@ -9,6 +9,8 @@ function Navigation(): React.ReactElement {
   const authStatus = useAppSelector((state) => state.authorizationStatus);
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const isLoginPage = (location === AppRoute.LOGIN);
+  const userInfo = useAppSelector((state) => state.userInfo);
+  const favorites = useAppSelector((state) => state.favorites);
 
   function logoutClickHandler() {
     dispatch(logoutAction());
@@ -24,8 +26,13 @@ function Navigation(): React.ReactElement {
                 <Link to={AppRoute.FAVORITES} className="header__nav-link header__nav-link--profile">
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">3</span>
+                  <span className="header__user-name user__name">{ userInfo ? userInfo.email : '' }</span>
+                  {
+                    (favorites && favorites.length > 0) && (
+                      <span className="header__favorite-count">{ favorites.length }</span>
+                    )
+                  }
+
                 </Link>
               </li>
               <li className="header__nav-item">

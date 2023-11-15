@@ -8,12 +8,15 @@ import {
   setOffersAction,
   loadNearbyAction,
   loadOfferItemAction,
-  loadComments,
-  setCommentsLoadedStatus,
-  setAuthorizationStatus
+  loadCommentsAction,
+  setCommentsLoadedStatusAction,
+  setAuthorizationStatusAction,
+  setUserInfoAction,
+  loadFavoritesAction
 } from './action';
 import { Comments } from '../types/comment';
 import { AuthorizationStatus } from '../const';
+import { UserData } from '../types/user-data';
 
 export const DEFAULT_CITY = 'Paris';
 
@@ -24,7 +27,9 @@ type initialState = {
   isCommentsLoaded: boolean;
   offer: Offer | null;
   nearbyOffers: Offers;
+  favorites: Offers;
   authorizationStatus: string;
+  userInfo: UserData | null;
 };
 
 const initialState: initialState = {
@@ -33,8 +38,10 @@ const initialState: initialState = {
   comments: [],
   isCommentsLoaded: false,
   offers: [],
+  favorites: [],
   nearbyOffers: [],
   authorizationStatus: AuthorizationStatus.UNKNOWN,
+  userInfo: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -54,16 +61,22 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOfferItemAction, (state, action) => {
       state.offer = action.payload.offer;
     })
-    .addCase(loadComments, (state, action) => {
+    .addCase(loadCommentsAction, (state, action) => {
       state.comments = action.payload.comments;
     })
-    .addCase(setCommentsLoadedStatus, (state, action) => {
+    .addCase(setCommentsLoadedStatusAction, (state, action) => {
       state.isCommentsLoaded = action.payload;
     })
     .addCase(loadNearbyAction, (state, action) => {
       state.nearbyOffers = action.payload.nearbyOffers;
     })
-    .addCase(setAuthorizationStatus, (state, action) => {
+    .addCase(loadFavoritesAction, (state, action) => {
+      state.favorites = action.payload.offers;
+    })
+    .addCase(setAuthorizationStatusAction, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setUserInfoAction, (state, action) => {
+      state.userInfo = action.payload;
     });
 });
