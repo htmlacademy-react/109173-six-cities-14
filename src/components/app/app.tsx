@@ -10,14 +10,11 @@ import Favorites from '../../pages/favorites/favorites';
 import OfferItem from '../../pages/offer-item/offer-item';
 import Login from '../../pages/login/login';
 import Page404 from '../../pages/page-404/page-404';
-import { useContext } from 'react';
-import { AuthContext } from '../..';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import Spinner from '../spinner/spinner';
 
 export default function App(): React.ReactElement {
   const offers = useAppSelector((state) => state.offers);
-  const isUserLoggedIn = useContext(AuthContext);
 
   if(offers.length <= 0) {
     return <Spinner />;
@@ -36,7 +33,7 @@ export default function App(): React.ReactElement {
             <Route
               path={AppRoute.FAVORITES}
               element={
-                <PrivateRoute redirectTo={AppRoute.LOGIN} isUserLoggedIn={ isUserLoggedIn }>
+                <PrivateRoute redirectTo={AppRoute.LOGIN}>
                   <Favorites offers={ offers } />
                 </PrivateRoute>
               }
@@ -46,7 +43,7 @@ export default function App(): React.ReactElement {
             <Route
               path={AppRoute.LOGIN}
               element={
-                <PrivateRoute redirectTo={AppRoute.MAIN} isUserLoggedIn={ isUserLoggedIn }>
+                <PrivateRoute redirectTo={AppRoute.MAIN}>
                   <Login />
                 </PrivateRoute>
               }

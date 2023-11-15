@@ -1,6 +1,4 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../..';
 
 import Header from '../header/header';
 import Footer from '../footer/footer';
@@ -19,7 +17,6 @@ const CSSClasses = {
 export default function Layout(): React.ReactElement {
   const location = useLocation();
   const isFavoritesPage = (location.pathname === String(AppRoute.FAVORITES));
-  const isUserLoggedIn = useContext(AuthContext);
 
   let pageClassName = String(CSSClasses.PAGE_CONTAINER);
   let mainClassName = String(CSSClasses.MAIN_CONTAINER);
@@ -46,7 +43,7 @@ export default function Layout(): React.ReactElement {
   return (
     // + page page--gray page--login || page page--gray page--main || page__main--offer"
     <div className={`${pageClassName}`}>
-      <Header isUserLoggedIn={ isUserLoggedIn } />
+      <Header />
 
       <main className={`${mainClassName}`}>
         <Outlet />

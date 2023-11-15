@@ -1,9 +1,8 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { Navigate, useParams } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { AuthContext } from '../..';
+import { useState } from 'react';
 
 import { Offer, Offers } from '../../types/offer';
 import { Comments } from '../../types/comment';
@@ -18,6 +17,7 @@ import Map from '../../components/map/map';
 import useOfferItem from '../../hooks/useOfferItem';
 import useReview from '../../hooks/useReview';
 import useNearbyOffer from '../../hooks/useNearbyOffer';
+import { useAppSelector } from '../../hooks';
 
 type CurrentOfferPtops = {
   offer: Offer;
@@ -27,7 +27,8 @@ type CurrentOfferPtops = {
 
 function CurrentOffer({ offer, comments, nearby }: CurrentOfferPtops): React.ReactElement {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-  const isUserLoggedIn = useContext(AuthContext);
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const itHasNearbyOffers = (nearby?.length > 0);
 
   if(!offer) {
