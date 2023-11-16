@@ -1,21 +1,35 @@
+
+/**
+ * TODO:
+ * Сортировка работает, но с запазданием на 1 действие
+ * (т.е. при нажатии на фильтр, срабатывет предыдущий выбранны фильтр) - поправить
+ * При наведении на карточку - сбрасывается вся сортировка
+ * (т.к. весь компонент main перерисовывается, а отсортированные офферы хранятся в его детях) - поправить
+ */
+
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import cn from 'classnames';
 
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import useSort from '../../hooks/useSort';
+
 import { MainProps, PlacesProps } from './main-props';
+import { changeCityAction } from '../../store/action';
+import { getRightPluralForm } from '../../utils/common';
 import { Offer } from '../../types/offer';
 
 import OffersList from '../../components/offers-list/offers-list';
-import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
-import { changeCityAction } from '../../store/action';
-import { getRightPluralForm } from '../../utils/common';
+import Sort from '../../components/sort/sort';
+import Map from '../../components/map/map';
 
-const enum CSSCLasses {
-  PlacesContainer = 'cities__places-container container',
-  NoPlaces = 'cities__places-container--empty'
-}
+const DEFAULT_SORT = 'POPULAR';
+
+const CSSCLasses = {
+  PlacesContainer: 'cities__places-container container',
+  NoPlaces: 'cities__places-container--empty'
+};
 
 function MainEmpty(): React.ReactNode {
   return (
@@ -29,27 +43,24 @@ function MainEmpty(): React.ReactNode {
 }
 
 function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
+  const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
+  const sortedOffers = useSort(offers, currentSort);
+
+  function sortChangeHandler(selectedSort: string) {
+    if(selectedSort && selectedSort !== currentSort) {
+      setCurrentSort(selectedSort);
+    }
+  }
+
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
       <b className="places__found">{ offers.length } { getRightPluralForm('place', offers.length) } to stay in Amsterdam</b>
-      <form className="places__sorting" action="#" method="get">
-        <span className="places__sorting-caption">Sort by</span>
-        <span className="places__sorting-type" tabIndex={ 0 }>
-          Popular
-          <svg className="places__sorting-arrow" width={ 7 } height={ 4 }>
-            <use xlinkHref="#icon-arrow-select"></use>
-          </svg>
-        </span>
-        <ul className="places__options places__options--custom places__options--opened">
-          <li className="places__option places__option--active" tabIndex={ 0 }>Popular</li>
-          <li className="places__option" tabIndex={ 0 }>Price: low to high</li>
-          <li className="places__option" tabIndex={ 0 }>Price: high to low</li>
-          <li className="places__option" tabIndex={ 0 }>Top rated first</li>
-        </ul>
-      </form>
+
+      <Sort onSortChange={ sortChangeHandler } />
+
       <div className="cities__places-list places__list tabs__content">
-        <OffersList offers={ offers } onSelectPoint={ onSelectPoint }></OffersList>
+        <OffersList offers={ sortedOffers } onSelectPoint={ onSelectPoint } />
       </div>
     </section>
   );
@@ -92,7 +103,8 @@ export default function Main({
           {[CSSCLasses.NoPlaces]: isMainEmpty}
         ) }
         >
-          { (isMainEmpty && <MainEmpty />) || <Places offers={ offers } onSelectPoint={ setSelectedPoint }/>}
+          { (isMainEmpty && <MainEmpty />)
+            || <Places offers={ offers } onSelectPoint={ setSelectedPoint }/> }
 
           <div className="cities__right-section">
             { !isMainEmpty && <Map city={ currentCity } mapPoints={ mapPoints } selectedPoint={ selectedPoint }/>}
