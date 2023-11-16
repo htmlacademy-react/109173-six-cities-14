@@ -2,10 +2,18 @@ import { Fragment } from 'react';
 
 type StartRatingProps = {
   rating: number;
+  disabledState?: boolean;
+  onRatingChange: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function StarsRatingForm({ rating }: StartRatingProps): React.ReactElement {
+export default function StarsRatingForm({ rating, disabledState, onRatingChange }: StartRatingProps): React.ReactElement {
   const stars = [5, 4, 3, 2, 1];
+
+  function changeRatingHandler(evt: React.ChangeEvent<HTMLInputElement>) {
+    const target = evt.target;
+
+    onRatingChange(Number(target.value));
+  }
 
   return (
     <div className="reviews__rating-form form__rating">
@@ -18,6 +26,8 @@ export default function StarsRatingForm({ rating }: StartRatingProps): React.Rea
               id={`${ star }-stars`}
               type="radio"
               defaultChecked={star <= rating}
+              onChange={ changeRatingHandler }
+              disabled={ disabledState }
             />
             <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width={ 37 } height={ 33 }>

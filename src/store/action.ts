@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Offer, Offers } from '../types/offer';
-import { Comments } from '../types/comment';
+import { Comment, Comments } from '../types/comment';
 import { UserData } from '../types/user-data';
 
 export const Action = {
@@ -15,6 +15,8 @@ export const Action = {
   SET_COMMENTS_STATUS: '/offerItem/setCommentsLoadedStatus',
   SET_AUTH_STATUS: 'user/setAuthorizationStatus',
   SET_USER_INFO: 'user/setUserInfo',
+  ADD_COMMENT: 'comments/add',
+  ADD_COMMENT_STATUS: 'comments/addStatus',
 };
 
 // INIT
@@ -30,6 +32,10 @@ export const setCommentsLoadedStatusAction = createAction<boolean>(Action.SET_CO
 
 // FAVORITES
 export const loadFavoritesAction = createAction<{ offers: Offers }>(Action.LOAD_FAVORITES);
+
+// COMMENTS
+export const addCommentAction = createAction<Comment>(Action.ADD_COMMENT);
+export const setAddCommentStatusAction = createAction<string>(Action.ADD_COMMENT_STATUS);
 
 // AUTH
 export const setAuthorizationStatusAction = createAction<string>(Action.SET_AUTH_STATUS);

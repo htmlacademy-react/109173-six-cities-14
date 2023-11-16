@@ -5,13 +5,13 @@ import Footer from '../footer/footer';
 import { AppRoute } from '../../const';
 
 const CSSClasses = {
-  'PAGE_CONTAINER': 'page',
-  'MAIN_CONTAINER': 'page__main',
-  'MAIN': 'page--gray page--main',
-  'LOGIN': 'page--gray page--login',
-  'MAIN_MODE': 'page__main--index',
-  'OFFER_MODE': 'page__main--offer',
-  'LOGIN_MODE': 'page__main--login',
+  PAGE_CONTAINER: 'page',
+  MAIN_CONTAINER: 'page__main',
+  MAIN: 'page--gray page--main',
+  LOGIN: 'page--gray page--login',
+  MAIN_MODE: 'page__main--index',
+  OFFER_MODE: 'page__main--offer',
+  LOGIN_MODE: 'page__main--login',
 };
 
 export default function Layout(): React.ReactElement {

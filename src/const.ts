@@ -1,7 +1,6 @@
 // MAIN
 export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
-export const REVIEW_TEXT_MIN_LENGTH = 50;
 
 // MAP
 export const PIN_ICON_URL = '../markup/img/pin.svg';
@@ -30,6 +29,12 @@ export const AuthorizationStatus = {
   AUTH: 'AUTH',
   NO_AUTH: 'NO_AUTH',
   UNKNOWN: 'UNKNOWN',
+};
+export const SEND_DATA_STATUS = {
+  NONE: 'NONE',
+  LOADING: 'LOADING',
+  LOADED: 'LOADED',
+  ERROR: 'ERROR',
 };
 
 export const DateFormat = {

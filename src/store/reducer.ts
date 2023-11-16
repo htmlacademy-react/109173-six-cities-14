@@ -1,6 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { Offer, Offers } from '../types/offer';
+import { Comments } from '../types/comment';
+import { AuthorizationStatus, SEND_DATA_STATUS } from '../const';
+import { UserData } from '../types/user-data';
 
 import {
   setCityAction,
@@ -12,19 +15,22 @@ import {
   setCommentsLoadedStatusAction,
   setAuthorizationStatusAction,
   setUserInfoAction,
-  loadFavoritesAction
+  loadFavoritesAction,
+  addCommentAction,
+  setAddCommentStatusAction,
 } from './action';
-import { Comments } from '../types/comment';
-import { AuthorizationStatus } from '../const';
-import { UserData } from '../types/user-data';
 
-export const DEFAULT_CITY = 'Paris';
+const DEFAULT_CITY = 'Paris';
+
+// type AddCommentStatus = keyof typeof SEND_DATA_STATUS;
 
 type initialState = {
   city: string;
   offers: Offers;
   comments: Comments;
   isCommentsLoaded: boolean;
+  // addCommentStatus: AddCommentStatus;
+  addCommentStatus: string;
   offer: Offer | null;
   nearbyOffers: Offers;
   favorites: Offers;
@@ -37,6 +43,8 @@ const initialState: initialState = {
   offer: null,
   comments: [],
   isCommentsLoaded: false,
+  // addCommentStatus: SEND_DATA_STATUS.NONE,
+  addCommentStatus: SEND_DATA_STATUS.NONE,
   offers: [],
   favorites: [],
   nearbyOffers: [],
@@ -66,6 +74,12 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setCommentsLoadedStatusAction, (state, action) => {
       state.isCommentsLoaded = action.payload;
+    })
+    .addCase(addCommentAction, (state, action) => {
+      state.comments.push(action.payload);
+    })
+    .addCase(setAddCommentStatusAction, (state, action) => {
+      state.addCommentStatus = action.payload;
     })
     .addCase(loadNearbyAction, (state, action) => {
       state.nearbyOffers = action.payload.nearbyOffers;
