@@ -19,7 +19,7 @@ export type Offer = {
   host: Host;
   description: string;
   location: Location;
-  id: string;
+  id: number;
 };
 
 export type Offers = Offer[];
