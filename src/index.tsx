@@ -13,7 +13,6 @@ import App from './components/app/app';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
 const authStatus = AuthorizationStatus.AUTH;
 const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
 export const AuthContext = createContext(isUserLoggedIn);
