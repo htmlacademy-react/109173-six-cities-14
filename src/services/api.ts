@@ -53,8 +53,15 @@ export function createAPI(): AxiosInstance {
         const { data } = error.response;
         const { message, details } = data;
 
+        let messageText = message;
+
         if(message) {
-          const messageText = (error.response.status === 401) ? ERROR_TEXT.NOT_AUTHORIZED : message;
+          switch(error.response.status) {
+            case StatusCodes.UNAUTHORIZED: {
+              messageText = ERROR_TEXT.NOT_AUTHORIZED;
+              break;
+            }
+          }
 
           toast.warn(messageText);
         }

@@ -11,9 +11,15 @@ export default function useOfferItem({ offerID }: UseOfferItemProps) {
   const currentOffer = useAppSelector((state) => state.offer);
 
   useEffect(() => {
-    if(offerID && !currentOffer) {
+    let isMounted = true;
+
+    if(isMounted && offerID && !currentOffer) {
       dispatch(fetchOfferItemAction({ offerID }));
     }
+
+    return () => {
+      isMounted = false;
+    };
   });
 
   return currentOffer;

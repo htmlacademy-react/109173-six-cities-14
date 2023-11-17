@@ -27,12 +27,6 @@ import { deleteToken, setToken } from '../services/token';
 import { UserData } from '../types/user-data';
 import { CommentData } from '../types/comment-data';
 
-type AsyncOptions = {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-};
-
 const APIAction = {
   FETCH_OFFERS: 'data/fetchOffers',
   FETCH_OFFER_ITEM: 'data/fetchOfferItem',
@@ -55,7 +49,11 @@ const SUCCESS_TEXT = {
 
 const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
 
-// TODO: Много шаблонного кода - вынести во вспомогательную функцию
+type AsyncOptions = {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+};
 
 export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
   APIAction.USER_LOGIN,
@@ -114,8 +112,7 @@ export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOpti
       dispatch(setCommentsLoadedStatusAction(false));
       dispatch(loadOfferItemAction({ offer: data }));
     } catch(err) {
-      console.log('тут блять');
-      dispatch(redirectToRoute('/page404'));
+      dispatch(redirectToRoute(AppRoute.PAGE_404));
     }
   }
 );
@@ -170,7 +167,10 @@ export const fetchCommentAction = createAsyncThunk<void, CommentData, AsyncOptio
 
       toast.warn(ERROR_TEXT.ADD_COMMENT);
 
-      setTimeout(() => dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.NONE)), CLEAR_COMMENT_STATUS_TIMEOUT);
+      setTimeout(
+        () => dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.NONE)),
+        CLEAR_COMMENT_STATUS_TIMEOUT
+      );
     }
 
   }

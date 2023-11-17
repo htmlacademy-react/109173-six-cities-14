@@ -28,7 +28,7 @@ export default function ReviewsForm(): React.ReactNode {
     setSubmitDisabled(state);
   }
 
-  function textareaChangeHandler(evt: FormEvent<HTMLTextAreaElement>) {
+  function handleTextareaChange(evt: FormEvent<HTMLTextAreaElement>) {
     const target = evt.target as HTMLTextAreaElement;
     const reviewLength = target.value.length;
 
@@ -40,7 +40,7 @@ export default function ReviewsForm(): React.ReactNode {
     setSubmitDisabled(true);
   }
 
-  function formSubmitHandler(evt: FormEvent<HTMLFormElement>) {
+  function handleFormSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
 
     if(!userReview.current) {
@@ -59,29 +59,45 @@ export default function ReviewsForm(): React.ReactNode {
   }
 
   useEffect(() => {
-    setSubmitDisabled(true);
+    let isMounted = true;
+
+    if(isMounted) {
+      setSubmitDisabled(true);
+    }
+
+    return function() {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    switch(addCommentStatus) {
-      case SEND_DATA_STATUS.LOADED: {
-        form.current?.reset();
-        disableForm(false);
-        break;
-      }
+    let isMounted = true;
 
-      case SEND_DATA_STATUS.ERROR: {
-        disableForm(false);
-        break;
+    if(isMounted) {
+      switch(addCommentStatus) {
+        case SEND_DATA_STATUS.LOADED: {
+          form.current?.reset();
+          disableForm(false);
+          break;
+        }
+
+        case SEND_DATA_STATUS.ERROR: {
+          disableForm(false);
+          break;
+        }
       }
     }
+
+    return function() {
+      isMounted = false;
+    };
   });
 
   return (
     <form
       className="reviews__form form"
       action="#" method="post"
-      onSubmit={ formSubmitHandler }
+      onSubmit={ handleFormSubmit }
       ref={ form }
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
@@ -95,7 +111,7 @@ export default function ReviewsForm(): React.ReactNode {
         minLength={ REVIEW_MIN_LENGTH }
         maxLength={ REVIEW_MAX_LENGTH }
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onInput={ textareaChangeHandler }
+        onInput={ handleTextareaChange }
         ref={ userReview }
         disabled={ textareaDisabled }
       />

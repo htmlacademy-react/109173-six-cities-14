@@ -11,7 +11,15 @@ export default function useNearbyOffer({ offerID }: UseNearbyOfferProps) {
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
 
   useEffect(() => {
-    dispatch(fetchNeabyOffers({ offerID }));
+    let isMounted = true;
+
+    if(isMounted) {
+      dispatch(fetchNeabyOffers({ offerID }));
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [dispatch, offerID]);
 
   return nearbyOffers;

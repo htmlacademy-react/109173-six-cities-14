@@ -43,4 +43,4 @@ export const setAuthorizationStatusAction = createAction<string>(Action.SET_AUTH
 export const setUserInfoAction = createAction<UserData | null>(Action.SET_USER_INFO);
 
 // ROUTING
-export const redirectToRoute = createAction(Action.REDIRECT);
+export const redirectToRoute = createAction<string>(Action.REDIRECT);

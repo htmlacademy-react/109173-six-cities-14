@@ -14,30 +14,38 @@ export default function useMap({ cityInfo, mapRef }: MapProps): Map | null {
   const isMapRendered = useRef<boolean>(false);
 
   useEffect(() => {
-    if(mapRef.current !== null && !isMapRendered.current) {
-      const mapInstance = new Map(mapRef.current, {
-        center: {
-          lat: cityInfo.location.latitude,
-          lng: cityInfo.location.longitude
-        },
-        zoom: cityInfo.location.zoom
-      });
+    let isMounted = true;
 
-      const tileLayer = new TileLayer(TILE_LAYER_URL, {
-        attribution: MAP_COPYRIGHT
-      });
+    if(isMounted) {
+      if(mapRef.current !== null && !isMapRendered.current) {
+        const mapInstance = new Map(mapRef.current, {
+          center: {
+            lat: cityInfo.location.latitude,
+            lng: cityInfo.location.longitude
+          },
+          zoom: cityInfo.location.zoom
+        });
 
-      mapInstance.addLayer(tileLayer);
-      setMap(mapInstance);
-      isMapRendered.current = true;
+        const tileLayer = new TileLayer(TILE_LAYER_URL, {
+          attribution: MAP_COPYRIGHT
+        });
+
+        mapInstance.addLayer(tileLayer);
+        setMap(mapInstance);
+        isMapRendered.current = true;
+      }
+
+      if(currentCity !== cityInfo.name && map) {
+        const {latitude: lat, longitude: lng, zoom} = cityInfo.location;
+
+        map.setView({lat, lng}, zoom);
+        setCurrentCity(cityInfo.name);
+      }
     }
 
-    if(currentCity !== cityInfo.name && map) {
-      const {latitude: lat, longitude: lng, zoom} = cityInfo.location;
-
-      map.setView({lat, lng}, zoom);
-      setCurrentCity(cityInfo.name);
-    }
+    return () => {
+      isMounted = false;
+    };
   }, [cityInfo, currentCity, map, mapRef]);
 
   return map;
