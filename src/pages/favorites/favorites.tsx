@@ -22,11 +22,9 @@ function FavoriteLocation({ city, offers }: FavoriteLocationProps): React.ReactE
       </div>
       <div className="favorites__places">
         {
-          offers .map((offer): React.ReactElement => {
-            const offerId: string = offer.id;
-
-            return <CardPlace key={ offerId } offerItem={ offer } isCompact/>;
-          })
+          offers .map((offer): React.ReactElement =>
+            <CardPlace key={ offer.id } offerItem={ offer } isCompact/>
+          )
         }
       </div>
     </li>
