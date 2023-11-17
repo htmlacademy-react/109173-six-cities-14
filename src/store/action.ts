@@ -17,6 +17,7 @@ export const Action = {
   SET_USER_INFO: 'user/setUserInfo',
   ADD_COMMENT: 'comments/add',
   ADD_COMMENT_STATUS: 'comments/addStatus',
+  REDIRECT: 'route/redirect',
 };
 
 // INIT
@@ -40,3 +41,6 @@ export const setAddCommentStatusAction = createAction<string>(Action.ADD_COMMENT
 // AUTH
 export const setAuthorizationStatusAction = createAction<string>(Action.SET_AUTH_STATUS);
 export const setUserInfoAction = createAction<UserData | null>(Action.SET_USER_INFO);
+
+// ROUTING
+export const redirectToRoute = createAction(Action.REDIRECT);

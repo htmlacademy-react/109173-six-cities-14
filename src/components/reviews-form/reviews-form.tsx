@@ -1,8 +1,10 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import StarsRatingForm from '../stars-rating-form/stars-rating-form';
 import { useParams } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCommentAction } from '../../store/api-action';
+
 import { SEND_DATA_STATUS } from '../../const';
 
 const BASE_RATING = 1;

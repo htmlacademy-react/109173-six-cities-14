@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { toast } from 'react-toastify';
 
-import { APIRoute, AuthorizationStatus, SEND_DATA_STATUS } from '../const';
+import { APIRoute, AppRoute, AuthorizationStatus, SEND_DATA_STATUS } from '../const';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
@@ -19,6 +19,7 @@ import {
   loadFavoritesAction,
   addCommentAction,
   setAddCommentStatusAction,
+  redirectToRoute,
 } from './action';
 import { Comment, Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';
@@ -107,10 +108,15 @@ export const fetchOffersAction = createAsyncThunk<void, void, AsyncOptions>(
 export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOptions>(
   APIAction.FETCH_OFFER_ITEM,
   async ({ offerID }, {dispatch, extra: api}) => {
-    const { data } = await api.get<Offer>(`${APIRoute.OFFERS}/${offerID}`);
+    try {
+      const { data } = await api.get<Offer>(`${APIRoute.OFFERS}/${offerID}`);
 
-    dispatch(setCommentsLoadedStatusAction(false));
-    dispatch(loadOfferItemAction({ offer: data }));
+      dispatch(setCommentsLoadedStatusAction(false));
+      dispatch(loadOfferItemAction({ offer: data }));
+    } catch(err) {
+      console.log('тут блять');
+      dispatch(redirectToRoute('/page404'));
+    }
   }
 );
 
