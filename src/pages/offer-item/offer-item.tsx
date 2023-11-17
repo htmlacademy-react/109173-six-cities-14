@@ -1,30 +1,36 @@
 // import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, NEAREST_OFFERS_COUNT } from '../../const';
+import { AppRoute } from '../../const';
 import { Navigate, useParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../..';
 
+import { Offer, Offers } from '../../types/offer';
+import { Comments } from '../../types/comment';
+
+import Spinner from '../../components/spinner/spinner';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import NearestOffers from '../../components/nearest-offers/nearest-offers';
+import NearbyOffers from '../../components/nearby-offers/nearby-offers';
 import Gallery from '../../components/gallery/gallery';
 import StarsRating from '../../components/stars-rating/stars-rating';
 import Map from '../../components/map/map';
+import useOfferItem from '../../hooks/useOfferItem';
+import useReview from '../../hooks/useReview';
+import useNearbyOffer from '../../hooks/useNearbyOffer';
 
-import { Offer, OffersProps } from '../../types/offer';
-import { useAppSelector } from '../../hooks';
+type CurrentOfferPtops = {
+  offer: Offer;
+  comments: Comments;
+  nearby: Offers;
+};
 
-
-export default function OffersItem({ offers, comments, mapPoints }: OffersProps) {
+function CurrentOffer({ offer, comments, nearby }: CurrentOfferPtops): React.ReactElement {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-  const offerID = Number(useParams().id);
-  const currentCity = useAppSelector((state) => state.city);
-  const currentOffer = offers.find((item) => offerID === item.id);
-  const slicedPoints = mapPoints.slice(0, NEAREST_OFFERS_COUNT);
   const isUserLoggedIn = useContext(AuthContext);
+  const itHasNearbyOffers = (nearby?.length > 0);
 
-  if(!currentOffer) {
+  if(!offer) {
     return <Navigate to={AppRoute.PAGE_404} />;
   }
 
@@ -38,7 +44,7 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
     isPremium,
     maxAdults,
     host
-  } = currentOffer;
+  } = offer;
 
   return (
     <>
@@ -124,7 +130,7 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
 
             {/* Отзывы */}
             <section className="offer__reviews reviews">
-              { comments && <ReviewsList comments={ comments }/>}
+              { <ReviewsList comments={ comments }/> }
 
               {/* Форма написания отзыва */}
               {isUserLoggedIn && <ReviewsForm />}
@@ -132,12 +138,25 @@ export default function OffersItem({ offers, comments, mapPoints }: OffersProps)
           </div>
         </div>
         {/* Карта */}
-        { <Map city={ currentCity } mapPoints={ slicedPoints } selectedPoint={ selectedPoint }/> }
+        { itHasNearbyOffers && <Map offers={ nearby } selectedPoint={ selectedPoint }/> }
       </section>
       <div className="container">
         {/* Места поблизости */}
-        <NearestOffers offerID={ offerID } offers={ offers } onSelectPoint={ setSelectedPoint }/>
+        { itHasNearbyOffers && <NearbyOffers offers={ nearby } onSelectPoint={ setSelectedPoint }/> }
       </div>
     </>
   );
+}
+
+export default function OfferItem(): React.ReactElement {
+  const offerID = String(useParams().id);
+  const currentOffer = useOfferItem({ offerID });
+  const comments = useReview({ offerID });
+  const nearbyOffers = useNearbyOffer({ offerID });
+
+  if(!currentOffer) {
+    return <Spinner />;
+  }
+
+  return <CurrentOffer offer={ currentOffer } comments={ comments } nearby={ nearbyOffers }/>;
 }

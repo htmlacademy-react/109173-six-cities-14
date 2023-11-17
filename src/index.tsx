@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-import { offers } from './mocks/offers';
-import { comments } from './mocks/comments';
-import { cities } from './mocks/cities';
-import { AuthorizationStatus, OFFERS_COUNT } from './const';
+import { fetchOffersAction } from './store/api-action';
+
+import { AuthorizationStatus } from './const';
 
 import App from './components/app/app';
+
+// Префетчинг данных
+store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,12 +23,7 @@ root.render(
   <React.StrictMode>
     <Provider store={ store }>
       <AuthContext.Provider value={ isUserLoggedIn }>
-        <App
-          cities={ cities }
-          offers={ offers }
-          offersCount={ OFFERS_COUNT }
-          comments={ comments }
-        />
+        <App />
       </AuthContext.Provider>
     </Provider>
   </React.StrictMode>
