@@ -18,7 +18,7 @@ export default function ReviewsForm(): React.ReactNode {
   const userReview = useRef<HTMLTextAreaElement>(null);
   const [userRate, setUserRate] = useState(BASE_RATING);
   const [starsDisabled, setStarsDisabled] = useState(false);
-  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
   const [textareaDisabled, setTextareaDisabled] = useState(false);
   const addCommentStatus = useAppSelector((state) => state.addCommentStatus);
 
@@ -57,18 +57,6 @@ export default function ReviewsForm(): React.ReactNode {
 
     dispatch(fetchCommentAction(review));
   }
-
-  useEffect(() => {
-    let isMounted = true;
-
-    if(isMounted) {
-      setSubmitDisabled(true);
-    }
-
-    return function() {
-      isMounted = false;
-    };
-  }, []);
 
   useEffect(() => {
     let isMounted = true;

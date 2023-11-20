@@ -25,7 +25,7 @@ export default function ReviewsList({ comments }: ReviewListProps): React.ReactE
     <>
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{ slicedComments.length }</span></h2>
       <ul className="reviews__list">
-        { slicedComments &&
+        { slicedComments?.length > 0 &&
           slicedComments.map((comment) => <ReviewsItem key={comment.id} comment={ comment } />) }
       </ul>
     </>
