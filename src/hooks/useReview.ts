@@ -11,9 +11,15 @@ export default function useReview({ offerID }: UseReviewProps) {
   const comments = useAppSelector((state) => state.comments);
 
   useEffect(() => {
-    if(offerID) {
+    let isMounted = true;
+
+    if(isMounted && offerID) {
       dispatch(fetchComments({ offerID }));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [dispatch, offerID]);
 
   return comments;

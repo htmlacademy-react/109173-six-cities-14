@@ -5,6 +5,9 @@ import { getToken } from './token';
 
 const BASE_URL = 'https://14.design.pages.academy';
 const TIMEOUT = 5000;
+const ERROR_TEXT = {
+  NOT_AUTHORIZED: 'You aren`t authorized',
+};
 
 const StatusCodesMap = [
   StatusCodes.BAD_REQUEST,
@@ -13,9 +16,16 @@ const StatusCodesMap = [
   StatusCodes.BAD_GATEWAY
 ];
 
+type DetailMessage = {
+  property: string;
+  value: string;
+  messages: string[];
+}
+
 type ErrorMessage = {
   type: string;
   message: string;
+  details: DetailMessage[];
 };
 
 export function createAPI(): AxiosInstance {
@@ -41,10 +51,27 @@ export function createAPI(): AxiosInstance {
     (error: AxiosError<ErrorMessage>) => {
       if(error.response && StatusCodesMap.includes(error.response.status)) {
         const { data } = error.response;
-        const { message } = data;
+        const { message, details } = data;
+
+        let messageText = message;
 
         if(message) {
-          toast.warn(message);
+          switch(error.response.status) {
+            case StatusCodes.UNAUTHORIZED: {
+              messageText = ERROR_TEXT.NOT_AUTHORIZED;
+              break;
+            }
+          }
+
+          toast.warn(messageText);
+        }
+
+        if(details && details.length > 0) {
+          details.forEach((detail) => {
+            if(detail.messages) {
+              detail.messages.forEach((item) => toast.warn(item));
+            }
+          });
         }
       }
 

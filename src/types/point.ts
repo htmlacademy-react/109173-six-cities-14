@@ -1,5 +1,5 @@
 export type Point = {
-  id: number;
+  id: string;
   lat: number;
   long: number;
 };

@@ -1,7 +1,10 @@
-import { AppRoute } from '../../const';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
+import { AppRoute } from '../../const';
+
+import HistoryRoute from '../history-route/history-route';
+import { browserHistory } from '../../browser-history';
 import { useAppSelector } from '../../hooks';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
@@ -22,7 +25,7 @@ export default function App(): React.ReactElement {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRoute history={ browserHistory }>
         <ScrollToTop />
         <Routes>
           <Route path={AppRoute.MAIN} element={<Layout />}>
@@ -51,7 +54,7 @@ export default function App(): React.ReactElement {
           </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>
-      </BrowserRouter>
+      </HistoryRoute>
     </HelmetProvider>
   );
 }
