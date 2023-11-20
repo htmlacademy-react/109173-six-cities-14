@@ -7,16 +7,14 @@ import { AppRoute } from '../../const';
 
 type Reducer = ReturnType<typeof reducer>;
 
-export default function redirect(): Middleware<unknown, Reducer> {
-  return function() {
-    return function(next) {
-      return function(action: PayloadAction<string>) {
+// Просто скопировано с примера академии, т.к. вариант на обычных функциях работать отказался
+export const redirect: Middleware<unknown, Reducer> =
+  () =>
+    (next) =>
+      (action: PayloadAction<string>) => {
         if(action.type === Action.REDIRECT) {
           browserHistory.push(AppRoute.PAGE_404);
         }
 
-        next(action);
+        return next(action);
       };
-    };
-  };
-}
