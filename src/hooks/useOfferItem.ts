@@ -13,7 +13,7 @@ export default function useOfferItem({ offerID }: UseOfferItemProps) {
   useEffect(() => {
     let isMounted = true;
 
-    if(offerID && !currentOffer) {
+    if(isMounted && offerID && !currentOffer) {
       dispatch(fetchOfferItemAction({ offerID }));
     }
 
