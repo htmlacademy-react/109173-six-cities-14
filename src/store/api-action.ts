@@ -71,7 +71,7 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
       setToken(token);
     }
 
-    // browserHistory.push(AppRoute.MAIN);
+    browserHistory.push(AppRoute.MAIN);
   }
 );
 

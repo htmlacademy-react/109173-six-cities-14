@@ -26,6 +26,7 @@ export const APIRoute = {
 };
 
 export const NAMESPACE = {
+  MAIN: 'MAIN',
   CITY: 'CITY',
   OFFERS: 'OFFERS',
   OFFERS_ITEM: 'OFFERS_ITEM',

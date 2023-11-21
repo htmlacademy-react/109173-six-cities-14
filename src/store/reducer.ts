@@ -13,8 +13,6 @@ import {
   loadOfferItemAction,
   loadCommentsAction,
   setCommentsLoadedStatusAction,
-  setAuthorizationStatusAction,
-  setUserInfoAction,
   loadFavoritesAction,
   addCommentAction,
   setAddCommentStatusAction,
@@ -92,11 +90,11 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(loadFavoritesAction, (state, action) => {
       state.favorites = action.payload.offers;
     })
-    // AUTH
-    .addCase(setAuthorizationStatusAction, (state, action) => {
-      state.authorizationStatus = action.payload;
-    })
-    .addCase(setUserInfoAction, (state, action) => {
-      state.userInfo = action.payload;
-    });
+    // // AUTH
+    // .addCase(setAuthorizationStatusAction, (state, action) => {
+    //   state.authorizationStatus = action.payload;
+    // })
+    // .addCase(setUserInfoAction, (state, action) => {
+    //   state.userInfo = action.payload;
+    // });
 });

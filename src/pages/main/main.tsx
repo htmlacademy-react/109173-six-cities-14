@@ -3,6 +3,7 @@ import { useState } from 'react';
 import cn from 'classnames';
 
 import { useAppSelector } from '../../hooks';
+import { getCity, getOffers } from '../../store/selectors';
 
 import { MainProps } from './main-props';
 
@@ -25,9 +26,10 @@ export default function Main({
 }: MainProps): React.ReactNode {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
 
-  const currentCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
+  const currentCity = useAppSelector(getCity);
+  const offers = useAppSelector(getOffers);
   const cityOffers = getOffersByCity(currentCity, offers);
+
 
   return (
     <>

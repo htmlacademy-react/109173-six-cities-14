@@ -16,7 +16,6 @@ export const userProcess = createSlice({
   initialState,
   reducers: {
     setUserInfoAction: (state, action: PayloadAction<UserData | null>) => {
-      console.log('Попали сюда');
       state.userInfo = action.payload;
       state.authorizationStatus = AuthorizationStatus.AUTH;
     }

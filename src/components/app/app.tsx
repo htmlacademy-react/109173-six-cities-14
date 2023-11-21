@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
+import { getOffers } from '../../store/selectors';
 import { AppRoute } from '../../const';
 
 import HistoryRoute from '../history-route/history-route';
@@ -17,7 +18,7 @@ import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import Spinner from '../spinner/spinner';
 
 export default function App(): React.ReactElement {
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
 
   if(offers?.length <= 0) {
     return <Spinner />;

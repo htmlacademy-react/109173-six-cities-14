@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getAuthStatus, getFavorites, getUserInfo } from '../../store/selectors';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-action';
 
@@ -8,9 +9,9 @@ export default function Navigation(): React.ReactElement {
   const dispatch = useAppDispatch();
   const location = useLocation().pathname;
 
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const userInfo = useAppSelector((state) => state.userInfo);
-  const favorites = useAppSelector((state) => state.favorites);
+  const authStatus = useAppSelector(getAuthStatus);
+  const userInfo = useAppSelector(getUserInfo);
+  const favorites = useAppSelector(getFavorites);
 
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const isLoginPage = (location === AppRoute.LOGIN);
