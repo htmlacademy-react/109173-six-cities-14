@@ -19,7 +19,7 @@ import Spinner from '../spinner/spinner';
 export default function App(): React.ReactElement {
   const offers = useAppSelector((state) => state.offers);
 
-  if(offers.length <= 0) {
+  if(offers?.length <= 0) {
     return <Spinner />;
   }
 

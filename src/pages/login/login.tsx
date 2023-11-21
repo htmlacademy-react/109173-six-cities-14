@@ -9,7 +9,7 @@ export default function Login(): React.ReactElement {
   const userPassword = useRef<HTMLInputElement>(null);
 
 
-  function formSubmitHandler(evt: React.FormEvent<HTMLFormElement>) {
+  function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
 
     if(!userLogin.current || !userPassword.current) {
@@ -29,7 +29,7 @@ export default function Login(): React.ReactElement {
       </Helmet>
       <section className="login">
         <h1 className="login__title">Sign in</h1>
-        <form className="login__form form" action="#" method="post" onSubmit={ formSubmitHandler }>
+        <form className="login__form form" action="#" method="post" onSubmit={ handleFormSubmit }>
           <div className="login__input-wrapper form__input-wrapper">
             <label className="visually-hidden">E-mail</label>
             <input className="login__input form__input" type="email" name="email" placeholder="Email" required ref={ userLogin } />

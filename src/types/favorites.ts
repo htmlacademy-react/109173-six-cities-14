@@ -1,4 +1,4 @@
-import { Offer, Offers } from '../../types/offer';
+import { Offer, Offers } from './offer';
 
 export type FavoritesProps = {
   offers: Offers;

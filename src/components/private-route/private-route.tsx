@@ -13,8 +13,8 @@ export default function PrivateRoute({
 }: PrivateRouteProps): React.ReactElement {
 
   const location: string = useLocation().pathname;
-  const isLoginPage = (location === String(AppRoute.LOGIN));
   const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const isLoginPage = (location === String(AppRoute.LOGIN));
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
 
   return (

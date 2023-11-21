@@ -3,7 +3,7 @@ import { NearbyOffersProps } from './nearby-offers-props';
 import OffersList from '../offers-list/offers-list';
 
 export default function NearbyOffers({ offers, onSelectPoint }: NearbyOffersProps): React.ReactElement {
-  const nearbyOffers = offers.slice(0, NEARBY_OFFERS_COUNT); // Предложения неподалеку (берем всего NEARBY_OFFERS_COUNT штук)
+  const nearbyOffers = offers.slice(0, NEARBY_OFFERS_COUNT);
 
   return (
     <section className="near-places places">
