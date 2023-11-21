@@ -1,35 +1,27 @@
 import { NAMESPACE } from '../const';
 import { Offers } from '../types/offer';
 import { State } from '../types/state';
-
-type test = keyof typeof NAMESPACE;
+import { UserData } from '../types/user-data';
 
 // Временные общие селекторы (с кривой типизацией) для плавной миграции
-// TODO: из за кривой типизации не выводится подсказка при написании конструкции
-// вида state[NAMESPACE.something].
 export function getCity(state: State): string {
-  const curState = state[NAMESPACE.MAIN] as State;
-  return curState.city;
+  return state[NAMESPACE.MAIN].city;
 }
 
 export function getOffers(state: State): Offers {
-  const curState = state[NAMESPACE.MAIN] as State;
-  return curState.offers;
+  return state[NAMESPACE.MAIN].offers;
 }
 
 export function getFavorites(state: State): Offers {
-  const curState = state[NAMESPACE.MAIN] as State;
-  return curState.favorites;
+  return state[NAMESPACE.MAIN].favorites;
 }
 
 
 // USER
 export function getAuthStatus(state: State): string {
-  const curState = state[NAMESPACE.USER] as State ;
-  return curState.authorizationStatus;
+  return state[NAMESPACE.USER].authorizationStatus;
 }
 
-export function getUserInfo(state: State): string {
-  const curState = state[NAMESPACE.USER] as State ;
-  return curState.userInfo;
+export function getUserInfo(state: State): UserData | null {
+  return state[NAMESPACE.USER].userInfo;
 }

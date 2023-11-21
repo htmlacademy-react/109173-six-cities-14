@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { toast } from 'react-toastify';
 
-import { APIRoute, AppRoute, SEND_DATA_STATUS } from '../const';
+import { APIRoute, AppRoute, AuthorizationStatus, SEND_DATA_STATUS } from '../const';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
@@ -20,7 +20,7 @@ import {
   redirectToRoute,
 } from './action';
 
-import { setUserInfoAction } from './user-process/user-process';
+import { setUserAuthStatusAction, setUserInfoAction } from './user-process/user-process';
 
 import { Comment, Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';

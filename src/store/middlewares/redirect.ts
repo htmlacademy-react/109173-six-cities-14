@@ -1,11 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { Middleware } from 'redux';
-import { reducer } from '../reducer';
 import { Action } from '../action';
 import { browserHistory } from '../../browser-history';
 import { AppRoute } from '../../const';
+import { rootReducer } from '../root-reducer';
 
-type Reducer = ReturnType<typeof reducer>;
+type Reducer = ReturnType<typeof rootReducer>;
 
 // Просто скопировано с примера академии, т.к. вариант на обычных функциях работать отказался
 export const redirect: Middleware<unknown, Reducer> =

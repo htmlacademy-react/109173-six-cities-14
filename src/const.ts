@@ -33,14 +33,14 @@ export const NAMESPACE = {
   FAVORITES: 'FAVORITES',
   USER: 'USER',
   DATA: 'DATA'
-};
+} as const;
 
 // STATUSES
 export const AuthorizationStatus = {
   AUTH: 'AUTH',
   NO_AUTH: 'NO_AUTH',
   UNKNOWN: 'UNKNOWN',
-};
+} as const;
 export const SEND_DATA_STATUS = {
   NONE: 'NONE',
   LOADING: 'LOADING',
