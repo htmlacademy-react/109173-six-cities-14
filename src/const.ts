@@ -25,6 +25,16 @@ export const APIRoute = {
   LOGOUT: '/six-cities/logout',
 };
 
+export const NAMESPACE = {
+  CITY: 'CITY',
+  OFFERS: 'OFFERS',
+  OFFERS_ITEM: 'OFFERS_ITEM',
+  FAVORITES: 'FAVORITES',
+  USER: 'USER',
+  DATA: 'DATA'
+};
+
+// STATUSES
 export const AuthorizationStatus = {
   AUTH: 'AUTH',
   NO_AUTH: 'NO_AUTH',
@@ -37,6 +47,7 @@ export const SEND_DATA_STATUS = {
   ERROR: 'ERROR',
 };
 
+// OTHERS
 export const DateFormat = {
   MONTH_YEAR: 'MONTH_YEAR',
   DATE_TIME: 'DATE_TIME'

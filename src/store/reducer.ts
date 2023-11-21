@@ -27,12 +27,12 @@ const DEFAULT_CITY = 'Paris';
 type initialState = {
   city: string;
   offers: Offers;
-  comments: Comments;
-  isCommentsLoaded: boolean;
-  // addCommentStatus: AddCommentStatus;
-  addCommentStatus: string;
   offer: Offer | null;
   nearbyOffers: Offers;
+  comments: Comments;
+  isCommentsLoaded: boolean;
+  addCommentStatus: string;
+
   favorites: Offers;
   authorizationStatus: string;
   userInfo: UserData | null;
@@ -41,22 +41,24 @@ type initialState = {
 const initialState: initialState = {
   city: DEFAULT_CITY,
   offer: null,
+  offers: [],
+  nearbyOffers: [],
   comments: [],
   isCommentsLoaded: false,
-  // addCommentStatus: SEND_DATA_STATUS.NONE,
   addCommentStatus: SEND_DATA_STATUS.NONE,
-  offers: [],
+
   favorites: [],
-  nearbyOffers: [],
   authorizationStatus: AuthorizationStatus.UNKNOWN,
   userInfo: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
+    // CITY
     .addCase(setCityAction, (state, action) => {
       state.city = action.payload.city;
     })
+    // OFFERS
     .addCase(setOffersAction, (state, action) => {
       state.offers = action.payload.offers;
       // TODO: Возможно - стоит перенести в отдельный экшен обнуление или не обнулять вобще (Смысл?)
@@ -69,6 +71,7 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOfferItemAction, (state, action) => {
       state.offer = action.payload.offer;
     })
+    // COMMENTS
     .addCase(loadCommentsAction, (state, action) => {
       state.comments = action.payload.comments;
     })
@@ -81,12 +84,15 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(setAddCommentStatusAction, (state, action) => {
       state.addCommentStatus = action.payload;
     })
+    // NEARBY
     .addCase(loadNearbyAction, (state, action) => {
       state.nearbyOffers = action.payload.nearbyOffers;
     })
+    // FAVORITES
     .addCase(loadFavoritesAction, (state, action) => {
       state.favorites = action.payload.offers;
     })
+    // AUTH
     .addCase(setAuthorizationStatusAction, (state, action) => {
       state.authorizationStatus = action.payload;
     })
