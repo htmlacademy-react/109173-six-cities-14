@@ -3,7 +3,7 @@ import { AuthorizationStatus, NAMESPACE } from '../../const';
 import { UserData } from '../../types/user-data';
 import { UserProcess } from '../../types/state';
 import { checkAuthAction, loginAction, logoutAction } from '../api-action';
-import { current } from '@reduxjs/toolkit';
+import { getToken } from '../../services/token';
 const initialState: UserProcess = {
   favorites: [],
   authorizationStatus: AuthorizationStatus.UNKNOWN,
@@ -22,9 +22,9 @@ export const userProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
-        // не всегда тут при удачном выполнении запроса пользователь должен быть авторизован
-        // нужно продумать систему, основываясь на статусах, возвращаемых от сервера
-        // state.authorizationStatus = AuthorizationStatus.AUTH;
+        if(getToken()) {
+          state.authorizationStatus = AuthorizationStatus.AUTH;
+        }
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NO_AUTH;
@@ -32,25 +32,13 @@ export const userProcess = createSlice({
       .addCase(loginAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.AUTH;
       })
-      .addCase(loginAction.rejected || logoutAction.fulfilled, (state) => {
+      .addCase(loginAction.rejected, (state) => {
+        state.authorizationStatus = AuthorizationStatus.NO_AUTH;
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NO_AUTH;
       });
   },
 });
-
-/* extraReducers(builder) {
-  builder
-    .addCase(checkAuthAction.fulfilled || loginAction.fulfilled, (state) => {
-      state.authorizationStatus = AuthorizationStatus.AUTH;
-    })
-    .addCase(
-      checkAuthAction.rejected
-      || loginAction.rejected
-      || logoutAction.fulfilled,
-      (state) => {
-        console.log('Попали на разавторизацию');
-        state.authorizationStatus = AuthorizationStatus.NO_AUTH;
-      });
-}, */
 
 export const { setUserInfoAction } = userProcess.actions;

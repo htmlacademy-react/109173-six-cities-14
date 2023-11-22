@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { toast } from 'react-toastify';
 
-import { APIRoute, AppRoute, AuthorizationStatus, SEND_DATA_STATUS } from '../const';
+import { APIRoute, AppRoute, SEND_DATA_STATUS } from '../const';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
@@ -20,14 +20,13 @@ import {
   redirectToRoute,
 } from './action';
 
-import { setUserAuthStatusAction, setUserInfoAction } from './user-process/user-process';
+import { setUserInfoAction } from './user-process/user-process';
 
 import { Comment, Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';
 import { deleteToken, setToken } from '../services/token';
 import { UserData } from '../types/user-data';
 import { CommentData } from '../types/comment-data';
-import { browserHistory } from '../browser-history';
 
 const APIAction = {
   FETCH_OFFERS: 'data/fetchOffers',
@@ -60,7 +59,7 @@ type AsyncOptions = {
 // AUTH
 export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
   APIAction.USER_LOGIN,
-  async ({ email, password }, { extra: api }) => {
+  async ({ email, password }, { dispatch, extra: api }) => {
     const { data } = await api.post<UserData>(
       APIRoute.LOGIN,
       { email, password }
@@ -71,15 +70,17 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
       setToken(token);
     }
 
-    browserHistory.push(AppRoute.MAIN);
+    dispatch(setUserInfoAction(data));
+    dispatch(redirectToRoute(AppRoute.MAIN));
   }
 );
 
 export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
   APIAction.USER_LOGOUT,
-  async (_arg, { extra: api }) => {
+  async (_arg, { dispatch, extra: api }) => {
     await api.delete(APIRoute.LOGOUT);
     deleteToken();
+    dispatch(setUserInfoAction(null));
   }
 );
 
