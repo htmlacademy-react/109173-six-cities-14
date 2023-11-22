@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '.';
 import { fetchNeabyOffers } from '../store/api-action';
-import { getNearby } from '../store/selectors';
+import { getNearby } from '../store/slices/offer-item-data-process/selectors';
 
 type UseNearbyOfferProps = {
   offerID: string;

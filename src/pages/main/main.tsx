@@ -3,7 +3,8 @@ import { useState } from 'react';
 import cn from 'classnames';
 
 import { useAppSelector } from '../../hooks';
-import { getCity, getOffers } from '../../store/selectors';
+import { getCity } from '../../store/slices/city-process/selectors';
+import { getOffers } from '../../store/slices/offers-data-process/selectors';
 
 import { MainProps } from './main-props';
 

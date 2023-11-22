@@ -32,7 +32,6 @@ export const NAMESPACE = {
   OFFER: 'OFFER',
   FAVORITES: 'FAVORITES',
   USER: 'USER',
-  DATA: 'DATA'
 } as const;
 
 // STATUSES

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '.';
 import { fetchComments } from '../store/api-action';
-import { getComments } from '../store/selectors';
+import { getComments } from '../store/slices/offer-item-data-process/selectors';
 
 type UseReviewProps = {
   offerID: string;

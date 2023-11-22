@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { getAuthStatus } from '../../store/selectors';
+import { getAuthStatus } from '../../store/slices/user-process/selectors';
 
 type PrivateRouteProps = {
   redirectTo: typeof AppRoute[keyof typeof AppRoute];

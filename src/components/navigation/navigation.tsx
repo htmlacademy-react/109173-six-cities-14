@@ -1,8 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getAuthStatus, getFavorites, getUserInfo } from '../../store/selectors';
-import { AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-action';
+import { getAuthStatus, getUserInfo } from '../../store/slices/user-process/selectors';
+import { getFavorites } from '../../store/slices/favorites-data-process/selectors';
+
+import { AppRoute, AuthorizationStatus } from '../../const';
 
 
 export default function Navigation(): React.ReactElement {

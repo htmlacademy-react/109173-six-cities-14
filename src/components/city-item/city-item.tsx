@@ -1,6 +1,7 @@
-import { useAppSelector } from '../../hooks';
 import cn from 'classnames';
-import { getCity } from '../../store/selectors';
+
+import { useAppSelector } from '../../hooks';
+import { getCity } from '../../store/slices/city-process/selectors';
 
 type CityProps = {
   city: string;
