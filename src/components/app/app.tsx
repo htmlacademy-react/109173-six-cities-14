@@ -20,6 +20,8 @@ import ScrollToTop from '../scroll-to-top/scroll-to-top';
 export default function App(): React.ReactElement {
   const offers = useAppSelector(getOffers);
 
+  // TODO: Надо опираться не на количество офферов, а на какой-нибудь статус типа isOffersLoading,
+  // чтобы в случае неудачи - показывать пустую страницу с возможностью перезагрузить офферы (может быть)
   if(offers?.length <= 0) {
     return <Spinner />;
   }
@@ -38,7 +40,7 @@ export default function App(): React.ReactElement {
               path={AppRoute.FAVORITES}
               element={
                 <PrivateRoute redirectTo={AppRoute.LOGIN}>
-                  <Favorites offers={ offers } />
+                  <Favorites />
                 </PrivateRoute>
               }
             />

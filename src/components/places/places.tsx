@@ -6,9 +6,10 @@ import Sort from '../sort/sort';
 import { PlacesProps } from '../../pages/main/main-props';
 import { useAppSelector } from '../../hooks';
 import useSortOffers from '../../hooks/useSortOffers';
+import { getCity } from '../../store/slices/city-process/selectors';
 
 export default function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
-  const currentCity = useAppSelector((state) => state.city);
+  const currentCity = useAppSelector(getCity);
   const [sortedOffers, handleSortChange] = useSortOffers(offers);
 
   return (
