@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AuthorizationStatus, NAMESPACE } from '../../const';
-import { UserData } from '../../types/user-data';
-import { UserProcess } from '../../types/state';
-import { checkAuthAction, loginAction, logoutAction } from '../api-action';
-import { getToken } from '../../services/token';
+import { AuthorizationStatus, NAMESPACE } from '../../../const';
+import { UserData } from '../../../types/user-data';
+import { UserProcess } from '../../../types/state';
+import { checkAuthAction, loginAction, logoutAction } from '../../api-action';
+import { getToken } from '../../../services/token';
 const initialState: UserProcess = {
   favorites: [],
   authorizationStatus: AuthorizationStatus.UNKNOWN,

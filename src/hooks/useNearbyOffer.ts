@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '.';
 import { fetchNeabyOffers } from '../store/api-action';
+import { getNearby } from '../store/selectors';
 
 type UseNearbyOfferProps = {
   offerID: string;
@@ -8,7 +9,7 @@ type UseNearbyOfferProps = {
 
 export default function useNearbyOffer({ offerID }: UseNearbyOfferProps) {
   const dispatch = useAppDispatch();
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const nearbyOffers = useAppSelector(getNearby);
 
   useEffect(() => {
     let isMounted = true;

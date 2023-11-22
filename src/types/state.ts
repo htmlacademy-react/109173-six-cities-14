@@ -1,4 +1,5 @@
 import { store } from '../store';
+import { Comments } from './comment';
 import { Offer, Offers } from './offer';
 import { UserData } from './user-data';
 
@@ -11,8 +12,23 @@ export type UserProcess = {
 
 export type OffersDataProcess = {
   offers: Offers;
+};
+
+export type OfferItemDataProcess = {
   offer: Offer | null;
+  comments: Comments;
+  isCommentsLoaded: boolean;
+  addCommentStatus: string;
   nearbyOffers: Offers;
+};
+
+
+export type FavoritesDataProcess = {
+  favorites: Offers;
+};
+
+export type CityProcess = {
+  city: string;
 };
 
 export type State = ReturnType<typeof store.getState>;

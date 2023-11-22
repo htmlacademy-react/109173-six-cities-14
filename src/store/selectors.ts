@@ -1,19 +1,36 @@
 import { NAMESPACE } from '../const';
-import { Offers } from '../types/offer';
+import { Comments } from '../types/comment';
+import { Offer, Offers } from '../types/offer';
 import { State } from '../types/state';
 import { UserData } from '../types/user-data';
 
-// Временные общие селекторы (с кривой типизацией) для плавной миграции
+// CITY
 export function getCity(state: State): string {
-  return state[NAMESPACE.MAIN].city;
+  return state[NAMESPACE.CITY].city;
 }
 
+// OFFERS
 export function getOffers(state: State): Offers {
-  return state[NAMESPACE.MAIN].offers;
+  return state[NAMESPACE.OFFERS].offers;
 }
 
+// OFFER
+export function getOffer(state: State): Offer | null {
+  return state[NAMESPACE.OFFER].offer;
+}
+
+export function getComments(state: State): Comments {
+  return state[NAMESPACE.OFFER].comments;
+}
+
+export function getNearby(state: State): Offers {
+  return state[NAMESPACE.OFFER].nearbyOffers;
+}
+
+
+// FAVORITES
 export function getFavorites(state: State): Offers {
-  return state[NAMESPACE.MAIN].favorites;
+  return state[NAMESPACE.FAVORITES].favorites;
 }
 
 

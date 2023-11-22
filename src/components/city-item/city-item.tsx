@@ -1,5 +1,6 @@
 import { useAppSelector } from '../../hooks';
 import cn from 'classnames';
+import { getCity } from '../../store/selectors';
 
 type CityProps = {
   city: string;
@@ -7,7 +8,7 @@ type CityProps = {
 };
 
 export default function CityItem({ city, onSelectCity }: CityProps): React.ReactNode {
-  const selectedCity = useAppSelector((state) => state.city);
+  const selectedCity = useAppSelector(getCity);
   const isSelectedCity = (selectedCity === city);
 
   return (

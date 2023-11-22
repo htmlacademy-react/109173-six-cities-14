@@ -3,31 +3,32 @@ import { AxiosInstance } from 'axios';
 import { toast } from 'react-toastify';
 
 import { APIRoute, AppRoute, SEND_DATA_STATUS } from '../const';
+import { deleteToken, setToken } from '../services/token';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
 import { OffersData } from '../types/offers-data';
-
-import {
-  loadOffersAction,
-  loadNearbyAction,
-  loadOfferItemAction,
-  loadCommentsAction,
-  setCommentsLoadedStatusAction,
-  loadFavoritesAction,
-  addCommentAction,
-  setAddCommentStatusAction,
-  redirectToRoute,
-} from './action';
-
-import { setUserInfoAction } from './user-process/user-process';
-
 import { Comment, Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';
-import { deleteToken, setToken } from '../services/token';
 import { UserData } from '../types/user-data';
 import { CommentData } from '../types/comment-data';
 
+import { redirectToRoute } from './action';
+
+// SLICES
+import { setUserInfoAction } from './slices/user-process/user-process';
+import { loadOffersAction } from './slices/offers-data-process/offers-data-process';
+import {
+  loadOfferItemAction,
+  loadCommentsAction,
+  setCommentsLoadedStatusAction,
+  addCommentAction,
+  setAddCommentStatusAction,
+  loadNearbyAction
+} from './slices/offer-item-data-process/offer-item-data-process';
+import { loadFavoritesAction } from './slices/favorites-data-process/favorites-data-process';
+
+// CODE
 const APIAction = {
   FETCH_OFFERS: 'data/fetchOffers',
   FETCH_OFFER_ITEM: 'data/fetchOfferItem',
