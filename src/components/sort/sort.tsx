@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import cn from 'classnames';
+import { upperCaseFirst } from '../../utils/offer';
 
 export const SortType = {
   'POPULAR': 'Popular',
@@ -15,6 +16,7 @@ const CSSClasses = {
 };
 
 type SortProps = {
+  currentSort: string;
   onSortChange: (currentSort: string) => void;
 };
 
@@ -34,16 +36,17 @@ function SortItem({ onSort }: SortItemProps) {
   ));
 }
 
-export default function Sort({ onSortChange }: SortProps): React.ReactElement {
+export default function Sort({ currentSort, onSortChange }: SortProps): React.ReactElement {
   const [sortOpened, setSortOpened] = useState(false);
+  const currentSortName = upperCaseFirst(currentSort);
 
-  function sortToggleHandler() {
+  function handleSortToggle() {
     const isSortOpened = !sortOpened;
 
     setSortOpened(isSortOpened);
   }
 
-  function sortChangeHandler(evt: React.MouseEvent<HTMLLIElement, MouseEvent>) {
+  function handleSortChange(evt: React.MouseEvent<HTMLLIElement, MouseEvent>) {
     const target = (evt.target as HTMLElement);
     const selectedSortType = target.textContent;
 
@@ -54,10 +57,10 @@ export default function Sort({ onSortChange }: SortProps): React.ReactElement {
   }
 
   return (
-    <form className="places__sorting" action="#" method="get" onClick={ sortToggleHandler }>
+    <form className="places__sorting" action="#" method="get" onClick={ handleSortToggle }>
       <span className="places__sorting-caption">Sort by</span>
       <span className="places__sorting-type" tabIndex={ 0 }>
-        Popular
+        { currentSortName }
         <svg className="places__sorting-arrow" width={ 7 } height={ 4 }>
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
@@ -67,7 +70,7 @@ export default function Sort({ onSortChange }: SortProps): React.ReactElement {
         { [CSSClasses.SORT_OPENED]: sortOpened }
       )}
       >
-        <SortItem onSort={ sortChangeHandler } />
+        <SortItem onSort={ handleSortChange } />
       </ul>
     </form>
   );

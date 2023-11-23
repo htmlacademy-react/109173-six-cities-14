@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getAuthStatus } from '../../store/slices/user-process/selectors';
 
 type PrivateRouteProps = {
   redirectTo: typeof AppRoute[keyof typeof AppRoute];
@@ -13,8 +14,8 @@ export default function PrivateRoute({
 }: PrivateRouteProps): React.ReactElement {
 
   const location: string = useLocation().pathname;
+  const authStatus = useAppSelector(getAuthStatus);
   const isLoginPage = (location === String(AppRoute.LOGIN));
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
 
   return (

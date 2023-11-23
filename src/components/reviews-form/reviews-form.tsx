@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCommentAction } from '../../store/api-action';
+import { getAddCommentsStatus } from '../../store/slices/offer-item-data-process/selectors';
 
 import { SEND_DATA_STATUS } from '../../const';
 
@@ -14,13 +15,16 @@ const REVIEW_MAX_LENGTH = 300;
 export default function ReviewsForm(): React.ReactNode {
   const dispatch = useAppDispatch();
   const offerID = String(useParams().id);
+
   const form = useRef<HTMLFormElement>(null);
   const userReview = useRef<HTMLTextAreaElement>(null);
+
   const [userRate, setUserRate] = useState(BASE_RATING);
   const [starsDisabled, setStarsDisabled] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [textareaDisabled, setTextareaDisabled] = useState(false);
-  const addCommentStatus = useAppSelector((state) => state.addCommentStatus);
+
+  const addCommentStatus = useAppSelector(getAddCommentsStatus);
 
   function disableForm(state: boolean = false) {
     setStarsDisabled(state);

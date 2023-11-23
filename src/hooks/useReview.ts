@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '.';
 import { fetchComments } from '../store/api-action';
+import { getComments } from '../store/slices/offer-item-data-process/selectors';
 
 type UseReviewProps = {
   offerID: string;
@@ -8,7 +9,7 @@ type UseReviewProps = {
 
 export default function useReview({ offerID }: UseReviewProps) {
   const dispatch = useAppDispatch();
-  const comments = useAppSelector((state) => state.comments);
+  const comments = useAppSelector(getComments);
 
   useEffect(() => {
     let isMounted = true;

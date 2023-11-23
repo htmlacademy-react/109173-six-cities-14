@@ -9,7 +9,7 @@ type StartRatingProps = {
 export default function StarsRatingForm({ rating, disabledState, onRatingChange }: StartRatingProps): React.ReactElement {
   const stars = [5, 4, 3, 2, 1];
 
-  function changeRatingHandler(evt: React.ChangeEvent<HTMLInputElement>) {
+  function handleRatingChange(evt: React.ChangeEvent<HTMLInputElement>) {
     const target = evt.target;
 
     onRatingChange(Number(target.value));
@@ -26,7 +26,7 @@ export default function StarsRatingForm({ rating, disabledState, onRatingChange 
               id={`${ star }-stars`}
               type="radio"
               defaultChecked={star <= rating}
-              onChange={ changeRatingHandler }
+              onChange={ handleRatingChange }
               disabled={ disabledState }
             />
             <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">

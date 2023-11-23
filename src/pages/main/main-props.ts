@@ -5,8 +5,6 @@ export type MainProps = {
 };
 
 export type PlacesProps = {
-  city: string;
   offers: Offers;
   onSelectPoint: (offer: Offer | null) => void;
-  onSortChange: (currentSort: string) => void;
 };
