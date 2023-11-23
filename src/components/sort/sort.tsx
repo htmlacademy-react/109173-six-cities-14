@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import cn from 'classnames';
+import { upperCaseFirst } from '../../utils/offer';
 
 export const SortType = {
   'POPULAR': 'Popular',
@@ -15,6 +16,7 @@ const CSSClasses = {
 };
 
 type SortProps = {
+  currentSort: string;
   onSortChange: (currentSort: string) => void;
 };
 
@@ -34,8 +36,9 @@ function SortItem({ onSort }: SortItemProps) {
   ));
 }
 
-export default function Sort({ onSortChange }: SortProps): React.ReactElement {
+export default function Sort({ currentSort, onSortChange }: SortProps): React.ReactElement {
   const [sortOpened, setSortOpened] = useState(false);
+  const currentSortName = upperCaseFirst(currentSort);
 
   function handleSortToggle() {
     const isSortOpened = !sortOpened;
@@ -56,8 +59,8 @@ export default function Sort({ onSortChange }: SortProps): React.ReactElement {
   return (
     <form className="places__sorting" action="#" method="get" onClick={ handleSortToggle }>
       <span className="places__sorting-caption">Sort by</span>
-      <span className="places__sorting-type" tabIndex={ 0 }> { /** TODO: Имя сортировки должно формироваться динамически */ }
-        Popular
+      <span className="places__sorting-type" tabIndex={ 0 }>
+        { currentSortName }
         <svg className="places__sorting-arrow" width={ 7 } height={ 4 }>
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>

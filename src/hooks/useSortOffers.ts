@@ -1,41 +1,41 @@
 import { useState } from 'react';
 import { Offers } from '../types/offer';
 import { SortType } from '../components/sort/sort';
-import { useAppSelector } from '.';
-import { getOffers } from '../store/slices/offers-data-process/selectors';
 
 const DEFAULT_SORT = 'POPULAR';
 
 type ResultSortOffers = [
   Offers,
+  currentSort: string,
   (selectedSort: string) => void
 ];
 
-function sortOffers(offers: Offers, sortType: string, baseOffersOrder: Offers): Offers {
+function sortOffers(offers: Offers, sortType: string): Offers {
+  const offersCopy = offers.slice();
+
   switch(sortType) {
     case SortType.POPULAR: {
-      return baseOffersOrder;
+      return offers;
       break;
     }
     case SortType.LOW_TO_HIGH: {
-      offers.sort((offerA, offerB) => offerA.price - offerB.price);
+      offersCopy.sort((offerA, offerB) => offerA.price - offerB.price);
       break;
     }
     case SortType.HIGH_TO_LOW: {
-      offers.sort((offerA, offerB) => offerB.price - offerA.price);
+      offersCopy.sort((offerA, offerB) => offerB.price - offerA.price);
       break;
     }
     case SortType.TOP: {
-      offers.sort((offerA, offerB) => offerB.rating - offerA.rating);
+      offersCopy.sort((offerA, offerB) => offerB.rating - offerA.rating);
       break;
     }
   }
 
-  return offers;
+  return offersCopy;
 }
 
 export default function useSortOffers(offers: Offers): ResultSortOffers {
-  const baseOffersOrder = useAppSelector(getOffers);
   const [currentSort, setCurrentSort] = useState(DEFAULT_SORT);
 
   function handleSortChange(selectedSort: string) {
@@ -44,7 +44,7 @@ export default function useSortOffers(offers: Offers): ResultSortOffers {
     }
   }
 
-  const sortedOffers = sortOffers(offers, currentSort, baseOffersOrder);
+  const sortedOffers = sortOffers(offers, currentSort);
 
-  return [sortedOffers, handleSortChange];
+  return [sortedOffers, currentSort, handleSortChange];
 }

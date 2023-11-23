@@ -19,5 +19,5 @@ export function adaptOffersToPoints(offers: Offers): Points {
 
 export function upperCaseFirst(string: string) {
   const newString = string.toLocaleLowerCase();
-  return `${ newString.charAt(0) }${ newString.slice(1) }`;
+  return `${ newString.charAt(0).toUpperCase() }${ newString.slice(1) }`;
 }
