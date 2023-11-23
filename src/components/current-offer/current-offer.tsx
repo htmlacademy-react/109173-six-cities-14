@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { AppRoute, AuthorizationStatus } from '../../const';
 
 import { useAppSelector } from '../../hooks';
+import { getAuthStatus } from '../../store/slices/user-process/selectors';
 
 import { Offer, Offers } from '../../types/offer';
 import { Comments } from '../../types/comment';
@@ -24,7 +25,7 @@ type CurrentOfferProps = {
 
 export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferProps): React.ReactElement {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const authStatus = useAppSelector(getAuthStatus);
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const itHasNearbyOffers = (nearby?.length > 0);
 

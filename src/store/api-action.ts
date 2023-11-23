@@ -92,6 +92,7 @@ export const checkAuthAction = createAsyncThunk<void, void, AsyncOptions>(
       const { data } = await api.get<UserData>(APIRoute.LOGIN);
       dispatch(setUserInfoAction(data));
     } catch(error) {
+      deleteToken();
       dispatch(setUserInfoAction(null));
     }
   }

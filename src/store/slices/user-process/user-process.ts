@@ -22,7 +22,7 @@ export const userProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
-        if(getToken()) {
+        if(getToken() !== '') {
           state.authorizationStatus = AuthorizationStatus.AUTH;
         }
       })
