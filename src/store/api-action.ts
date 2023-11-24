@@ -17,18 +17,20 @@ import { redirectToRoute } from './action';
 
 // SLICES
 import { setUserInfoAction } from './slices/user-process/user-process';
-import { loadOffersAction, updateOfferAction } from './slices/offers-data-process/offers-data-process';
+import { loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
 import {
-  loadOfferItemAction,
-  loadCommentsAction,
+  setOfferItemAction,
+  setCommentsAction,
   setCommentsLoadedStatusAction,
   addCommentAction,
   setAddCommentStatusAction,
-  loadNearbyAction
+  setNearbyAction,
+  updateOfferItemFavoriteAction
 } from './slices/offer-item-data-process/offer-item-data-process';
-import { addFavoriteAction, loadFavoritesAction, removeFavoriteAction } from './slices/favorites-data-process/favorites-data-process';
+import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
 import { browserHistory } from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
+import { useParams } from 'react-router';
 
 // CODE
 const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
@@ -122,10 +124,11 @@ export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOpti
     {dispatch, extra: api}
   ) => {
     try {
-      const { data } = await api.get<Offer>(`${APIRoute.OFFERS}/${offerId}`);
+      dispatch(setOfferItemAction({ offer: null }));
 
-      dispatch(setCommentsLoadedStatusAction(false));
-      dispatch(loadOfferItemAction({ offer: data }));
+      const { data } = await api.get<Offer>(`${ APIRoute.OFFERS }/${ offerId }`);
+
+      dispatch(setOfferItemAction({ offer: data }));
     } catch(err) {
       dispatch(redirectToRoute(AppRoute.PAGE_404));
     }
@@ -140,7 +143,7 @@ export const fetchNeabyOffers = createAsyncThunk<void, OffersData, AsyncOptions>
   ) => {
     const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
 
-    dispatch(loadNearbyAction({ nearbyOffers: data }));
+    dispatch(setNearbyAction({ nearbyOffers: data }));
   }
 );
 
@@ -164,20 +167,25 @@ export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOp
       const favoriteStatus = Number(status);
       const { data } = await api.post<Offer>(`${ APIRoute.FAVORITE }/${ offerId }/${ favoriteStatus }`);
 
-      switch(status) {
+      switch(favoriteStatus) {
         case 1: {
           // 1. Обновить список "Избранного" у пользователя
-          dispatch(addFavoriteAction(data));
+          dispatch(addFavoriteItemAction(data));
           break;
         }
         case 0: {
-          dispatch(removeFavoriteAction(data));
+          dispatch(removeFavoriteItemAction(data));
           break;
         }
       }
 
       // 2. Обновить список офферов, а точнее - конкретный оффер и его статус избранного
-      dispatch(updateOfferAction(data));
+      dispatch(updateOffersListAction(data));
+
+      // 3. Если у нас открыт какой-то конкретней оффер - надо обновить и его,
+      // т.к. он в отдельном стейте и дергается отдельным запросом
+      // dispatch(updateOfferItemFavoriteAction(status));
+
     } catch(error) {
       toast.warn(ERROR_TEXT.ADD_FAVORITE);
     }
@@ -193,7 +201,7 @@ export const fetchComments = createAsyncThunk<void, OffersData, AsyncOptions>(
     const { data } = await api.get<Comments>(`${ APIRoute.COMMENTS }/${ offerId }`);
 
     dispatch(setCommentsLoadedStatusAction(true));
-    dispatch(loadCommentsAction({ comments: data }));
+    dispatch(setCommentsAction({ comments: data }));
   }
 );
 

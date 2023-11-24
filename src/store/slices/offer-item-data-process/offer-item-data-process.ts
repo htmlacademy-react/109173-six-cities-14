@@ -17,12 +17,17 @@ export const offerItemDataProcess = createSlice({
   initialState,
   reducers: {
     // OFFER
-    loadOfferItemAction: (state, action: PayloadAction<{ offer: Offer }>) => {
+    setOfferItemAction: (state, action: PayloadAction<{ offer: Offer | null }>) => {
       state.offer = action.payload.offer;
+    },
+    updateOfferItemFavoriteAction: (state, action: PayloadAction<boolean>) => {
+      if(state.offer) {
+        state.offer.isFavorite = action.payload;
+      }
     },
 
     // COMMENTS
-    loadCommentsAction: (state, action: PayloadAction<{ comments: Comments }>) => {
+    setCommentsAction: (state, action: PayloadAction<{ comments: Comments }>) => {
       state.comments = action.payload.comments;
     },
     setCommentsLoadedStatusAction: (state, action: PayloadAction<boolean>) => {
@@ -36,17 +41,18 @@ export const offerItemDataProcess = createSlice({
     },
 
     // NEARBY
-    loadNearbyAction: (state, action: PayloadAction<{ nearbyOffers: Offers }>) => {
+    setNearbyAction: (state, action: PayloadAction<{ nearbyOffers: Offers }>) => {
       state.nearbyOffers = action.payload.nearbyOffers;
     },
   }
 });
 
 export const {
-  loadOfferItemAction,
-  loadCommentsAction,
+  setOfferItemAction,
+  updateOfferItemFavoriteAction,
+  setCommentsAction,
   setCommentsLoadedStatusAction,
   addCommentAction,
   setAddCommentStatusAction,
-  loadNearbyAction
+  setNearbyAction
 } = offerItemDataProcess.actions;

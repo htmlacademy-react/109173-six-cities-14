@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '.';
 import { fetchOfferItemAction } from '../store/api-action';
+import { useAppDispatch, useAppSelector } from '.';
 import { getOffer } from '../store/slices/offer-item-data-process/selectors';
+import { setOfferItemAction } from '../store/slices/offer-item-data-process/offer-item-data-process';
 
 type UseOfferItemProps = {
   offerId: string;
@@ -14,12 +15,13 @@ export default function useOfferItem({ offerId }: UseOfferItemProps) {
   useEffect(() => {
     let isMounted = true;
 
-    if(isMounted && offerId && !currentOffer) {
+    if(isMounted && currentOffer?.id !== offerId) {
       dispatch(fetchOfferItemAction({ offerId }));
     }
 
     return () => {
       isMounted = false;
+      // dispatch(setOfferItemAction({ offer: null }));
     };
   });
 

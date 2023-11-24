@@ -19,7 +19,7 @@ export const offersDataProcess = createSlice({
     setOffersLoadingStatus: (state, action: PayloadAction<boolean>) => {
       state.isOffersLoading = action.payload;
     },
-    updateOfferAction: (state, action: PayloadAction<Offer>) => {
+    updateOffersListAction: (state, action: PayloadAction<Offer>) => {
       const newOffer = action.payload;
       state.offers = state.offers.map((offer: Offer) => (offer.id === newOffer.id) ? newOffer : offer);
     }
@@ -38,4 +38,4 @@ export const offersDataProcess = createSlice({
   }
 });
 
-export const { loadOffersAction, setOffersLoadingStatus, updateOfferAction } = offersDataProcess.actions;
+export const { loadOffersAction, setOffersLoadingStatus, updateOffersListAction } = offersDataProcess.actions;

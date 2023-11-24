@@ -16,10 +16,10 @@ export const favoritesDataProcess = createSlice({
     },
 
     // FAVORITE
-    addFavoriteAction: (state, action: PayloadAction<Offer>) => {
+    addFavoriteItemAction: (state, action: PayloadAction<Offer>) => {
       state.favorites.push(action.payload);
     },
-    removeFavoriteAction: (state, action: PayloadAction<Offer>) => {
+    removeFavoriteItemAction: (state, action: PayloadAction<Offer>) => {
       const offerId = action.payload.id;
 
       state.favorites = state.favorites.filter((item) => item.id !== offerId);
@@ -27,4 +27,4 @@ export const favoritesDataProcess = createSlice({
   },
 });
 
-export const { loadFavoritesAction, addFavoriteAction, removeFavoriteAction } = favoritesDataProcess.actions;
+export const { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } = favoritesDataProcess.actions;
