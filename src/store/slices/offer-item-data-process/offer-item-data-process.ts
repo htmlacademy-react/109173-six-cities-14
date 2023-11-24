@@ -39,7 +39,7 @@ export const offerItemDataProcess = createSlice({
     loadNearbyAction: (state, action: PayloadAction<{ nearbyOffers: Offers }>) => {
       state.nearbyOffers = action.payload.nearbyOffers;
     },
-  },
+  }
 });
 
 export const {

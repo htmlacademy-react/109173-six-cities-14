@@ -4,24 +4,24 @@ import { fetchComments } from '../store/api-action';
 import { getComments } from '../store/slices/offer-item-data-process/selectors';
 
 type UseReviewProps = {
-  offerID: string;
+  offerId: string;
 };
 
-export default function useReview({ offerID }: UseReviewProps) {
+export default function useReview({ offerId }: UseReviewProps) {
   const dispatch = useAppDispatch();
   const comments = useAppSelector(getComments);
 
   useEffect(() => {
     let isMounted = true;
 
-    if(isMounted && offerID) {
-      dispatch(fetchComments({ offerID }));
+    if(isMounted && offerId) {
+      dispatch(fetchComments({ offerId }));
     }
 
     return () => {
       isMounted = false;
     };
-  }, [dispatch, offerID]);
+  }, [dispatch, offerId]);
 
   return comments;
 }

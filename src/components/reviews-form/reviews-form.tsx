@@ -14,7 +14,7 @@ const REVIEW_MAX_LENGTH = 300;
 
 export default function ReviewsForm(): React.ReactNode {
   const dispatch = useAppDispatch();
-  const offerID = String(useParams().id);
+  const offerId = String(useParams().id);
 
   const form = useRef<HTMLFormElement>(null);
   const userReview = useRef<HTMLTextAreaElement>(null);
@@ -54,7 +54,7 @@ export default function ReviewsForm(): React.ReactNode {
     disableForm(true);
 
     const review = {
-      offerID,
+      offerId,
       rating: userRate,
       comment: userReview.current.value
     };

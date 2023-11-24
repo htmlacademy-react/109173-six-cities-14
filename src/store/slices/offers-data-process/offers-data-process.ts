@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NAMESPACE } from '../../../const';
 import { OffersDataProcess } from '../../../types/state';
-import { Offers } from '../../../types/offer';
+import { Offer, Offers } from '../../../types/offer';
 import { fetchOffersAction } from '../../api-action';
 
 const initialState: OffersDataProcess = {
@@ -18,6 +18,10 @@ export const offersDataProcess = createSlice({
     },
     setOffersLoadingStatus: (state, action: PayloadAction<boolean>) => {
       state.isOffersLoading = action.payload;
+    },
+    updateOfferAction: (state, action: PayloadAction<Offer>) => {
+      const newOffer = action.payload;
+      state.offers = state.offers.map((offer: Offer) => (offer.id === newOffer.id) ? newOffer : offer);
     }
   },
   extraReducers(builder) {
@@ -34,4 +38,4 @@ export const offersDataProcess = createSlice({
   }
 });
 
-export const { loadOffersAction, setOffersLoadingStatus } = offersDataProcess.actions;
+export const { loadOffersAction, setOffersLoadingStatus, updateOfferAction } = offersDataProcess.actions;
