@@ -24,7 +24,10 @@ export const userProcess = createSlice({
       .addCase(checkAuthAction.fulfilled, (state) => {
         if(getToken() !== '') {
           state.authorizationStatus = AuthorizationStatus.AUTH;
+          return;
         }
+
+        state.authorizationStatus = AuthorizationStatus.NO_AUTH;
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NO_AUTH;

@@ -8,3 +8,7 @@ type OffersNamespace = typeof NAMESPACE.OFFERS
 export function getOffers(state: Pick<State, OffersNamespace>): Offers {
   return state[NAMESPACE.OFFERS].offers;
 }
+
+export function getOffersLoadingStatus(state: Pick<State, OffersNamespace>): boolean {
+  return state[NAMESPACE.OFFERS].isOffersLoading;
+}

@@ -9,10 +9,10 @@ import Spinner from '../../components/spinner/spinner';
 import CurrentOffer from '../../components/current-offer/current-offer';
 
 export default function OfferItem(): React.ReactElement {
-  const offerID = String(useParams().id);
-  const currentOffer = useOfferItem({ offerID });
-  const comments = useReview({ offerID });
-  const nearbyOffers = useNearbyOffer({ offerID });
+  const offerId = String(useParams().id);
+  const currentOffer = useOfferItem({ offerId });
+  const comments = useReview({ offerId });
+  const nearbyOffers = useNearbyOffer({ offerId });
 
   if(!currentOffer) {
     return <Spinner />;

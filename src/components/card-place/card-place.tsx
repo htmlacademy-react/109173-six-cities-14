@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
+
 import { AppRoute } from '../../const';
 import { CardPlaceProps } from './card-place-props';
 import StarsRating from '../stars-rating/stars-rating';
+import useFavorite from '../../hooks/useFavorite';
 
 const CARD_IMG = {
   WIDTH: 260,
@@ -20,35 +22,54 @@ const BOOKMARK_TEXT = {
 };
 
 const CSSClasses = {
+  FAVORITE_ACTIVE: 'place-card__bookmark-button--active',
   FAVORITE_CARD_: 'favorites__card',
   FAVORITE_CARD_IMG: 'favorites__image-wrapper',
   FAVORITE_CARD_INFO: 'favorites__card-info',
 };
 
 export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseLeave }: CardPlaceProps): React.ReactNode {
-  const { id, previewImage, price, rating } = offerItem;
+  const {
+    id,
+    previewImage,
+    title,
+    type,
+    price,
+    rating,
+    isPremium,
+    isFavorite
+  } = offerItem;
+
   const imgWidth = !isCompact
     ? CARD_IMG.WIDTH
     : FAVORITE_CARD_IMG.WIDTH;
+
   const imgHeight = !isCompact
     ? CARD_IMG.HEIGHT
     : FAVORITE_CARD_IMG.HEIGHT;
+
   const bookmarkText = !isCompact
     ? BOOKMARK_TEXT.TO_BOOKMARKS
     : BOOKMARK_TEXT.IN_BOOKMARKS;
+
+  const handleFavoriteClick = useFavorite({ id, isFavorite });
 
   return (
     <article
       className={ cn(
         'cities__card place-card',
-        {[CSSClasses.FAVORITE_CARD_]: isCompact}
+        { [CSSClasses.FAVORITE_CARD_]: isCompact }
       ) }
       onMouseEnter={ onMouseEnter }
       onMouseLeave={ onMouseLeave }
     >
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+      {
+        isPremium && (
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div>
+        )
+      }
       <div
         className={ cn(
           'cities__image-wrapper place-card__image-wrapper',
@@ -68,7 +89,7 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
       <div
         className={ cn(
           'place-card__info',
-          {[CSSClasses.FAVORITE_CARD_INFO]: isCompact}
+          { [CSSClasses.FAVORITE_CARD_INFO]: isCompact }
         ) }
       >
         <div className="place-card__price-wrapper">
@@ -76,7 +97,14 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
             <b className="place-card__price-value">&euro;{ price }</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button
+            className={ cn(
+              'place-card__bookmark-button button',
+              { [CSSClasses.FAVORITE_ACTIVE]: isFavorite }
+            ) }
+            type="button"
+            onClick={ handleFavoriteClick }
+          >
             <svg className="place-card__bookmark-icon" width={ 18 } height={ 19 }>
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -89,9 +117,9 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.OFFER}/${ id }`}>Beautiful &amp; luxurious apartment at great location</Link>
+          <Link to={`${AppRoute.OFFER}/${ id }`}>{ title }</Link>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{ type }</p>
       </div>
     </article>
   );

@@ -1,3 +1,3 @@
 export type OffersData = {
-  offerID: string;
+  offerId: string;
 };

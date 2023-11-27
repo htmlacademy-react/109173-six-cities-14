@@ -1,7 +1,7 @@
 import { Offer, Offers } from './offer';
 
 export type FavoritesProps = {
-  offers: Offers;
+  offers: Map<string, Offers>;
   isFavoritesEmpty?: boolean;
 };
 

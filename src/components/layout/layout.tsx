@@ -1,9 +1,10 @@
 import { Outlet, useLocation } from 'react-router-dom';
 
+import { useAppSelector } from '../../hooks';
+import { AppRoute } from '../../const';
+
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks';
 import { getFavorites } from '../../store/slices/favorites-data-process/selectors';
 import { getOffers } from '../../store/slices/offers-data-process/selectors';
 

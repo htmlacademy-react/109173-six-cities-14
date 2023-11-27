@@ -1,5 +1,5 @@
 export type CommentData = {
-  offerID: string;
+  offerId: string;
   rating: number;
   comment: string;
 };

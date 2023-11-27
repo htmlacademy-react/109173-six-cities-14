@@ -12,6 +12,7 @@ export type UserProcess = {
 
 export type OffersDataProcess = {
   offers: Offers;
+  isOffersLoading: boolean;
 };
 
 export type OfferItemDataProcess = {

@@ -3,7 +3,7 @@ import CardPlace from '../card-place/card-place';
 
 type FavoriteLocationProps = {
   city: string;
-  offers: Offers;
+  offers: Offers | undefined;
 };
 
 export default function FavoriteLocation({ city, offers }: FavoriteLocationProps): React.ReactElement {
@@ -18,7 +18,7 @@ export default function FavoriteLocation({ city, offers }: FavoriteLocationProps
       </div>
       <div className="favorites__places">
         {
-          offers .map((offer): React.ReactElement =>
+          offers?.map((offer): React.ReactElement =>
             <CardPlace key={ offer.id } offerItem={ offer } isCompact/>
           )
         }

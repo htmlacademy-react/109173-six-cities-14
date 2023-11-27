@@ -17,18 +17,23 @@ import { redirectToRoute } from './action';
 
 // SLICES
 import { setUserInfoAction } from './slices/user-process/user-process';
-import { loadOffersAction } from './slices/offers-data-process/offers-data-process';
+import { loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
 import {
-  loadOfferItemAction,
-  loadCommentsAction,
+  setOfferItemAction,
+  setCommentsAction,
   setCommentsLoadedStatusAction,
   addCommentAction,
   setAddCommentStatusAction,
-  loadNearbyAction
+  setNearbyAction,
+  updateOfferItemFavoriteAction
 } from './slices/offer-item-data-process/offer-item-data-process';
-import { loadFavoritesAction } from './slices/favorites-data-process/favorites-data-process';
+import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
+import { browserHistory } from '../browser-history';
+import { FavoriteData } from '../types/favorite-data';
 
 // CODE
+const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
+
 const APIAction = {
   FETCH_OFFERS: 'data/fetchOffers',
   FETCH_OFFER_ITEM: 'data/fetchOfferItem',
@@ -36,20 +41,20 @@ const APIAction = {
   FETCH_COMMENTS: 'data/fetchComments',
   FETCH_COMMENT: 'data/fetchComment',
   FETCH_FAVORITES: 'data/fetchFavorites',
+  TOGGLE_FAVORITE: 'data/toggleFavorite',
   USER_LOGIN: 'user/login',
   USER_LOGOUT: 'user/logout',
   USER_CHECK_AUTH: 'user/checkAuth',
-};
-
-const ERROR_TEXT = {
-  ADD_COMMENT: 'Sorry! Can`t add you comment! Please, try again.',
 };
 
 const SUCCESS_TEXT = {
   ADD_COMMENT: 'Thank you for opinion! Your comment successfully added!',
 };
 
-const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
+const ERROR_TEXT = {
+  ADD_COMMENT: 'Sorry! Can`t add you comment! Please, try again.',
+  ADD_FAVORITE: 'Sorry! Can`t add this offer to favorites. Please, try again later.',
+};
 
 type AsyncOptions = {
   dispatch: AppDispatch;
@@ -60,7 +65,10 @@ type AsyncOptions = {
 // AUTH
 export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
   APIAction.USER_LOGIN,
-  async ({ email, password }, { dispatch, extra: api }) => {
+  async (
+    { email, password },
+    { dispatch, extra: api }
+  ) => {
     const { data } = await api.post<UserData>(
       APIRoute.LOGIN,
       { email, password }
@@ -72,7 +80,7 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
     }
 
     dispatch(setUserInfoAction(data));
-    dispatch(redirectToRoute(AppRoute.MAIN));
+    browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
   }
 );
 
@@ -110,12 +118,16 @@ export const fetchOffersAction = createAsyncThunk<void, void, AsyncOptions>(
 
 export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOptions>(
   APIAction.FETCH_OFFER_ITEM,
-  async ({ offerID }, {dispatch, extra: api}) => {
+  async (
+    { offerId },
+    {dispatch, extra: api}
+  ) => {
     try {
-      const { data } = await api.get<Offer>(`${APIRoute.OFFERS}/${offerID}`);
+      dispatch(setOfferItemAction({ offer: null }));
 
-      dispatch(setCommentsLoadedStatusAction(false));
-      dispatch(loadOfferItemAction({ offer: data }));
+      const { data } = await api.get<Offer>(`${ APIRoute.OFFERS }/${ offerId }`);
+
+      dispatch(setOfferItemAction({ offer: data }));
     } catch(err) {
       dispatch(redirectToRoute(AppRoute.PAGE_404));
     }
@@ -125,10 +137,12 @@ export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOpti
 // NEARBY
 export const fetchNeabyOffers = createAsyncThunk<void, OffersData, AsyncOptions>(
   APIAction.FETCH_NEARBY,
-  async ({ offerID }, { dispatch, extra: api }) => {
-    const { data } = await api.get<Offers>(`${APIRoute.OFFERS}/${offerID}${APIRoute.NEAREST}`);
+  async (
+    { offerId }, { dispatch, extra: api }
+  ) => {
+    const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
 
-    dispatch(loadNearbyAction({ nearbyOffers: data }));
+    dispatch(setNearbyAction({ nearbyOffers: data }));
   }
 );
 
@@ -142,25 +156,59 @@ export const fetchFavoritesAction = createAsyncThunk<void, void, AsyncOptions>(
   }
 );
 
+export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOptions>(
+  APIAction.TOGGLE_FAVORITE,
+  async (
+    { offerId, status },
+    { dispatch, extra: api }
+  ) => {
+    try {
+      const favoriteStatus = Number(status);
+      const { data } = await api.post<Offer>(`${ APIRoute.FAVORITE }/${ offerId }/${ favoriteStatus }`);
+
+      switch(favoriteStatus) {
+        case 1: {
+          // 1. Обновить список "Избранного" у пользователя
+          dispatch(addFavoriteItemAction(data));
+          break;
+        }
+        case 0: {
+          dispatch(removeFavoriteItemAction(data));
+          break;
+        }
+      }
+
+      // 2. Обновить список офферов, а точнее - конкретный оффер и его статус избранного
+      dispatch(updateOffersListAction(data));
+
+      // 3. Если у нас открыт какой-то конкретней оффер - надо обновить и его,
+      // т.к. он в отдельном стейте и дергается отдельным запросом
+      dispatch(updateOfferItemFavoriteAction(status));
+    } catch(error) {
+      toast.warn(ERROR_TEXT.ADD_FAVORITE);
+    }
+  }
+);
+
 // COMMENTS
 export const fetchComments = createAsyncThunk<void, OffersData, AsyncOptions>(
   APIAction.FETCH_COMMENTS,
-  async ({ offerID }, { dispatch, extra: api }) => {
+  async ({ offerId }, { dispatch, extra: api }) => {
     dispatch(setCommentsLoadedStatusAction(false));
 
-    const { data } = await api.get<Comments>(`${APIRoute.COMMENTS }/${offerID}`);
+    const { data } = await api.get<Comments>(`${ APIRoute.COMMENTS }/${ offerId }`);
 
     dispatch(setCommentsLoadedStatusAction(true));
-    dispatch(loadCommentsAction({ comments: data }));
+    dispatch(setCommentsAction({ comments: data }));
   }
 );
 
 export const fetchCommentAction = createAsyncThunk<void, CommentData, AsyncOptions>(
   APIAction.FETCH_COMMENT,
-  async ({ offerID, rating, comment }, { dispatch, extra: api }) => {
+  async ({ offerId, rating, comment }, { dispatch, extra: api }) => {
     try {
       const { data } = await api.post<Comment>(
-        `${APIRoute.COMMENTS}/${offerID}`,
+        `${APIRoute.COMMENTS}/${offerId}`,
         {rating, comment}
       );
 

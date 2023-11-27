@@ -6,13 +6,14 @@ import { store } from './store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { checkAuthAction, fetchOffersAction } from './store/api-action';
+import { checkAuthAction, fetchFavoritesAction, fetchOffersAction } from './store/api-action';
 
 import App from './components/app/app';
 
 // Префетчинг данных
-store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
+store.dispatch(fetchOffersAction());
+store.dispatch(fetchFavoritesAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

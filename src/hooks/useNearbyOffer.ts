@@ -4,10 +4,10 @@ import { fetchNeabyOffers } from '../store/api-action';
 import { getNearby } from '../store/slices/offer-item-data-process/selectors';
 
 type UseNearbyOfferProps = {
-  offerID: string;
+  offerId: string;
 };
 
-export default function useNearbyOffer({ offerID }: UseNearbyOfferProps) {
+export default function useNearbyOffer({ offerId }: UseNearbyOfferProps) {
   const dispatch = useAppDispatch();
   const nearbyOffers = useAppSelector(getNearby);
 
@@ -15,13 +15,13 @@ export default function useNearbyOffer({ offerID }: UseNearbyOfferProps) {
     let isMounted = true;
 
     if(isMounted) {
-      dispatch(fetchNeabyOffers({ offerID }));
+      dispatch(fetchNeabyOffers({ offerId }));
     }
 
     return () => {
       isMounted = false;
     };
-  }, [dispatch, offerID]);
+  }, [dispatch, offerId]);
 
   return nearbyOffers;
 }

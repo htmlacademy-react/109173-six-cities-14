@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router';
 import { Helmet } from 'react-helmet-async';
+import cn from 'classnames';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
 
@@ -16,6 +17,16 @@ import ReviewsList from '../reviews-list/reviews-list';
 import ReviewsForm from '../reviews-form/reviews-form';
 import Map from '../map/map';
 import NearbyOffers from '../nearby-offers/nearby-offers';
+import useFavorite from '../../hooks/useFavorite';
+
+const CSSClasses = {
+  FAVORITE_ACTIVE: 'offer__bookmark-button--active',
+};
+
+const BOOKMARK_TEXT = {
+  IN_BOOKMARKS: 'In bookmarks',
+  TO_BOOKMARKS: 'To bookmarks',
+};
 
 type CurrentOfferProps = {
   offer: Offer;
@@ -25,9 +36,17 @@ type CurrentOfferProps = {
 
 export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferProps): React.ReactElement {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
+  const id = offer.id;
   const authStatus = useAppSelector(getAuthStatus);
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const itHasNearbyOffers = (nearby?.length > 0);
+  const isFavorite = offer.isFavorite;
+
+  const handleFavoriteClick = useFavorite({ id, isFavorite });
+
+  const bookmarkText = !isFavorite
+    ? BOOKMARK_TEXT.TO_BOOKMARKS
+    : BOOKMARK_TEXT.IN_BOOKMARKS;
 
   if(!offer) {
     return <Navigate to={AppRoute.PAGE_404} />;
@@ -67,11 +86,18 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
               <h1 className="offer__name">
                 { title }
               </h1>
-              <button className="offer__bookmark-button button" type="button">
+              <button
+                className={ cn(
+                  'offer__bookmark-button button',
+                  { [CSSClasses.FAVORITE_ACTIVE]: isFavorite }
+                ) }
+                type="button"
+                onClick={ handleFavoriteClick }
+              >
                 <svg className="offer__bookmark-icon" width={ 31 } height={ 33 }>
-                  <use xlinkHref="#icon-bookmark"></use>
+                  <use xlinkHref="#icon-bookmark" />
                 </svg>
-                <span className="visually-hidden">To bookmarks</span>
+                <span className="visually-hidden">{ bookmarkText }</span>
               </button>
             </div>
             <div className="offer__rating rating">
