@@ -30,7 +30,6 @@ import {
 import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
 import { browserHistory } from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
-import { useParams } from 'react-router';
 
 // CODE
 const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
@@ -184,8 +183,7 @@ export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOp
 
       // 3. Если у нас открыт какой-то конкретней оффер - надо обновить и его,
       // т.к. он в отдельном стейте и дергается отдельным запросом
-      // dispatch(updateOfferItemFavoriteAction(status));
-
+      dispatch(updateOfferItemFavoriteAction(status));
     } catch(error) {
       toast.warn(ERROR_TEXT.ADD_FAVORITE);
     }

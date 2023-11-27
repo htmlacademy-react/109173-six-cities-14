@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { fetchOfferItemAction } from '../store/api-action';
 import { useAppDispatch, useAppSelector } from '.';
 import { getOffer } from '../store/slices/offer-item-data-process/selectors';
-import { setOfferItemAction } from '../store/slices/offer-item-data-process/offer-item-data-process';
 
 type UseOfferItemProps = {
   offerId: string;
@@ -21,7 +20,6 @@ export default function useOfferItem({ offerId }: UseOfferItemProps) {
 
     return () => {
       isMounted = false;
-      // dispatch(setOfferItemAction({ offer: null }));
     };
   });
 

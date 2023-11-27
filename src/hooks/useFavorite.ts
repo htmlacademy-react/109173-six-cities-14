@@ -19,7 +19,7 @@ export default function useFavorite({ id: offerId, isFavorite }: UseFavoriteProp
       navigate(AppRoute.LOGIN);
     }
 
-    const status = Number(!isFavorite);
+    const status = !isFavorite;
 
     dispatch(toggleFavoriteAction({ offerId, status }));
   }
