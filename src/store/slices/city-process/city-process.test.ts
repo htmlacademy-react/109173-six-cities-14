@@ -1,6 +1,6 @@
 import { cityProcess, setCityAction } from './city-process';
 
-describe('City-Process Slice: when setCityAction', () => {
+describe('[City process Slice]:', () => {
   it('Should return initisl state with empty action', () => {
     const emptyAction = {type: '', payload: ''};
     const expectedState = {

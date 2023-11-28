@@ -13,8 +13,8 @@ export const offersDataProcess = createSlice({
   name: NAMESPACE.OFFERS,
   initialState,
   reducers: {
-    loadOffersAction: (state, action: PayloadAction<{ offers: Offers }>) => {
-      state.offers = action.payload.offers;
+    loadOffersAction: (state, action: PayloadAction<Offers>) => {
+      state.offers = action.payload;
     },
     setOffersLoadingStatus: (state, action: PayloadAction<boolean>) => {
       state.isOffersLoading = action.payload;

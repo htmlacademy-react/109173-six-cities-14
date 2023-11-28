@@ -1,7 +1,7 @@
 import { makeFakeOffer } from '../../../utils/mock';
 import { addFavoriteItemAction, favoritesDataProcess, loadFavoritesAction, removeFavoriteItemAction } from './favorites-data-process';
 
-describe('Favorites-Data-Process Slice', () => {
+describe('[Favorites datap process Slice]:', () => {
   it('Should return initial state with empty action', () => {
     const emptyAction = {type: '', payload: ''};
     const expectedState = {
