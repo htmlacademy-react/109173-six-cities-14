@@ -1,4 +1,5 @@
 import { AuthorizationStatus, NAMESPACE } from '../../../const';
+import { setToken } from '../../../services/token';
 import { UserProcess } from '../../../types/state';
 import { makeMockStore } from '../../../utils/mock';
 import { checkAuthAction, loginAction, logoutAction } from '../../api-action';
@@ -25,6 +26,7 @@ describe('[User Process Slice]:', () => {
   // Тест падает, т.к. пока нер работы с токенами
   it('Should set "AUTH" status when checkAuthAction.fulfilled', () => {
     initialState.authorizationStatus = AuthorizationStatus.NO_AUTH;
+    setToken(crypto.randomUUID());
 
     const result = userProcess.reducer(initialState, checkAuthAction.fulfilled);
 
