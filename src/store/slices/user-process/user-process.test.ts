@@ -8,7 +8,11 @@ describe('User-Process Slice', () => {
 
   it('Should return initial state with Empty Action', () => {
     const emptyAction = {type: '', payload: ''};
-    const expectedState = mockStore[NAMESPACE.USER];
+    const expectedState = {
+      favorites: [],
+      authorizationStatus: AuthorizationStatus.UNKNOWN,
+      userInfo: null,
+    };
 
     const result = userProcess.reducer(expectedState, emptyAction);
 
