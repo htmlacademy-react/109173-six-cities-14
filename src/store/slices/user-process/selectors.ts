@@ -1,14 +1,12 @@
 import { NAMESPACE } from '../../../const';
-import { State } from '../../../types/state';
+import { UserNamespaceState } from '../../../types/selector';
 import { UserData } from '../../../types/user-data';
 
-type userNamespace = typeof NAMESPACE.USER
-
-export function getAuthStatus(state: Pick<State, userNamespace>): string {
+export function getAuthStatus(state: UserNamespaceState): string {
   return state[NAMESPACE.USER].authorizationStatus;
 }
 
-export function getUserInfo(state: Pick<State, userNamespace>): UserData | null {
+export function getUserInfo(state: UserNamespaceState): UserData | null {
   return state[NAMESPACE.USER].userInfo;
 }
 

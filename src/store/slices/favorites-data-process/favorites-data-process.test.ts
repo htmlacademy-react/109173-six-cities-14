@@ -2,7 +2,7 @@ import { makeFakeOffer } from '../../../utils/mock';
 import { addFavoriteItemAction, favoritesDataProcess, loadFavoritesAction, removeFavoriteItemAction } from './favorites-data-process';
 
 describe('Favorites-Data-Process Slice', () => {
-  it('Should return initisl state with empty action', () => {
+  it('Should return initial state with empty action', () => {
     const emptyAction = {type: '', payload: ''};
     const expectedState = {
       favorites: [],
@@ -14,16 +14,15 @@ describe('Favorites-Data-Process Slice', () => {
   });
 
   it('Shoult load Favorites Offers when loadFavoritesAction', () => {
-    const offerOne = makeFakeOffer();
-    const offerTwo = makeFakeOffer();
+    const offer = makeFakeOffer();
     const initialState = {
       favorites: [],
     };
     const expectedState = {
-      favorites: [ offerOne, offerTwo ]
+      favorites: [ offer ]
     };
 
-    const result = favoritesDataProcess.reducer(initialState, loadFavoritesAction([ offerOne, offerTwo ]));
+    const result = favoritesDataProcess.reducer(initialState, loadFavoritesAction([ offer ]));
 
     expect(result).toEqual(expectedState);
   });

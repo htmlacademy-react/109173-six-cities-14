@@ -1,6 +1,6 @@
 import { AuthorizationStatus, DEFAULT_CITY, NAMESPACE, SEND_DATA_STATUS } from '../const';
 import { State } from '../types/state';
-import { address, datatype, image, lorem } from 'faker';
+import { address, datatype, date, image, internet, lorem } from 'faker';
 
 export function makeMockStore(initialState?: Partial<State>) {
   return {
@@ -31,16 +31,30 @@ export function makeMockStore(initialState?: Partial<State>) {
   };
 }
 
+export function makeFakeUser() {
+  return {
+    id: datatype.number(1000),
+    email: internet.email(),
+    isPro: datatype.boolean(),
+    name: lorem.words(3),
+    avatarUrl : image.imageUrl(),
+    token: crypto.randomUUID(),
+  };
+}
+
+export function makeFakeLocation() {
+  return {
+    latitude: datatype.float(100),
+    longitude: datatype.float(100),
+    zoom: datatype.number(10)
+  };
+}
 
 export function makeFakeOffer() {
   return {
     city: {
       name: address.cityName(),
-      location: {
-        latitude: datatype.float(100),
-        longitude: datatype.float(100),
-        zoom: datatype.number(10)
-      }
+      location: makeFakeLocation(),
     },
     previewImage: image.imageUrl(),
     images: [],
@@ -53,18 +67,19 @@ export function makeFakeOffer() {
     maxAdults: datatype.number(5),
     price: datatype.number(500),
     goods: [],
-    host: {
-      id: datatype.number(1000),
-      name: lorem.words(3),
-      isPro: datatype.boolean(),
-      avatarUrl: image.imageUrl(),
-    },
+    host: makeFakeUser(),
     description: lorem.words(60),
-    location: {
-      latitude: datatype.float(100),
-      longitude: datatype.float(100),
-      zoom: datatype.number(10)
-    },
+    location: makeFakeLocation(),
     id: crypto.randomUUID(),
+  };
+}
+
+export function makeFakeComment() {
+  return {
+    id: datatype.number(1000),
+    user: makeFakeUser(),
+    rating: datatype.number(5),
+    comment: lorem.words(50),
+    date: String(date.recent()),
   };
 }
