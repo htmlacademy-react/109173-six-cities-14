@@ -1,9 +1,9 @@
 import { AuthorizationStatus, NAMESPACE } from '../../../const';
 import { setToken } from '../../../services/token';
 import { UserProcess } from '../../../types/state';
-import { makeMockStore } from '../../../utils/mock';
+import { makeFakeUser, makeMockStore } from '../../../utils/mock';
 import { checkAuthAction, loginAction, logoutAction } from '../../api-action';
-import { userProcess } from './user-process';
+import { setUserInfoAction, userProcess } from './user-process';
 
 describe('[User Process Slice]:', () => {
   let initialState: UserProcess;
@@ -20,6 +20,15 @@ describe('[User Process Slice]:', () => {
     const result = userProcess.reducer(expectedState, emptyAction);
 
     expect(result).toEqual(expectedState);
+  });
+
+  it('Should set "User info" when "setUserInfoAction"', () => {
+    const user = makeFakeUser();
+    initialState.userInfo = null;
+
+    const result = userProcess.reducer(initialState, setUserInfoAction(user));
+
+    expect(result.userInfo).toEqual(user);
   });
 
   // CHECK AUTH

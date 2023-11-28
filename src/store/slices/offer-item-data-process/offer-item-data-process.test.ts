@@ -4,7 +4,7 @@ import { makeFakeComment, makeFakeOffer } from '../../../utils/mock';
 import { addCommentAction, offerItemDataProcess, setAddCommentStatusAction, setCommentsAction, setCommentsLoadedStatusAction, setNearbyAction, setOfferItemAction, updateOfferItemFavoriteAction } from './offer-item-data-process';
 
 describe('[Offer item data process Slice]:', () => {
-  let initialState: OfferItemDataProcess | undefined = undefined;
+  let initialState: OfferItemDataProcess;
 
   beforeEach(() => {
     initialState = {

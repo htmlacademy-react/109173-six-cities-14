@@ -1,6 +1,13 @@
-import { AuthorizationStatus, DEFAULT_CITY, NAMESPACE, SEND_DATA_STATUS } from '../const';
-import { State } from '../types/state';
 import { address, datatype, date, image, internet, lorem } from 'faker';
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+
+import { State } from '../types/state';
+
+import { createAPI } from '../services/api';
+import { AuthorizationStatus, DEFAULT_CITY, NAMESPACE, SEND_DATA_STATUS } from '../const';
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
 
 export function makeMockStore(initialState?: Partial<State>) {
   return {
