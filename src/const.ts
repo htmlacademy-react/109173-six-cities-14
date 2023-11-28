@@ -1,4 +1,5 @@
 // MAIN
+export const DEFAULT_CITY = 'Paris';
 export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
 
