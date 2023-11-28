@@ -123,11 +123,11 @@ export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOpti
     {dispatch, extra: api}
   ) => {
     try {
-      dispatch(setOfferItemAction({ offer: null }));
+      dispatch(setOfferItemAction(null));
 
       const { data } = await api.get<Offer>(`${ APIRoute.OFFERS }/${ offerId }`);
 
-      dispatch(setOfferItemAction({ offer: data }));
+      dispatch(setOfferItemAction(data));
     } catch(err) {
       dispatch(redirectToRoute(AppRoute.PAGE_404));
     }
@@ -142,7 +142,7 @@ export const fetchNeabyOffers = createAsyncThunk<void, OffersData, AsyncOptions>
   ) => {
     const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
 
-    dispatch(setNearbyAction({ nearbyOffers: data }));
+    dispatch(setNearbyAction(data));
   }
 );
 
@@ -152,7 +152,7 @@ export const fetchFavoritesAction = createAsyncThunk<void, void, AsyncOptions>(
   async (_arg, { dispatch, extra: api }) => {
     const { data } = await api.get<Offers>(APIRoute.FAVORITE);
 
-    dispatch(loadFavoritesAction({ offers: data }));
+    dispatch(loadFavoritesAction(data));
   }
 );
 
@@ -199,7 +199,7 @@ export const fetchComments = createAsyncThunk<void, OffersData, AsyncOptions>(
     const { data } = await api.get<Comments>(`${ APIRoute.COMMENTS }/${ offerId }`);
 
     dispatch(setCommentsLoadedStatusAction(true));
-    dispatch(setCommentsAction({ comments: data }));
+    dispatch(setCommentsAction(data));
   }
 );
 

@@ -11,8 +11,8 @@ export const favoritesDataProcess = createSlice({
   name: NAMESPACE.FAVORITES,
   initialState,
   reducers: {
-    loadFavoritesAction: (state, action: PayloadAction<{ offers: Offers }>) => {
-      state.favorites = action.payload.offers;
+    loadFavoritesAction: (state, action: PayloadAction<Offers>) => {
+      state.favorites = action.payload;
     },
 
     // FAVORITE

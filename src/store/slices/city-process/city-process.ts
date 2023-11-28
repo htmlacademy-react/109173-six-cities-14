@@ -10,8 +10,8 @@ export const cityProcess = createSlice({
   name: NAMESPACE.CITY,
   initialState,
   reducers: {
-    setCityAction: (state, action: PayloadAction<{ city: string }>) => {
-      state.city = action.payload.city;
+    setCityAction: (state, action: PayloadAction<string>) => {
+      state.city = action.payload;
     }
   },
 });

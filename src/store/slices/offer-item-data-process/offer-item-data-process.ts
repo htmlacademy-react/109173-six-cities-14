@@ -17,8 +17,8 @@ export const offerItemDataProcess = createSlice({
   initialState,
   reducers: {
     // OFFER
-    setOfferItemAction: (state, action: PayloadAction<{ offer: Offer | null }>) => {
-      state.offer = action.payload.offer;
+    setOfferItemAction: (state, action: PayloadAction<Offer | null>) => {
+      state.offer = action.payload;
     },
     updateOfferItemFavoriteAction: (state, action: PayloadAction<boolean>) => {
       if(state.offer) {
@@ -27,8 +27,8 @@ export const offerItemDataProcess = createSlice({
     },
 
     // COMMENTS
-    setCommentsAction: (state, action: PayloadAction<{ comments: Comments }>) => {
-      state.comments = action.payload.comments;
+    setCommentsAction: (state, action: PayloadAction<Comments>) => {
+      state.comments = action.payload;
     },
     setCommentsLoadedStatusAction: (state, action: PayloadAction<boolean>) => {
       state.isCommentsLoaded = action.payload;
@@ -41,8 +41,8 @@ export const offerItemDataProcess = createSlice({
     },
 
     // NEARBY
-    setNearbyAction: (state, action: PayloadAction<{ nearbyOffers: Offers }>) => {
-      state.nearbyOffers = action.payload.nearbyOffers;
+    setNearbyAction: (state, action: PayloadAction<Offers>) => {
+      state.nearbyOffers = action.payload;
     },
   }
 });
