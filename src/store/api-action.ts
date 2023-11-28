@@ -80,7 +80,7 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
     }
 
     dispatch(setUserInfoAction(data));
-    browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
+    // browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
   }
 );
 

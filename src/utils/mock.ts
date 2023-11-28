@@ -9,6 +9,10 @@ import { AuthorizationStatus, DEFAULT_CITY, NAMESPACE, SEND_DATA_STATUS } from '
 
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
 
+export function extractActionsTypes(actions: Action<string>[]) {
+  return actions.map((action) => action.type);
+}
+
 export function makeMockStore(initialState?: Partial<State>) {
   return {
     [NAMESPACE.CITY]: {
