@@ -15,7 +15,7 @@ export default function useReview({ offerId }: UseReviewProps) {
     let isMounted = true;
 
     if(isMounted && offerId) {
-      dispatch(fetchComments({ offerId }));
+      dispatch(fetchComments(offerId));
     }
 
     return () => {

@@ -15,7 +15,7 @@ export default function useNearbyOffer({ offerId }: UseNearbyOfferProps) {
     let isMounted = true;
 
     if(isMounted) {
-      dispatch(fetchNeabyOffers({ offerId }));
+      dispatch(fetchNeabyOffers(offerId));
     }
 
     return () => {

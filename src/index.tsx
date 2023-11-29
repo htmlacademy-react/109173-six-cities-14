@@ -7,8 +7,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { checkAuthAction, fetchFavoritesAction, fetchOffersAction } from './store/api-action';
-import { browserHistory } from './browser-history';
 import { getAuthStatus } from './store/slices/user-process/selectors';
+import browserHistory from './browser-history';
 
 import HistoryRouter from './components/history-route/history-route';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';

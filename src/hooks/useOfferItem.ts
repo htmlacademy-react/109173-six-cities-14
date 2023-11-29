@@ -15,7 +15,7 @@ export default function useOfferItem({ offerId }: UseOfferItemProps) {
     let isMounted = true;
 
     if(isMounted && currentOffer?.id !== offerId) {
-      dispatch(fetchOfferItemAction({ offerId }));
+      dispatch(fetchOfferItemAction(offerId));
     }
 
     return () => {

@@ -1,3 +1,1 @@
-export type OffersData = {
-  offerId: string;
-};
+export type OfferId = string;

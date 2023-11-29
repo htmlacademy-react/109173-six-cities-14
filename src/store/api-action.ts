@@ -7,7 +7,7 @@ import { deleteToken, setToken } from '../services/token';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
-import { OffersData } from '../types/offers-data';
+import { OfferId } from '../types/offers-data';
 import { Comment, Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
@@ -28,7 +28,7 @@ import {
   updateOfferItemFavoriteAction
 } from './slices/offer-item-data-process/offer-item-data-process';
 import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
-import { browserHistory } from '../browser-history';
+import browserHistory from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
 
 // CODE
@@ -116,13 +116,15 @@ export const fetchOffersAction = createAsyncThunk<void, void, AsyncOptions>(
   }
 );
 
-export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOptions>(
+export const fetchOfferItemAction = createAsyncThunk<void, OfferId, AsyncOptions>(
   APIAction.FETCH_OFFER_ITEM,
   async (
-    { offerId },
+    offerId,
     {dispatch, extra: api}
   ) => {
     try {
+      // Временно решаем проблему, когда в момент открытия очередного оффера
+      // пользователь может увидеть ненадолго предыдущий открытый оффер
       dispatch(setOfferItemAction(null));
 
       const { data } = await api.get<Offer>(`${ APIRoute.OFFERS }/${ offerId }`);
@@ -135,10 +137,11 @@ export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOpti
 );
 
 // NEARBY
-export const fetchNeabyOffers = createAsyncThunk<void, OffersData, AsyncOptions>(
+export const fetchNeabyOffers = createAsyncThunk<void, OfferId, AsyncOptions>(
   APIAction.FETCH_NEARBY,
   async (
-    { offerId }, { dispatch, extra: api }
+    offerId,
+    { dispatch, extra: api }
   ) => {
     const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
 
@@ -191,9 +194,9 @@ export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOp
 );
 
 // COMMENTS
-export const fetchComments = createAsyncThunk<void, OffersData, AsyncOptions>(
+export const fetchComments = createAsyncThunk<void, OfferId, AsyncOptions>(
   APIAction.FETCH_COMMENTS,
-  async ({ offerId }, { dispatch, extra: api }) => {
+  async (offerId, { dispatch, extra: api }) => {
     dispatch(setCommentsLoadedStatusAction(false));
 
     const { data } = await api.get<Comments>(`${ APIRoute.COMMENTS }/${ offerId }`);
