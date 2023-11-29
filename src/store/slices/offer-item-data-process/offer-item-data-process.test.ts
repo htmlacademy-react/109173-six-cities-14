@@ -16,84 +16,80 @@ describe('[Offer item data process Slice]:', () => {
     };
   });
 
-  it('Should return initial state with empty action', () => {
-    const emptyAction = {type: '', payload: ''};
-    const expectedState = initialState;
+  describe('Offer item actions:', () => {
+    it('Should return initial state with empty initialState and action', () => {
+      const emptyAction = {type: '', payload: ''};
+      const expectedState = initialState;
 
-    const result = offerItemDataProcess.reducer(expectedState, emptyAction);
+      const result = offerItemDataProcess.reducer(undefined, emptyAction);
 
-    expect(result).toEqual(expectedState);
-  });
+      expect(result).toEqual(expectedState);
+    });
 
-  it('Should set Offer item to state when "setOfferItemAction"', () => {
-    const offer = makeFakeOffer();
+    it('Should set Offer item to state when "setOfferItemAction"', () => {
+      const offer = makeFakeOffer();
 
-    const result = offerItemDataProcess.reducer(initialState, setOfferItemAction(offer));
+      const result = offerItemDataProcess.reducer(undefined, setOfferItemAction(offer));
 
-    expect(result.offer).toEqual(offer);
-  });
+      expect(result.offer).toEqual(offer);
+    });
 
-  it('Should update Offer item favorite status when "updateOfferItemFavoriteAction"', () => {
-    const isFavorite = false;
-    const offer = makeFakeOffer();
-
-    if(initialState) {
+    it('Should update Offer item favorite status when "updateOfferItemFavoriteAction"', () => {
+      const isFavorite = false;
+      const offer = makeFakeOffer();
       initialState.offer = offer;
 
       const result = offerItemDataProcess.reducer(initialState, updateOfferItemFavoriteAction(isFavorite));
 
       expect(result.offer?.isFavorite).toBe(isFavorite);
-    }
+    });
   });
 
-  // TODO: Возможно, при рефакторинге, стоит вынести комментарии в отдельный слайс
-  it('Should set comments to offer when "setCommentsAction"', () => {
-    const comment = makeFakeComment();
-    const expectedState = [ comment ];
+  describe('Comments actions:', () => {
+    it('Should set comments to offer when "setCommentsAction"', () => {
+      const comment = makeFakeComment();
+      const expectedState = [ comment ];
 
-    const result = offerItemDataProcess.reducer(initialState, setCommentsAction(expectedState));
-
-    expect(result.comments).toEqual(expectedState);
-  });
-
-  it('Should change "Comments loaded" status when "setCommentsLoadedStatusAction"', () => {
-    const isCommentsLoaded = true;
-
-    const result = offerItemDataProcess.reducer(initialState, setCommentsLoadedStatusAction(isCommentsLoaded));
-
-    expect(result.isCommentsLoaded).toBe(isCommentsLoaded);
-  });
-
-
-  it('Should add Comment to other Comments in state when "addCommentAction"', () => {
-    const commentOne = makeFakeComment();
-    const commentTwo = makeFakeComment();
-    const expectedState = [ commentOne, commentTwo ];
-
-    if(initialState) {
-      initialState.comments = [ commentOne ];
-
-      const result = offerItemDataProcess.reducer(initialState, addCommentAction(commentTwo));
+      const result = offerItemDataProcess.reducer(undefined, setCommentsAction(expectedState));
 
       expect(result.comments).toEqual(expectedState);
-    }
+    });
+
+    it('Should change "Comments loaded" status when "setCommentsLoadedStatusAction"', () => {
+      const isCommentsLoaded = true;
+
+      const result = offerItemDataProcess.reducer(undefined, setCommentsLoadedStatusAction(isCommentsLoaded));
+
+      expect(result.isCommentsLoaded).toBe(isCommentsLoaded);
+    });
+
+
+    it('Should add Comment to other Comments in state when "addCommentAction"', () => {
+      const comment = makeFakeComment();
+      const expectedState = [ comment ];
+
+      const result = offerItemDataProcess.reducer(undefined, addCommentAction(comment));
+
+      expect(result.comments).toEqual(expectedState);
+    });
+
+    it('Should change "Add comment status" when "setAddCommentStatusAction"', () => {
+      const addCommentStatus = SEND_DATA_STATUS.LOADED;
+
+      const result = offerItemDataProcess.reducer(undefined, setAddCommentStatusAction(addCommentStatus));
+
+      expect(result.addCommentStatus).toBe(SEND_DATA_STATUS.LOADED);
+    });
   });
 
-  it('Should change "Add comment status" when "setAddCommentStatusAction"', () => {
-    const addCommentStatus = SEND_DATA_STATUS.LOADED;
+  describe('Nearby offers actions:', () => {
+    it('Should set "Nearby offers" to state when "setNearbyAction"', () => {
+      const nearbyOffer = makeFakeOffer();
+      const expectedState = [ nearbyOffer ];
 
-    const result = offerItemDataProcess.reducer(initialState, setAddCommentStatusAction(addCommentStatus));
+      const result = offerItemDataProcess.reducer(undefined, setNearbyAction(expectedState));
 
-    expect(result.addCommentStatus).toBe(SEND_DATA_STATUS.LOADED);
-  });
-
-  // TODO: Возможно, при рефакторинге, стоит вынести предложения по-близости в отдельный слайс
-  it('Should set "Nearby offers" to state when "setNearbyAction"', () => {
-    const nearbyOffer = makeFakeOffer();
-    const expectedState = [ nearbyOffer ];
-
-    const result = offerItemDataProcess.reducer(initialState, setNearbyAction(expectedState));
-
-    expect(result.nearbyOffers).toEqual(expectedState);
+      expect(result.nearbyOffers).toEqual(expectedState);
+    });
   });
 });

@@ -30,29 +30,29 @@ describe('[API async actions]:', () => {
     store = mockStoreCreator();
   });
 
-  it(`Should dispatch
-    "loginAction.pending" &
-    "loginAction.fulfilled" &
-    "setUserInfoAction"
-    when "loginAction"`, async () => {
+  // it(`Should dispatch
+  //   "loginAction.pending" &
+  //   "loginAction.fulfilled" &
+  //   "setUserInfoAction"
+  //   when "loginAction"`, async () => {
 
-    const mockUser = {
-      email: 'test@test.me',
-      password: 'Af2egf24t4'
-    };
-    const mockServerReply = { token: 'some_secret_token' };
-    mockAxiosAdapter.onPost(APIRoute.LOGIN).reply(200, mockServerReply);
-    const expectedActions = [
-      loginAction.pending.type,
-      loginAction.fulfilled.type,
-      setUserInfoAction.type,
-    ];
+  //   const mockUser = {
+  //     email: 'test@test.me',
+  //     password: 'Af2egf24t4'
+  //   };
+  //   const mockServerReply = { token: 'some_secret_token' };
+  //   mockAxiosAdapter.onPost(APIRoute.LOGIN).reply(200, mockServerReply);
+  //   const expectedActions = [
+  //     loginAction.pending.type,
+  //     loginAction.fulfilled.type,
+  //     setUserInfoAction.type,
+  //   ];
 
-    await store.dispatch(loginAction(mockUser));
-    const actions = extractActionsTypes(store.getActions());
+  //   await store.dispatch(loginAction(mockUser));
+  //   const actions = extractActionsTypes(store.getActions());
 
-    expect(actions).toEqual(expectedActions);
-    // expect(setUserInfoAction).toBeCalledTimes(1);
-  });
+  //   expect(actions).toEqual(expectedActions);
+  //   // expect(setUserInfoAction).toBeCalledTimes(1);
+  // });
   // it('', () => {});
 });

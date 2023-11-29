@@ -13,66 +13,67 @@ describe('[User Process Slice]:', () => {
     initialState = mockStore[NAMESPACE.USER];
   });
 
-  it('Should return initial state with Empty Action', () => {
+  it('Should return initial state with empty initialState and action', () => {
     const emptyAction = {type: '', payload: ''};
-    const expectedState = initialState;
 
-    const result = userProcess.reducer(expectedState, emptyAction);
+    const result = userProcess.reducer(undefined, emptyAction);
 
-    expect(result).toEqual(expectedState);
+    expect(result).toEqual(initialState);
   });
 
   it('Should set "User info" when "setUserInfoAction"', () => {
     const user = makeFakeUser();
-    initialState.userInfo = null;
 
-    const result = userProcess.reducer(initialState, setUserInfoAction(user));
+    const result = userProcess.reducer(undefined, setUserInfoAction(user));
 
     expect(result.userInfo).toEqual(user);
   });
 
   // CHECK AUTH
-  // Тест падает, т.к. пока нер работы с токенами
-  it('Should set "AUTH" status when checkAuthAction.fulfilled', () => {
-    initialState.authorizationStatus = AuthorizationStatus.NO_AUTH;
-    setToken(crypto.randomUUID());
+  describe('Check auth action:', () => {
+    it('Should set "AUTH" status when checkAuthAction.fulfilled', () => {
+      initialState.authorizationStatus = AuthorizationStatus.NO_AUTH;
+      setToken(crypto.randomUUID());
 
-    const result = userProcess.reducer(initialState, checkAuthAction.fulfilled);
+      const result = userProcess.reducer(initialState, checkAuthAction.fulfilled);
 
-    expect(result.authorizationStatus).toBe(AuthorizationStatus.AUTH);
-  });
+      expect(result.authorizationStatus).toBe(AuthorizationStatus.AUTH);
+    });
 
 
-  it('Should set "NO_AUTH" status when checkAuthAction.rejected', () => {
-    initialState.authorizationStatus = AuthorizationStatus.UNKNOWN;
+    it('Should set "NO_AUTH" status when checkAuthAction.rejected', () => {
+      initialState.authorizationStatus = AuthorizationStatus.UNKNOWN;
 
-    const result = userProcess.reducer(initialState, checkAuthAction.rejected);
+      const result = userProcess.reducer(initialState, checkAuthAction.rejected);
 
-    expect(result.authorizationStatus).toBe(AuthorizationStatus.NO_AUTH);
+      expect(result.authorizationStatus).toBe(AuthorizationStatus.NO_AUTH);
+    });
   });
 
   // LOGIN / LOGOUT
-  it('Should set "AUTH" status when loginAction.fulfilled', () => {
-    initialState.authorizationStatus = AuthorizationStatus.NO_AUTH;
+  describe('Login/Logout actions:', () => {
+    it('Should set "AUTH" status when loginAction.fulfilled', () => {
+      initialState.authorizationStatus = AuthorizationStatus.NO_AUTH;
 
-    const result = userProcess.reducer(initialState, loginAction.fulfilled);
+      const result = userProcess.reducer(initialState, loginAction.fulfilled);
 
-    expect(result.authorizationStatus).toBe(AuthorizationStatus.AUTH);
-  });
+      expect(result.authorizationStatus).toBe(AuthorizationStatus.AUTH);
+    });
 
-  it('Should set "NO_AUTH" status when loginAction.rejected', () => {
-    initialState.authorizationStatus = AuthorizationStatus.AUTH;
+    it('Should set "NO_AUTH" status when loginAction.rejected', () => {
+      initialState.authorizationStatus = AuthorizationStatus.AUTH;
 
-    const result = userProcess.reducer(initialState, loginAction.rejected);
+      const result = userProcess.reducer(initialState, loginAction.rejected);
 
-    expect(result.authorizationStatus).toBe(AuthorizationStatus.NO_AUTH);
-  });
+      expect(result.authorizationStatus).toBe(AuthorizationStatus.NO_AUTH);
+    });
 
-  it('Should set "NO_AUTH" status when logoutAction.fulfilled', () => {
-    initialState.authorizationStatus = AuthorizationStatus.AUTH;
+    it('Should set "NO_AUTH" status when logoutAction.fulfilled', () => {
+      initialState.authorizationStatus = AuthorizationStatus.AUTH;
 
-    const result = userProcess.reducer(initialState, logoutAction.fulfilled);
+      const result = userProcess.reducer(initialState, logoutAction.fulfilled);
 
-    expect(result.authorizationStatus).toBe(AuthorizationStatus.NO_AUTH);
+      expect(result.authorizationStatus).toBe(AuthorizationStatus.NO_AUTH);
+    });
   });
 });
