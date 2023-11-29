@@ -24,7 +24,6 @@ describe('[API async actions]:', () => {
   const mockAxiosAdapter = new MockAdapter(axios);
   const middleware = [thunk.withExtraArgument(axios)];
   const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
-  // let store: ReturnType<typeof mockStoreCreator>;
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {

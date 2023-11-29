@@ -38,6 +38,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
   const id = offer.id;
   const authStatus = useAppSelector(getAuthStatus);
+  const currentOfferPoint = {id: offer.id, lat: offer.location.latitude, long: offer.location.longitude,};
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const itHasNearbyOffers = (nearby?.length > 0);
   const isFavorite = offer.isFavorite;
@@ -163,7 +164,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
           </div>
         </div>
         {/* Карта */}
-        { itHasNearbyOffers && <Map offers={ nearby } selectedPoint={ selectedPoint }/> }
+        { itHasNearbyOffers && <Map offers={ nearby } selectedPoint={ selectedPoint } currentOfferPoint={ currentOfferPoint }/> }
       </section>
       <div className="container">
         {/* Места поблизости */}
