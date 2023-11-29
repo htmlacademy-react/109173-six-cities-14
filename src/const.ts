@@ -54,7 +54,7 @@ export const DateFormat = {
   DATE_TIME: 'DATE_TIME'
 };
 
-export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export const months = [
   'January',

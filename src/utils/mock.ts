@@ -1,10 +1,15 @@
 import { address, datatype, date, image, internet, lorem } from 'faker';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-
-import { State } from '../types/state';
+import thunk from 'redux-thunk';
+import MockAdapter from 'axios-mock-adapter';
+import { configureMockStore } from '@jedmao/redux-mock-store';
 
 import { createAPI } from '../services/api';
+
+import { State } from '../types/state';
+import { Namespace } from '../types/namespace';
+
 import { AuthorizationStatus, DEFAULT_CITY, NAMESPACE, SEND_DATA_STATUS } from '../const';
 
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
@@ -13,8 +18,18 @@ export function extractActionsTypes(actions: Action<string>[]) {
   return actions.map((action) => action.type);
 }
 
-export function makeMockStore(initialState?: Partial<State>) {
-  return {
+export function getFakeStore() {
+  const axios = createAPI();
+  const mockAxiosAdapter = new MockAdapter(axios);
+  const middleware = [thunk.withExtraArgument(axios)];
+  const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
+
+  return { axios, mockAxiosAdapter, middleware, mockStoreCreator };
+}
+
+
+export function makeMockStore(initialState?: Partial<State>, returnNamespace?: Namespace) {
+  const mockStore = {
     [NAMESPACE.CITY]: {
       city: DEFAULT_CITY,
     },
@@ -40,6 +55,12 @@ export function makeMockStore(initialState?: Partial<State>) {
     },
     ...initialState ?? {}
   };
+
+  // if(returnNamespace && returnNamespace in mockStore) {
+  //   return mockStore[returnNamespace];
+  // }
+
+  return mockStore;
 }
 
 export function makeFakeUser() {

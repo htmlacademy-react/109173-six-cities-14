@@ -1,15 +1,15 @@
 import { cities } from '../../const';
-import CityItem from '../city-item/city-item';
+import CitiesItem from '../cities-item/cities-item';
 import useCitySelection from '../../hooks/useCitySelection';
 
 export default function CitiesList(): React.ReactElement {
   const handleCitySelect = useCitySelection();
 
   return (
-    <ul className="locations__list tabs__list">
+    <ul className="locations__list tabs__list" data-testid="citiesListElement">
       {
         cities && cities.slice()
-          .map((city: string) => <CityItem key={ city } city={ city } onSelectCity={ handleCitySelect }/>)
+          .map((city: string) => <CitiesItem key={ city } city={ city } onSelectCity={ handleCitySelect } />)
       }
     </ul>
   );
