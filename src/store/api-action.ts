@@ -32,8 +32,6 @@ import browserHistory from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
 
 // CODE
-const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
-
 const APIAction = {
   FETCH_OFFERS: 'data/fetchOffers',
   FETCH_OFFER_ITEM: 'data/fetchOfferItem',
@@ -215,21 +213,14 @@ export const fetchCommentAction = createAsyncThunk<void, CommentData, AsyncOptio
         {rating, comment}
       );
 
-      toast.success(SUCCESS_TEXT.ADD_COMMENT);
-
       dispatch(addCommentAction(data));
       dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.LOADED));
 
-      setTimeout(() => dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.NONE)), CLEAR_COMMENT_STATUS_TIMEOUT);
+      toast.success(SUCCESS_TEXT.ADD_COMMENT);
     } catch(err) {
       dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.ERROR));
 
       toast.warn(ERROR_TEXT.ADD_COMMENT);
-
-      setTimeout(
-        () => dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.NONE)),
-        CLEAR_COMMENT_STATUS_TIMEOUT
-      );
     }
 
   }

@@ -5,14 +5,15 @@ import { State } from '../types/state';
 import { Action } from '@reduxjs/toolkit';
 
 import { APIRoute } from '../const';
-import { AppThunkDispatch, extractActionsTypes } from '../utils/mock';
+import { AppThunkDispatch, extractActionsTypes, makeFakeComment } from '../utils/mock';
 import { createAPI } from '../services/api';
-import { checkAuthAction, fetchNeabyOffers, fetchOfferItemAction, fetchOffersAction, loginAction, logoutAction } from './api-action';
+import { checkAuthAction, fetchCommentAction, fetchComments, fetchFavoritesAction, fetchNeabyOffers, fetchOfferItemAction, fetchOffersAction, loginAction, logoutAction, toggleFavoriteAction } from './api-action';
 import { setUserInfoAction } from './slices/user-process/user-process';
 import * as tokenStorage from '../services/token';
-import { loadOffersAction } from './slices/offers-data-process/offers-data-process';
-import { setNearbyAction, setOfferItemAction } from './slices/offer-item-data-process/offer-item-data-process';
+import { loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
+import { addCommentAction, setAddCommentStatusAction, setCommentsAction, setCommentsLoadedStatusAction, setNearbyAction, setOfferItemAction, updateOfferItemFavoriteAction } from './slices/offer-item-data-process/offer-item-data-process';
 import { redirectToRoute } from './action';
+import { addFavoriteItemAction, loadFavoritesAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
 
 vi.mock('../browser-history', () => ({
   default: {
@@ -100,6 +101,8 @@ describe('[API async actions]:', () => {
     });
   });
 
+  const offerId = 'be7380d9-95b4-4cef-ae28-0ac71e1ebce6';
+
   describe('Offers actions:', () => {
     it('Should dispatch "loadOffersAction" when "fetchOffersAction.fulfilled"', async () => {
       mockAxiosAdapter.onGet(APIRoute.OFFERS).reply(200);
@@ -116,7 +119,6 @@ describe('[API async actions]:', () => {
     });
 
     it('Should dispatch "setOfferItemAction" when "fetchOfferItemAction.pending" and  "setOfferItemAction" when "fetchOfferItemAction.fulfilled"', async () => {
-      const offerId = 'be7380d9-95b4-4cef-ae28-0ac71e1ebce6';
       mockAxiosAdapter.onGet(`${ APIRoute.OFFERS}/${ offerId }`).reply(200);
       const expectedActions = [
         fetchOfferItemAction.pending.type,
@@ -132,7 +134,6 @@ describe('[API async actions]:', () => {
     });
 
     it('Should dispatch "redirectToRoute" when "fetchOfferItemAction.fulfilled", but server response !== 200 status', async () => {
-      const offerId = 'be7380d9-95b4-4cef-ae28-0ac71e1ebce6';
       mockAxiosAdapter.onGet(`${ APIRoute.OFFERS}/${ offerId }`).reply(404);
       const expectedActions = [
         fetchOfferItemAction.pending.type,
@@ -151,7 +152,6 @@ describe('[API async actions]:', () => {
 
   describe('Nearby offers actions:', () => {
     it('Should dispatch "setNearbyAction" when "fetchNeabyOffers.fulfilled"', async () => {
-      const offerId = 'be7380d9-95b4-4cef-ae28-0ac71e1ebce6';
       mockAxiosAdapter.onGet(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`).reply(200);
       const expectedActions = [
         fetchNeabyOffers.pending.type,
@@ -165,5 +165,103 @@ describe('[API async actions]:', () => {
       expect(actions).toEqual(expectedActions);
     });
   });
-  // it('', () => {});
+
+  describe('Favorites offers actions:', () => {
+    it('Should dispatch "loadFavoritesAction" when "fetchFavoritesAction.fulfilled"', async () => {
+      mockAxiosAdapter.onGet(APIRoute.FAVORITE).reply(200);
+      const expectedActions = [
+        fetchFavoritesAction.pending.type,
+        loadFavoritesAction.type,
+        fetchFavoritesAction.fulfilled.type,
+      ];
+
+      await store.dispatch(fetchFavoritesAction());
+      const actions = extractActionsTypes(store.getActions());
+
+      expect(actions).toEqual(expectedActions);
+    });
+  });
+
+  it('Should dispatch "addFavoriteItemAction", "updateOffersListAction" and "updateOfferItemFavoriteAction" when "toggleFavoriteAction.fulfilled" and status = 1', async () => {
+    const status = 1;
+    mockAxiosAdapter.onPost(`${ APIRoute.FAVORITE }/${ offerId }/${ status }`).reply(200);
+    const expectedActions = [
+      toggleFavoriteAction.pending.type,
+      addFavoriteItemAction.type,
+      updateOffersListAction.type,
+      updateOfferItemFavoriteAction.type,
+      toggleFavoriteAction.fulfilled.type,
+    ];
+
+    await store.dispatch(toggleFavoriteAction({ offerId, status: Boolean(status) }));
+    const actions = extractActionsTypes(store.getActions());
+
+    expect(actions).toEqual(expectedActions);
+  });
+
+  it('Should dispatch "removeFavoriteItemAction", -//-//-//- and status = 0', async () => {
+    const status = 0;
+    mockAxiosAdapter.onPost(`${ APIRoute.FAVORITE }/${ offerId }/${ status }`).reply(200);
+    const expectedActions = [
+      toggleFavoriteAction.pending.type,
+      removeFavoriteItemAction.type,
+      updateOffersListAction.type,
+      updateOfferItemFavoriteAction.type,
+      toggleFavoriteAction.fulfilled.type,
+    ];
+
+    await store.dispatch(toggleFavoriteAction({ offerId, status: Boolean(status) }));
+    const actions = extractActionsTypes(store.getActions());
+
+    expect(actions).toEqual(expectedActions);
+  });
+
+  describe('Comments actions:', () => {
+    it('Should dispatch "setCommentsLoadedStatusAction" twice and "setCommentsAction" when "fetchComments.fulfilled"', async () => {
+      mockAxiosAdapter.onGet(`${ APIRoute.COMMENTS }/${ offerId }`).reply(200);
+      const expectedActions = [
+        fetchComments.pending.type,
+        setCommentsLoadedStatusAction.type,
+        setCommentsLoadedStatusAction.type,
+        setCommentsAction.type,
+        fetchComments.fulfilled.type,
+      ];
+
+      await store.dispatch(fetchComments(offerId));
+      const actions = extractActionsTypes(store.getActions());
+
+      expect(actions).toEqual(expectedActions);
+    });
+
+    it('Should dispatch "addCommentAction" and "setAddCommentStatusAction" when "fetchCommentAction.fulfilled"', async () => {
+      const { rating, comment } = makeFakeComment();
+      mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(200);
+      const expectedActions = [
+        fetchCommentAction.pending.type,
+        addCommentAction.type,
+        setAddCommentStatusAction.type,
+        fetchCommentAction.fulfilled.type,
+      ];
+
+      await store.dispatch(fetchCommentAction({ offerId, rating, comment }));
+      const actions = extractActionsTypes(store.getActions());
+
+      expect(actions).toEqual(expectedActions);
+    });
+
+    it('Should dispatch "setAddCommentStatusAction" when "fetchCommentAction.fulfilled", but server response !== 200 status', async () => {
+      const { rating, comment } = makeFakeComment();
+      mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(400);
+      const expectedActions = [
+        fetchCommentAction.pending.type,
+        setAddCommentStatusAction.type,
+        fetchCommentAction.fulfilled.type,
+      ];
+
+      await store.dispatch(fetchCommentAction({ offerId, rating, comment }));
+      const actions = extractActionsTypes(store.getActions());
+
+      expect(actions).toEqual(expectedActions);
+    });
+  });
 });
