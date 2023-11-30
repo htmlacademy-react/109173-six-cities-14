@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NAMESPACE, SEND_DATA_STATUS } from '../../../const';
+import { Namespace, SEND_DATA_STATUS } from '../../../const';
 import { OfferItemDataProcess } from '../../../types/state';
 import { Offer, Offers } from '../../../types/offer';
 import { Comment, Comments } from '../../../types/comment';
@@ -15,7 +15,7 @@ const initialState: OfferItemDataProcess = {
 };
 
 export const offerItemDataProcess = createSlice({
-  name: NAMESPACE.OFFER,
+  name: Namespace.OFFER,
   initialState,
   reducers: {
     // OFFER

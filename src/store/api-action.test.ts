@@ -1,5 +1,5 @@
 import { APIRoute } from '../const';
-import { extractActionsTypes, getFakeStore, makeFakeComment } from '../utils/mock';
+import { extractActionsTypes, getFakeStore, makeMockComment } from '../utils/mock';
 import { checkAuthAction, fetchCommentAction, fetchComments, fetchFavoritesAction, fetchNeabyOffers, fetchOfferItemAction, fetchOffersAction, loginAction, logoutAction, toggleFavoriteAction } from './api-action';
 import { setUserInfoAction } from './slices/user-process/user-process';
 import * as tokenStorage from '../services/token';
@@ -224,7 +224,7 @@ describe('[API async actions]:', () => {
     });
 
     it('Should dispatch "addCommentAction" and "setAddCommentStatusAction" when "fetchCommentAction.fulfilled"', async () => {
-      const { rating, comment } = makeFakeComment();
+      const { rating, comment } = makeMockComment();
       mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(200);
       const expectedActions = [
         fetchCommentAction.pending.type,
@@ -240,7 +240,7 @@ describe('[API async actions]:', () => {
     });
 
     it('Should dispatch "setAddCommentStatusAction" when "fetchCommentAction.fulfilled", but server response !== 200 status', async () => {
-      const { rating, comment } = makeFakeComment();
+      const { rating, comment } = makeMockComment();
       mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(400);
       const expectedActions = [
         fetchCommentAction.pending.type,

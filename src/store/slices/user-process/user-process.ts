@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AuthorizationStatus, NAMESPACE } from '../../../const';
+import { AuthorizationStatus, Namespace } from '../../../const';
 import { UserData } from '../../../types/user-data';
 import { UserProcess } from '../../../types/state';
 import { checkAuthAction, loginAction, logoutAction } from '../../api-action';
@@ -12,7 +12,7 @@ const initialState: UserProcess = {
 };
 
 export const userProcess = createSlice({
-  name: NAMESPACE.USER,
+  name: Namespace.USER,
   initialState,
   reducers: {
     setUserInfoAction: (state, action: PayloadAction<UserData | null>) => {

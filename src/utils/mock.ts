@@ -10,7 +10,7 @@ import { createAPI } from '../services/api';
 import { State } from '../types/state';
 import { Namespace } from '../types/namespace';
 
-import { AuthorizationStatus, DEFAULT_CITY, NAMESPACE, SEND_DATA_STATUS } from '../const';
+import { AuthorizationStatus, DEFAULT_CITY, Namespace, SEND_DATA_STATUS } from '../const';
 
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
 
@@ -28,27 +28,27 @@ export function getFakeStore() {
 }
 
 
-export function makeMockStore(initialState?: Partial<State>, returnNamespace?: Namespace) {
+export function makeMockStoreState(initialState?: Partial<State>, returnNamespace?: Namespace) {
   const mockStore = {
-    [NAMESPACE.CITY]: {
+    [Namespace.CITY]: {
       city: DEFAULT_CITY,
     },
-    [NAMESPACE.FAVORITES]: {
+    [Namespace.FAVORITES]: {
       favorites: [],
     },
-    [NAMESPACE.MAIN]: {/* Something about main */},
-    [NAMESPACE.OFFER]: {
+    [Namespace.MAIN]: {/* Something about main */},
+    [Namespace.OFFER]: {
       offer: null,
       nearbyOffers: [],
       comments: [],
       isCommentsLoaded: false,
       addCommentStatus: SEND_DATA_STATUS.NONE,
     },
-    [NAMESPACE.OFFERS]: {
+    [Namespace.OFFERS]: {
       offers: [],
       isOffersLoading: false,
     },
-    [NAMESPACE.USER]: {
+    [Namespace.USER]: {
       favorites: [],
       authorizationStatus: AuthorizationStatus.UNKNOWN,
       userInfo: null,
@@ -63,7 +63,7 @@ export function makeMockStore(initialState?: Partial<State>, returnNamespace?: N
   return mockStore;
 }
 
-export function makeFakeUser() {
+export function makeMockUser() {
   return {
     id: datatype.number(1000),
     email: internet.email(),
@@ -74,7 +74,7 @@ export function makeFakeUser() {
   };
 }
 
-export function makeFakeLocation() {
+export function makeMockLocation() {
   return {
     latitude: datatype.float(100),
     longitude: datatype.float(100),
@@ -82,11 +82,11 @@ export function makeFakeLocation() {
   };
 }
 
-export function makeFakeOffer() {
+export function makeMockOffer() {
   return {
     city: {
       name: address.cityName(),
-      location: makeFakeLocation(),
+      location: makeMockLocation(),
     },
     previewImage: image.imageUrl(),
     images: [],
@@ -99,17 +99,17 @@ export function makeFakeOffer() {
     maxAdults: datatype.number(5),
     price: datatype.number(500),
     goods: [],
-    host: makeFakeUser(),
+    host: makeMockUser(),
     description: lorem.words(60),
-    location: makeFakeLocation(),
+    location: makeMockLocation(),
     id: crypto.randomUUID(),
   };
 }
 
-export function makeFakeComment() {
+export function makeMockComment() {
   return {
     id: datatype.number(1000),
-    user: makeFakeUser(),
+    user: makeMockUser(),
     rating: datatype.number(5),
     comment: lorem.words(50),
     date: String(date.recent()),

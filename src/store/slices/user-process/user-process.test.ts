@@ -1,16 +1,16 @@
-import { AuthorizationStatus, NAMESPACE } from '../../../const';
+import { AuthorizationStatus, Namespace } from '../../../const';
 import { setToken } from '../../../services/token';
 import { UserProcess } from '../../../types/state';
-import { makeFakeUser, makeMockStore } from '../../../utils/mock';
+import { makeMockUser, makeMockStoreState } from '../../../utils/mock';
 import { checkAuthAction, loginAction, logoutAction } from '../../api-action';
 import { setUserInfoAction, userProcess } from './user-process';
 
 describe('[User Process Slice]:', () => {
   let initialState: UserProcess;
-  const mockStore = makeMockStore();
+  const mockStore = makeMockStoreState();
 
   beforeAll(() => {
-    initialState = mockStore[NAMESPACE.USER];
+    initialState = mockStore[Namespace.USER];
   });
 
   it('Should return initial state with empty initialState and action', () => {
@@ -22,7 +22,7 @@ describe('[User Process Slice]:', () => {
   });
 
   it('Should set "User info" when "setUserInfoAction"', () => {
-    const user = makeFakeUser();
+    const user = makeMockUser();
 
     const result = userProcess.reducer(undefined, setUserInfoAction(user));
 

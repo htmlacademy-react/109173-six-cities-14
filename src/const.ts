@@ -26,7 +26,7 @@ export const APIRoute = {
   LOGOUT: '/six-cities/logout',
 };
 
-export const NAMESPACE = {
+export const Namespace = {
   MAIN: 'MAIN',
   CITY: 'CITY',
   OFFERS: 'OFFERS',

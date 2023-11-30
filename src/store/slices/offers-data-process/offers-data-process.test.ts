@@ -1,5 +1,5 @@
 import { OffersDataProcess } from '../../../types/state';
-import { makeFakeOffer } from '../../../utils/mock';
+import { makeMockOffer } from '../../../utils/mock';
 import { fetchOffersAction } from '../../api-action';
 import { loadOffersAction, offersDataProcess, setOffersLoadingStatus, updateOffersListAction } from './offers-data-process';
 
@@ -22,7 +22,7 @@ describe('[Offers data process Slice]:', () => {
   });
 
   it('Should set Offers to state when "loadOffersAction"', () => {
-    const offer = makeFakeOffer();
+    const offer = makeMockOffer();
     const expectedState = [ offer ];
 
     const result = offersDataProcess.reducer(undefined, loadOffersAction(expectedState));
@@ -39,7 +39,7 @@ describe('[Offers data process Slice]:', () => {
   });
 
   it('Should update old offer to new when "updateOffersListAction"', () => {
-    const offer = makeFakeOffer();
+    const offer = makeMockOffer();
     initialState.offers = [ offer ];
     offer.title = 'New title';
 

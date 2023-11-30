@@ -1,8 +1,8 @@
-import { NAMESPACE } from '../const';
+import { Namespace } from '../const';
 
-export type Namespace = keyof [keyof typeof NAMESPACE];
-export type CityNamespace = typeof NAMESPACE.CITY
-export type OfferNamespace = typeof NAMESPACE.OFFER
-export type OffersNamespace = typeof NAMESPACE.OFFERS;
-export type FavoritesNamespace = typeof NAMESPACE.FAVORITES
-export type UserNamespace = typeof NAMESPACE.USER;
+export type Namespace = keyof [keyof typeof Namespace];
+export type CityNamespace = typeof Namespace.CITY
+export type OfferNamespace = typeof Namespace.OFFER
+export type OffersNamespace = typeof Namespace.OFFERS;
+export type FavoritesNamespace = typeof Namespace.FAVORITES
+export type UserNamespace = typeof Namespace.USER;

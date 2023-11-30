@@ -1,4 +1,4 @@
-import { makeFakeOffer } from '../../../utils/mock';
+import { makeMockOffer } from '../../../utils/mock';
 import { addFavoriteItemAction, favoritesDataProcess, loadFavoritesAction, removeFavoriteItemAction } from './favorites-data-process';
 
 describe('[Favorites datap process Slice]:', () => {
@@ -14,7 +14,7 @@ describe('[Favorites datap process Slice]:', () => {
   });
 
   it('Shoult load Favorites Offers when loadFavoritesAction', () => {
-    const offer = makeFakeOffer();
+    const offer = makeMockOffer();
     const expectedState = {
       favorites: [ offer ]
     };
@@ -25,7 +25,7 @@ describe('[Favorites datap process Slice]:', () => {
   });
 
   it('Shoult add Offer to "Favorites" when addFavoriteItemAction', () => {
-    const offer = makeFakeOffer();
+    const offer = makeMockOffer();
     const expectedState = {
       favorites: [ offer ]
     };
@@ -36,7 +36,7 @@ describe('[Favorites datap process Slice]:', () => {
   });
 
   it('Shoult remove Offer from "Favorites" when removeFavoriteItemAction', () => {
-    const offer = makeFakeOffer();
+    const offer = makeMockOffer();
     const expectedState = {
       favorites: [],
     };

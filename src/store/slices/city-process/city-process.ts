@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { DEFAULT_CITY, NAMESPACE } from '../../../const';
+import { DEFAULT_CITY, Namespace } from '../../../const';
 import { CityProcess } from '../../../types/state';
 
 const initialState: CityProcess = {
@@ -7,7 +7,7 @@ const initialState: CityProcess = {
 };
 
 export const cityProcess = createSlice({
-  name: NAMESPACE.CITY,
+  name: Namespace.CITY,
   initialState,
   reducers: {
     setCityAction: (state, action: PayloadAction<string>) => {

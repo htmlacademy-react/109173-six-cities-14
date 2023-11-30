@@ -1,17 +1,12 @@
 import cn from 'classnames';
 
-import { useAppSelector } from '../../hooks';
-import { getCity } from '../../store/slices/city-process/selectors';
-
 type CitiesItemProps = {
   city: string;
+  isSelectedCity?: boolean;
   onSelectCity: (evt: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
 };
 
-export default function CitiesItem({ city, onSelectCity }: CitiesItemProps): React.ReactNode {
-  const selectedCity = useAppSelector(getCity);
-  const isSelectedCity = (selectedCity === city);
-
+export default function CitiesItem({ city, isSelectedCity, onSelectCity }: CitiesItemProps): React.ReactNode {
   return (
     <li className="locations__item" onClick={ (evt: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
       evt.preventDefault();
@@ -24,6 +19,7 @@ export default function CitiesItem({ city, onSelectCity }: CitiesItemProps): Rea
         'locations__item-link tabs__item',
         {'tabs__item tabs__item--active': isSelectedCity}
       )} href="#"
+      data-testid="citiesItemLinkElement"
       >
         <span>{ city }</span>
       </a>

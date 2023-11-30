@@ -1,6 +1,6 @@
 import { SEND_DATA_STATUS } from '../../../const';
 import { OfferItemDataProcess } from '../../../types/state';
-import { makeFakeComment, makeFakeOffer } from '../../../utils/mock';
+import { makeMockComment, makeMockOffer } from '../../../utils/mock';
 import { addCommentAction, offerItemDataProcess, setAddCommentStatusAction, setCommentsAction, setCommentsLoadedStatusAction, setNearbyAction, setOfferItemAction, updateOfferItemFavoriteAction } from './offer-item-data-process';
 
 describe('[Offer item data process Slice]:', () => {
@@ -27,7 +27,7 @@ describe('[Offer item data process Slice]:', () => {
     });
 
     it('Should set Offer item to state when "setOfferItemAction"', () => {
-      const offer = makeFakeOffer();
+      const offer = makeMockOffer();
 
       const result = offerItemDataProcess.reducer(undefined, setOfferItemAction(offer));
 
@@ -36,7 +36,7 @@ describe('[Offer item data process Slice]:', () => {
 
     it('Should update Offer item favorite status when "updateOfferItemFavoriteAction"', () => {
       const isFavorite = false;
-      const offer = makeFakeOffer();
+      const offer = makeMockOffer();
       initialState.offer = offer;
 
       const result = offerItemDataProcess.reducer(initialState, updateOfferItemFavoriteAction(isFavorite));
@@ -47,7 +47,7 @@ describe('[Offer item data process Slice]:', () => {
 
   describe('Comments actions:', () => {
     it('Should set comments to offer when "setCommentsAction"', () => {
-      const comment = makeFakeComment();
+      const comment = makeMockComment();
       const expectedState = [ comment ];
 
       const result = offerItemDataProcess.reducer(undefined, setCommentsAction(expectedState));
@@ -65,7 +65,7 @@ describe('[Offer item data process Slice]:', () => {
 
 
     it('Should add Comment to other Comments in state when "addCommentAction"', () => {
-      const comment = makeFakeComment();
+      const comment = makeMockComment();
       const expectedState = [ comment ];
 
       const result = offerItemDataProcess.reducer(undefined, addCommentAction(comment));
@@ -84,7 +84,7 @@ describe('[Offer item data process Slice]:', () => {
 
   describe('Nearby offers actions:', () => {
     it('Should set "Nearby offers" to state when "setNearbyAction"', () => {
-      const nearbyOffer = makeFakeOffer();
+      const nearbyOffer = makeMockOffer();
       const expectedState = [ nearbyOffer ];
 
       const result = offerItemDataProcess.reducer(undefined, setNearbyAction(expectedState));
