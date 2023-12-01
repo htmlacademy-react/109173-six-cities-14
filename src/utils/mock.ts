@@ -8,7 +8,6 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../services/api';
 
 import { State } from '../types/state';
-import { Namespace } from '../types/namespace';
 
 import { AuthorizationStatus, DEFAULT_CITY, Namespace, SEND_DATA_STATUS } from '../const';
 
@@ -28,7 +27,7 @@ export function getFakeStore() {
 }
 
 
-export function makeMockStoreState(initialState?: Partial<State>, returnNamespace?: Namespace) {
+export function makeMockStoreState(initialState?: Partial<State>) {
   const mockStore = {
     [Namespace.CITY]: {
       city: DEFAULT_CITY,
@@ -55,10 +54,6 @@ export function makeMockStoreState(initialState?: Partial<State>, returnNamespac
     },
     ...initialState ?? {}
   };
-
-  // if(returnNamespace && returnNamespace in mockStore) {
-  //   return mockStore[returnNamespace];
-  // }
 
   return mockStore;
 }

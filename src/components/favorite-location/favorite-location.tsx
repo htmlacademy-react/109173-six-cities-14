@@ -16,7 +16,7 @@ export default function FavoriteLocation({ city, offers }: FavoriteLocationProps
           </a>
         </div>
       </div>
-      <div className="favorites__places">
+      <div className="favorites__places" data-testid="favoritePlacesElem">
         {
           offers?.map((offer): React.ReactElement =>
             <CardPlace key={ offer.id } offerItem={ offer } isCompact/>
