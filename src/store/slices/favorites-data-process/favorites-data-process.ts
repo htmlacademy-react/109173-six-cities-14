@@ -15,6 +15,10 @@ export const favoritesDataProcess = createSlice({
       state.favorites = action.payload;
     },
 
+    clearFavoritesAction: (state) => {
+      state.favorites = [];
+    },
+
     // FAVORITE
     addFavoriteItemAction: (state, action: PayloadAction<Offer>) => {
       state.favorites.push(action.payload);
@@ -27,4 +31,4 @@ export const favoritesDataProcess = createSlice({
   },
 });
 
-export const { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } = favoritesDataProcess.actions;
+export const { loadFavoritesAction, clearFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } = favoritesDataProcess.actions;

@@ -3,10 +3,10 @@ import { extractActionsTypes, getFakeStore, makeMockComment } from '../utils/moc
 import { checkAuthAction, fetchCommentAction, fetchComments, fetchFavoritesAction, fetchNeabyOffers, fetchOfferItemAction, fetchOffersAction, loginAction, logoutAction, toggleFavoriteAction } from './api-action';
 import { setUserInfoAction } from './slices/user-process/user-process';
 import * as tokenStorage from '../services/token';
-import { loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
+import { clearOffersFavoriteStatus, loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
 import { addCommentAction, setAddCommentStatusAction, setCommentsAction, setCommentsLoadedStatusAction, setNearbyAction, setOfferItemAction, updateOfferItemFavoriteAction } from './slices/offer-item-data-process/offer-item-data-process';
 import { redirectToRoute } from './action';
-import { addFavoriteItemAction, loadFavoritesAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
+import { addFavoriteItemAction, clearFavoritesAction, loadFavoritesAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
 
 vi.mock('../browser-history', () => ({
   default: {
@@ -49,14 +49,23 @@ describe('[API async actions]:', () => {
       expect(mockSaveToken).toBeCalledWith(mockServerReply.token);
     });
 
-    it('Should remove token from localStorage and setUserInfo to null when "logoutAction"', async () => {
+    it('Should remove token from localStorage, setUserInfo to "null" and dispatch "clearFavoritesAction" when "logoutAction"', async () => {
       const mockDeleteToken = vi.spyOn(tokenStorage, 'deleteToken');
       mockAxiosAdapter.onDelete(APIRoute.LOGOUT).reply(204);
+      const expectedActions = [
+        logoutAction.pending.type,
+        setUserInfoAction.type,
+        clearFavoritesAction.type,
+        clearOffersFavoriteStatus.type,
+        logoutAction.fulfilled.type
+      ];
 
       await store.dispatch(logoutAction());
+      const actions = extractActionsTypes(store.getActions());
 
       expect(mockDeleteToken).toBeCalledTimes(1);
       expect(tokenStorage.getToken()).toBe('');
+      expect(actions).toEqual(expectedActions);
     });
 
     it('Should dispatch "setUserInfoAction" when "checkAuthAction.fulfilled"', async () => {
@@ -65,6 +74,7 @@ describe('[API async actions]:', () => {
       const expectedActions = [
         checkAuthAction.pending.type,
         setUserInfoAction.type,
+        fetchFavoritesAction.pending.type,
         checkAuthAction.fulfilled.type,
       ];
 

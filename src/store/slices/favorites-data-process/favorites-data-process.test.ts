@@ -1,5 +1,5 @@
 import { makeMockOffer } from '../../../utils/mock';
-import { addFavoriteItemAction, favoritesDataProcess, loadFavoritesAction, removeFavoriteItemAction } from './favorites-data-process';
+import { addFavoriteItemAction, clearFavoritesAction, favoritesDataProcess, loadFavoritesAction, removeFavoriteItemAction } from './favorites-data-process';
 
 describe('[Favorites datap process Slice]:', () => {
   it('Should return initial state with empty initialState and action', () => {
@@ -42,6 +42,20 @@ describe('[Favorites datap process Slice]:', () => {
     };
 
     const result = favoritesDataProcess.reducer(undefined, removeFavoriteItemAction(offer));
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Should clear "Favorites" when "clearFavoritesAction"', () => {
+    const offer = makeMockOffer();
+    const initialState = {
+      favorites: [ offer ],
+    };
+    const expectedState = {
+      favorites: [],
+    };
+
+    const result = favoritesDataProcess.reducer(initialState, clearFavoritesAction());
 
     expect(result).toEqual(expectedState);
   });

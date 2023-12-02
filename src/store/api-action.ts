@@ -17,7 +17,7 @@ import { redirectToRoute } from './action';
 
 // SLICES
 import { setUserInfoAction } from './slices/user-process/user-process';
-import { loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
+import { clearOffersFavoriteStatus, loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
 import {
   setOfferItemAction,
   setCommentsAction,
@@ -27,7 +27,7 @@ import {
   setNearbyAction,
   updateOfferItemFavoriteAction
 } from './slices/offer-item-data-process/offer-item-data-process';
-import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
+import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction, clearFavoritesAction } from './slices/favorites-data-process/favorites-data-process';
 import browserHistory from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
 
@@ -60,6 +60,50 @@ type AsyncOptions = {
   extra: AxiosInstance;
 };
 
+// FAVORITES
+export const fetchFavoritesAction = createAsyncThunk<void, void, AsyncOptions>(
+  APIAction.FETCH_FAVORITES,
+  async (_arg, { dispatch, extra: api }) => {
+    const { data } = await api.get<Offers>(APIRoute.FAVORITE);
+
+    dispatch(loadFavoritesAction(data));
+  }
+);
+
+export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOptions>(
+  APIAction.TOGGLE_FAVORITE,
+  async (
+    { offerId, status },
+    { dispatch, extra: api }
+  ) => {
+    try {
+      const favoriteStatus = Number(status);
+      const { data } = await api.post<Offer>(`${ APIRoute.FAVORITE }/${ offerId }/${ favoriteStatus }`);
+
+      switch(favoriteStatus) {
+        case 1: {
+          // 1. Обновить список "Избранного" у пользователя
+          dispatch(addFavoriteItemAction(data));
+          break;
+        }
+        case 0: {
+          dispatch(removeFavoriteItemAction(data));
+          break;
+        }
+      }
+
+      // 2. Обновить список офферов, а точнее - конкретный оффер и его статус избранного
+      dispatch(updateOffersListAction(data));
+
+      // 3. Если у нас открыт какой-то конкретней оффер - надо обновить и его,
+      // т.к. он в отдельном стейте и дергается отдельным запросом
+      dispatch(updateOfferItemFavoriteAction(status));
+    } catch(error) {
+      toast.warn(ERROR_TEXT.ADD_FAVORITE);
+    }
+  }
+);
+
 // AUTH
 export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
   APIAction.USER_LOGIN,
@@ -88,6 +132,8 @@ export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
     await api.delete(APIRoute.LOGOUT);
     deleteToken();
     dispatch(setUserInfoAction(null));
+    dispatch(clearFavoritesAction());
+    dispatch(clearOffersFavoriteStatus());
   }
 );
 
@@ -97,6 +143,7 @@ export const checkAuthAction = createAsyncThunk<void, void, AsyncOptions>(
     try {
       const { data } = await api.get<UserData>(APIRoute.LOGIN);
       dispatch(setUserInfoAction(data));
+      dispatch(fetchFavoritesAction());
     } catch(error) {
       deleteToken();
       dispatch(setUserInfoAction(null));
@@ -144,50 +191,6 @@ export const fetchNeabyOffers = createAsyncThunk<void, OfferId, AsyncOptions>(
     const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
 
     dispatch(setNearbyAction(data));
-  }
-);
-
-// FAVORITES
-export const fetchFavoritesAction = createAsyncThunk<void, void, AsyncOptions>(
-  APIAction.FETCH_FAVORITES,
-  async (_arg, { dispatch, extra: api }) => {
-    const { data } = await api.get<Offers>(APIRoute.FAVORITE);
-
-    dispatch(loadFavoritesAction(data));
-  }
-);
-
-export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOptions>(
-  APIAction.TOGGLE_FAVORITE,
-  async (
-    { offerId, status },
-    { dispatch, extra: api }
-  ) => {
-    try {
-      const favoriteStatus = Number(status);
-      const { data } = await api.post<Offer>(`${ APIRoute.FAVORITE }/${ offerId }/${ favoriteStatus }`);
-
-      switch(favoriteStatus) {
-        case 1: {
-          // 1. Обновить список "Избранного" у пользователя
-          dispatch(addFavoriteItemAction(data));
-          break;
-        }
-        case 0: {
-          dispatch(removeFavoriteItemAction(data));
-          break;
-        }
-      }
-
-      // 2. Обновить список офферов, а точнее - конкретный оффер и его статус избранного
-      dispatch(updateOffersListAction(data));
-
-      // 3. Если у нас открыт какой-то конкретней оффер - надо обновить и его,
-      // т.к. он в отдельном стейте и дергается отдельным запросом
-      dispatch(updateOfferItemFavoriteAction(status));
-    } catch(error) {
-      toast.warn(ERROR_TEXT.ADD_FAVORITE);
-    }
   }
 );
 

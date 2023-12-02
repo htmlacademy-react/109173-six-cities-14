@@ -22,6 +22,12 @@ export const offersDataProcess = createSlice({
     updateOffersListAction: (state, action: PayloadAction<Offer>) => {
       const newOffer = action.payload;
       state.offers = state.offers.map((offer: Offer) => (offer.id === newOffer.id) ? newOffer : offer);
+    },
+    clearOffersFavoriteStatus: (state) => {
+      state.offers = state.offers.map((offer: Offer) => {
+        offer.isFavorite = false;
+        return offer;
+      });
     }
   },
   extraReducers(builder) {
@@ -38,4 +44,4 @@ export const offersDataProcess = createSlice({
   }
 });
 
-export const { loadOffersAction, setOffersLoadingStatus, updateOffersListAction } = offersDataProcess.actions;
+export const { loadOffersAction, setOffersLoadingStatus, updateOffersListAction, clearOffersFavoriteStatus } = offersDataProcess.actions;
