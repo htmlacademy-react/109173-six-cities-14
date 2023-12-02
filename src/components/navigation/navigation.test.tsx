@@ -22,7 +22,6 @@ describe('[Component ]:', () => {
     const user = makeMockUser();
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
-        favorites: [],
         authorizationStatus: AuthorizationStatus.AUTH,
         userInfo: user,
       }

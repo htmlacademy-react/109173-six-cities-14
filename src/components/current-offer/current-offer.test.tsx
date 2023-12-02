@@ -66,7 +66,6 @@ describe('[Component Current-offer]:', () => {
     const nearby = [offer];
     const initialMockStoreState = makeMockStoreState({
       [Namespace.USER]: {
-        favorites: [],
         authorizationStatus: AuthorizationStatus.AUTH,
         userInfo: null,
       }

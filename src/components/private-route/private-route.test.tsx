@@ -19,7 +19,6 @@ describe('[Component Private-route]:', () => {
     const notExpectedText = 'Favorites page';
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
-        favorites: [],
         authorizationStatus: AuthorizationStatus.NO_AUTH,
         userInfo: null,
       }
@@ -49,7 +48,6 @@ describe('[Component Private-route]:', () => {
     const notExpectedText = 'Login page';
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
-        favorites: [],
         authorizationStatus: AuthorizationStatus.AUTH,
         userInfo: null,
       }
@@ -80,7 +78,6 @@ describe('[Component Private-route]:', () => {
     const notExpectedChildren = 'Not expected text';
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
-        favorites: [],
         authorizationStatus: AuthorizationStatus.AUTH,
         userInfo: null,
       }
