@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { makeMockOffer } from '../../utils/mock';
 import { widthHistoryStore } from '../../utils/mock-components';
 import CardPlace from './card-place';
@@ -16,7 +17,6 @@ describe('[Component: Card-place:]', () => {
     };
     const component = widthHistoryStore(<CardPlace offerItem={ mockOffer } />);
 
-    screen.debug();
     render(component);
     const ExpectElem = {
       CONTAINER: screen.getByTestId(CardPlaceElem.CONTAINER),
@@ -33,5 +33,21 @@ describe('[Component: Card-place:]', () => {
     expect(ExpectElem.RATING).toBeInTheDocument();
     expect(ExpectElem.NAME).toBeInTheDocument();
     expect(ExpectElem.TYPE).toBeInTheDocument();
+  });
+
+  it('Should correct react onMouseEnter/onMouseLeave', async () => {
+    const user = userEvent.setup();
+    const mockOffer = makeMockOffer();
+    const onMouseEnter = vi.fn();
+    const onMouseLeave = vi.fn();
+    const component = widthHistoryStore(<CardPlace offerItem={ mockOffer } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave} />);
+
+    render(component);
+    const cardPlace = screen.getByTestId('cardPlaceElem');
+    await user.hover(cardPlace);
+    await user.unhover(cardPlace);
+
+    expect(onMouseEnter).toBeCalled();
+    expect(onMouseLeave).toBeCalled();
   });
 });
