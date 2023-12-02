@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import PrivateRoute from './private-route';
 import { AppRoute, AuthorizationStatus, Namespace } from '../../const';
-import { makeMockStoreState, makeMockUser } from '../../utils/mock';
+import { makeMockStoreState } from '../../utils/mock';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { withMockHistory, withMockStore } from '../../utils/mock-components';
 import { Route, Routes } from 'react-router-dom';
@@ -14,14 +14,14 @@ describe('[Component Private-route]:', () => {
     mockHistory.push(AppRoute.FAVORITES);
   });
 
-  it('Should render "Login page" when user didnt loggen in and page AppRoute.FAVORITES', () => {
+  it('Should render "Login page" when user didnt logged in and page AppRoute.FAVORITES', () => {
     const expectedText = 'Login page';
-    const notExpectedText = 'Not expected text';
+    const notExpectedText = 'Favorites page';
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
         favorites: [],
         authorizationStatus: AuthorizationStatus.NO_AUTH,
-        userInfo: makeMockUser(),
+        userInfo: null,
       }
     });
     const preparedComponent = withMockHistory(
@@ -45,25 +45,29 @@ describe('[Component Private-route]:', () => {
   });
 
   it('Should render "Main page" when user loggen in and page AppRoute.LOGIN', () => {
-    mockHistory.push(AppRoute.LOGIN);
     const expectedText = 'Main page';
     const notExpectedText = 'Login page';
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
         favorites: [],
         authorizationStatus: AuthorizationStatus.AUTH,
-        userInfo: makeMockUser(),
+        userInfo: null,
       }
     });
     const preparedComponent = withMockHistory(
       <Routes>
-        <Route path={ AppRoute.MAIN } element={ <span> { expectedText } </span> } >
-          <Route path={ AppRoute.LOGIN } element={ <span>{ notExpectedText }</span> } />
-        </Route>
+        <Route path={ AppRoute.MAIN } element={ <span> { expectedText } </span> } />
+        <Route path={ AppRoute.LOGIN } element={
+          <PrivateRoute redirectTo={ AppRoute.MAIN }>
+            <span>{ notExpectedText }</span>
+          </PrivateRoute>
+        }
+        />
       </Routes>,
       mockHistory
     );
     const component = withMockStore(preparedComponent, initialMockStore);
+    mockHistory.push(AppRoute.LOGIN);
 
     render(component);
 
@@ -78,7 +82,7 @@ describe('[Component Private-route]:', () => {
       [Namespace.USER]: {
         favorites: [],
         authorizationStatus: AuthorizationStatus.AUTH,
-        userInfo: makeMockUser(),
+        userInfo: null,
       }
     });
     const preparedComponent = withMockHistory(
