@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NAMESPACE } from '../../../const';
+import { Namespace } from '../../../const';
 import { FavoritesDataProcess } from '../../../types/state';
 import { Offer, Offers } from '../../../types/offer';
 
@@ -8,11 +8,15 @@ const initialState: FavoritesDataProcess = {
 };
 
 export const favoritesDataProcess = createSlice({
-  name: NAMESPACE.FAVORITES,
+  name: Namespace.FAVORITES,
   initialState,
   reducers: {
-    loadFavoritesAction: (state, action: PayloadAction<{ offers: Offers }>) => {
-      state.favorites = action.payload.offers;
+    loadFavoritesAction: (state, action: PayloadAction<Offers>) => {
+      state.favorites = action.payload;
+    },
+
+    clearFavoritesAction: (state) => {
+      state.favorites = [];
     },
 
     // FAVORITE
@@ -27,4 +31,4 @@ export const favoritesDataProcess = createSlice({
   },
 });
 
-export const { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } = favoritesDataProcess.actions;
+export const { loadFavoritesAction, clearFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } = favoritesDataProcess.actions;

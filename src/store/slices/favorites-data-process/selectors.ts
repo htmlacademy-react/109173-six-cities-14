@@ -1,9 +1,7 @@
-import { NAMESPACE } from '../../../const';
+import { Namespace } from '../../../const';
 import { Offers } from '../../../types/offer';
-import { State } from '../../../types/state';
+import { FavoritesNamespaceState } from '../../../types/selector';
 
-type FavoritesNamespace = typeof NAMESPACE.FAVORITES
-
-export function getFavorites(state: Pick<State, FavoritesNamespace>): Offers {
-  return state[NAMESPACE.FAVORITES].favorites;
+export function getFavorites(state: FavoritesNamespaceState): Offers {
+  return state[Namespace.FAVORITES].favorites;
 }

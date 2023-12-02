@@ -1,4 +1,5 @@
 // MAIN
+export const DEFAULT_CITY = 'Paris';
 export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
 
@@ -25,7 +26,7 @@ export const APIRoute = {
   LOGOUT: '/six-cities/logout',
 };
 
-export const NAMESPACE = {
+export const Namespace = {
   MAIN: 'MAIN',
   CITY: 'CITY',
   OFFERS: 'OFFERS',
@@ -53,7 +54,7 @@ export const DateFormat = {
   DATE_TIME: 'DATE_TIME'
 };
 
-export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export const months = [
   'January',

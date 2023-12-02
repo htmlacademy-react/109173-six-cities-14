@@ -5,7 +5,6 @@ import { UserData } from './user-data';
 
 
 export type UserProcess = {
-  favorites: Offers;
   authorizationStatus: string;
   userInfo: UserData | null;
 };

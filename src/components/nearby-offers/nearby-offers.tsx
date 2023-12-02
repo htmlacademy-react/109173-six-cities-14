@@ -8,7 +8,7 @@ export default function NearbyOffers({ offers, onSelectPoint }: NearbyOffersProp
   return (
     <section className="near-places places">
       <h2 className="near-places__title">Other places in the neighbourhood</h2>
-      <div className="near-places__list places__list">
+      <div className="near-places__list places__list" data-testid="nearbyListElem">
         <OffersList offers={ nearbyOffers } onSelectPoint={ onSelectPoint }/>
       </div>
     </section>

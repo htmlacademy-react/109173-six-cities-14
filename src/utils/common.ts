@@ -1,4 +1,5 @@
 import { DateFormat, months } from '../const';
+import { Offers } from '../types/offer';
 
 export function getRatingPercent(rating: number) {
   return (100 / 5) * rating;
@@ -35,4 +36,33 @@ export function getFormattedDate(date: Date, format: typeof DateFormat[keyof typ
 
 export function getRightPluralForm(phrase: string, itemsCount: number) {
   return (itemsCount <= 1) ? phrase : `${phrase}s`;
+}
+
+export function getOffersByCities(offers: Offers) {
+  const offersByCities: Map<string, Offers> = new Map();
+
+  offers.map((offer) => {
+    const city = offer.city.name;
+
+    if(offersByCities.has(city)) {
+      const cityOffers = offersByCities.get(city);
+
+      if(cityOffers) {
+        cityOffers?.push(offer);
+
+        offersByCities.set(city, cityOffers);
+      }
+    } else {
+      offersByCities.set(city, [ offer ]);
+    }
+  });
+
+  return offersByCities;
+}
+
+export function getStarTextByNum(number: number): string {
+  const starsText = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
+  const index = number - 1;
+
+  return starsText.at(index) || '';
 }

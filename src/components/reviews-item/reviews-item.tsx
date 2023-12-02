@@ -14,7 +14,7 @@ export default function ReviewsItem({ comment }: ReviewsItemProps): React.ReactE
   const monthYearDate = getFormattedDate(commentDate, DateFormat.MONTH_YEAR);
 
   return (
-    <li className="reviews__item">
+    <li className="reviews__item" data-testid="reviewsItem">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
           <img className="reviews__avatar user__avatar" src={ user.avatarUrl } width={ 54 } height={ 54 } alt="Reviews avatar" />
@@ -25,7 +25,7 @@ export default function ReviewsItem({ comment }: ReviewsItemProps): React.ReactE
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
+          <div className="reviews__stars rating__stars" data-testid="reviewsratingElem">
             <StarsRating rating={ comment.rating } />
           </div>
         </div>

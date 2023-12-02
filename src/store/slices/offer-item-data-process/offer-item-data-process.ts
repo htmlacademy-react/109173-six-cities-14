@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NAMESPACE, SEND_DATA_STATUS } from '../../../const';
+import { Namespace, SEND_DATA_STATUS } from '../../../const';
 import { OfferItemDataProcess } from '../../../types/state';
 import { Offer, Offers } from '../../../types/offer';
 import { Comment, Comments } from '../../../types/comment';
+
+const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
 
 const initialState: OfferItemDataProcess = {
   offer: null,
@@ -13,12 +15,12 @@ const initialState: OfferItemDataProcess = {
 };
 
 export const offerItemDataProcess = createSlice({
-  name: NAMESPACE.OFFER,
+  name: Namespace.OFFER,
   initialState,
   reducers: {
     // OFFER
-    setOfferItemAction: (state, action: PayloadAction<{ offer: Offer | null }>) => {
-      state.offer = action.payload.offer;
+    setOfferItemAction: (state, action: PayloadAction<Offer | null>) => {
+      state.offer = action.payload;
     },
     updateOfferItemFavoriteAction: (state, action: PayloadAction<boolean>) => {
       if(state.offer) {
@@ -27,8 +29,8 @@ export const offerItemDataProcess = createSlice({
     },
 
     // COMMENTS
-    setCommentsAction: (state, action: PayloadAction<{ comments: Comments }>) => {
-      state.comments = action.payload.comments;
+    setCommentsAction: (state, action: PayloadAction<Comments>) => {
+      state.comments = action.payload;
     },
     setCommentsLoadedStatusAction: (state, action: PayloadAction<boolean>) => {
       state.isCommentsLoaded = action.payload;
@@ -38,11 +40,16 @@ export const offerItemDataProcess = createSlice({
     },
     setAddCommentStatusAction: (state, action: PayloadAction<string>) => {
       state.addCommentStatus = action.payload;
+
+      const timeoutId = setTimeout(() => {
+        state.addCommentStatus = SEND_DATA_STATUS.NONE;
+        clearTimeout(timeoutId);
+      }, CLEAR_COMMENT_STATUS_TIMEOUT);
     },
 
     // NEARBY
-    setNearbyAction: (state, action: PayloadAction<{ nearbyOffers: Offers }>) => {
-      state.nearbyOffers = action.payload.nearbyOffers;
+    setNearbyAction: (state, action: PayloadAction<Offers>) => {
+      state.nearbyOffers = action.payload;
     },
   }
 });

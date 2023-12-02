@@ -7,7 +7,7 @@ import { deleteToken, setToken } from '../services/token';
 
 import { Offer, Offers } from '../types/offer';
 import { AppDispatch, State } from '../types/state';
-import { OffersData } from '../types/offers-data';
+import { OfferId } from '../types/offers-data';
 import { Comment, Comments } from '../types/comment';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
@@ -17,7 +17,7 @@ import { redirectToRoute } from './action';
 
 // SLICES
 import { setUserInfoAction } from './slices/user-process/user-process';
-import { loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
+import { clearOffersFavoriteStatus, loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
 import {
   setOfferItemAction,
   setCommentsAction,
@@ -27,13 +27,11 @@ import {
   setNearbyAction,
   updateOfferItemFavoriteAction
 } from './slices/offer-item-data-process/offer-item-data-process';
-import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
-import { browserHistory } from '../browser-history';
+import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction, clearFavoritesAction } from './slices/favorites-data-process/favorites-data-process';
+import browserHistory from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
 
 // CODE
-const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
-
 const APIAction = {
   FETCH_OFFERS: 'data/fetchOffers',
   FETCH_OFFER_ITEM: 'data/fetchOfferItem',
@@ -62,97 +60,13 @@ type AsyncOptions = {
   extra: AxiosInstance;
 };
 
-// AUTH
-export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
-  APIAction.USER_LOGIN,
-  async (
-    { email, password },
-    { dispatch, extra: api }
-  ) => {
-    const { data } = await api.post<UserData>(
-      APIRoute.LOGIN,
-      { email, password }
-    );
-    const { token } = data;
-
-    if(token) {
-      setToken(token);
-    }
-
-    dispatch(setUserInfoAction(data));
-    browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
-  }
-);
-
-export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
-  APIAction.USER_LOGOUT,
-  async (_arg, { dispatch, extra: api }) => {
-    await api.delete(APIRoute.LOGOUT);
-    deleteToken();
-    dispatch(setUserInfoAction(null));
-  }
-);
-
-export const checkAuthAction = createAsyncThunk<void, void, AsyncOptions>(
-  APIAction.USER_CHECK_AUTH,
-  async (_arg, { dispatch, extra: api }) => {
-    try {
-      const { data } = await api.get<UserData>(APIRoute.LOGIN);
-      dispatch(setUserInfoAction(data));
-    } catch(error) {
-      deleteToken();
-      dispatch(setUserInfoAction(null));
-    }
-  }
-);
-
-// OFFERS
-export const fetchOffersAction = createAsyncThunk<void, void, AsyncOptions>(
-  APIAction.FETCH_OFFERS,
-  async (_arg, { dispatch, extra: api }) => {
-    const { data } = await api.get<Offers>(APIRoute.OFFERS);
-
-    dispatch(loadOffersAction({ offers: data }));
-  }
-);
-
-export const fetchOfferItemAction = createAsyncThunk<void, OffersData, AsyncOptions>(
-  APIAction.FETCH_OFFER_ITEM,
-  async (
-    { offerId },
-    {dispatch, extra: api}
-  ) => {
-    try {
-      dispatch(setOfferItemAction({ offer: null }));
-
-      const { data } = await api.get<Offer>(`${ APIRoute.OFFERS }/${ offerId }`);
-
-      dispatch(setOfferItemAction({ offer: data }));
-    } catch(err) {
-      dispatch(redirectToRoute(AppRoute.PAGE_404));
-    }
-  }
-);
-
-// NEARBY
-export const fetchNeabyOffers = createAsyncThunk<void, OffersData, AsyncOptions>(
-  APIAction.FETCH_NEARBY,
-  async (
-    { offerId }, { dispatch, extra: api }
-  ) => {
-    const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
-
-    dispatch(setNearbyAction({ nearbyOffers: data }));
-  }
-);
-
 // FAVORITES
 export const fetchFavoritesAction = createAsyncThunk<void, void, AsyncOptions>(
   APIAction.FETCH_FAVORITES,
   async (_arg, { dispatch, extra: api }) => {
     const { data } = await api.get<Offers>(APIRoute.FAVORITE);
 
-    dispatch(loadFavoritesAction({ offers: data }));
+    dispatch(loadFavoritesAction(data));
   }
 );
 
@@ -190,16 +104,106 @@ export const toggleFavoriteAction = createAsyncThunk<void, FavoriteData, AsyncOp
   }
 );
 
+// AUTH
+export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
+  APIAction.USER_LOGIN,
+  async (
+    { email, password },
+    { dispatch, extra: api }
+  ) => {
+    const { data } = await api.post<UserData>(
+      APIRoute.LOGIN,
+      { email, password }
+    );
+    const { token } = data;
+
+    if(token) {
+      setToken(token);
+    }
+
+    dispatch(setUserInfoAction(data));
+    browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
+  }
+);
+
+export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
+  APIAction.USER_LOGOUT,
+  async (_arg, { dispatch, extra: api }) => {
+    await api.delete(APIRoute.LOGOUT);
+    deleteToken();
+    dispatch(setUserInfoAction(null));
+    dispatch(clearFavoritesAction());
+    dispatch(clearOffersFavoriteStatus());
+  }
+);
+
+export const checkAuthAction = createAsyncThunk<void, void, AsyncOptions>(
+  APIAction.USER_CHECK_AUTH,
+  async (_arg, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.get<UserData>(APIRoute.LOGIN);
+      dispatch(setUserInfoAction(data));
+      dispatch(fetchFavoritesAction());
+    } catch(error) {
+      deleteToken();
+      dispatch(setUserInfoAction(null));
+    }
+  }
+);
+
+// OFFERS
+export const fetchOffersAction = createAsyncThunk<void, void, AsyncOptions>(
+  APIAction.FETCH_OFFERS,
+  async (_arg, { dispatch, extra: api }) => {
+    const { data } = await api.get<Offers>(APIRoute.OFFERS);
+
+    dispatch(loadOffersAction(data));
+  }
+);
+
+export const fetchOfferItemAction = createAsyncThunk<void, OfferId, AsyncOptions>(
+  APIAction.FETCH_OFFER_ITEM,
+  async (
+    offerId,
+    {dispatch, extra: api}
+  ) => {
+    try {
+      // Временно решаем проблему, когда в момент открытия очередного оффера
+      // пользователь может увидеть ненадолго предыдущий открытый оффер
+      dispatch(setOfferItemAction(null));
+
+      const { data } = await api.get<Offer>(`${ APIRoute.OFFERS }/${ offerId }`);
+
+      dispatch(setOfferItemAction(data));
+    } catch(err) {
+      dispatch(redirectToRoute(AppRoute.PAGE_404));
+    }
+  }
+);
+
+// NEARBY
+export const fetchNeabyOffers = createAsyncThunk<void, OfferId, AsyncOptions>(
+  APIAction.FETCH_NEARBY,
+  async (
+    offerId,
+    { dispatch, extra: api }
+  ) => {
+    const { data } = await api.get<Offers>(`${ APIRoute.OFFERS }/${ offerId }${ APIRoute.NEAREST }`);
+
+    dispatch(setNearbyAction(data));
+  }
+);
+
 // COMMENTS
-export const fetchComments = createAsyncThunk<void, OffersData, AsyncOptions>(
+export const fetchComments = createAsyncThunk<void, OfferId, AsyncOptions>(
   APIAction.FETCH_COMMENTS,
-  async ({ offerId }, { dispatch, extra: api }) => {
+  async (offerId, { dispatch, extra: api }) => {
     dispatch(setCommentsLoadedStatusAction(false));
 
     const { data } = await api.get<Comments>(`${ APIRoute.COMMENTS }/${ offerId }`);
 
     dispatch(setCommentsLoadedStatusAction(true));
-    dispatch(setCommentsAction({ comments: data }));
+    dispatch(setCommentsAction(data));
   }
 );
 
@@ -212,21 +216,14 @@ export const fetchCommentAction = createAsyncThunk<void, CommentData, AsyncOptio
         {rating, comment}
       );
 
-      toast.success(SUCCESS_TEXT.ADD_COMMENT);
-
       dispatch(addCommentAction(data));
       dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.LOADED));
 
-      setTimeout(() => dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.NONE)), CLEAR_COMMENT_STATUS_TIMEOUT);
+      toast.success(SUCCESS_TEXT.ADD_COMMENT);
     } catch(err) {
       dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.ERROR));
 
       toast.warn(ERROR_TEXT.ADD_COMMENT);
-
-      setTimeout(
-        () => dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.NONE)),
-        CLEAR_COMMENT_STATUS_TIMEOUT
-      );
     }
 
   }

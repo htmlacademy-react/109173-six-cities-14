@@ -2,7 +2,6 @@ import { useAppDispatch } from '.';
 import { cities } from '../const';
 import { setCityAction } from '../store/slices/city-process/city-process';
 
-
 export default function useCitySelection() {
   const dispatch = useAppDispatch();
 
@@ -12,7 +11,7 @@ export default function useCitySelection() {
     const selectedCity = cities.find((city) => city === targetCity);
 
     if(selectedCity !== undefined) {
-      dispatch(setCityAction({ city: selectedCity }));
+      dispatch(setCityAction(selectedCity));
     }
   }
 

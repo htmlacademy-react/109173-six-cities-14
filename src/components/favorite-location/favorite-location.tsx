@@ -8,7 +8,7 @@ type FavoriteLocationProps = {
 
 export default function FavoriteLocation({ city, offers }: FavoriteLocationProps): React.ReactElement {
   return (
-    <li className="favorites__locations-items">
+    <li className="favorites__locations-items" data-testid="favoritesItemElem">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
           <a className="locations__item-link" href="#">
@@ -16,7 +16,7 @@ export default function FavoriteLocation({ city, offers }: FavoriteLocationProps
           </a>
         </div>
       </div>
-      <div className="favorites__places">
+      <div className="favorites__places" data-testid="favoritePlacesElem">
         {
           offers?.map((offer): React.ReactElement =>
             <CardPlace key={ offer.id } offerItem={ offer } isCompact/>

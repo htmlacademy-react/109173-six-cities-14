@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NAMESPACE } from '../../../const';
+import { Namespace } from '../../../const';
 import { OffersDataProcess } from '../../../types/state';
 import { Offer, Offers } from '../../../types/offer';
 import { fetchOffersAction } from '../../api-action';
@@ -10,11 +10,11 @@ const initialState: OffersDataProcess = {
 };
 
 export const offersDataProcess = createSlice({
-  name: NAMESPACE.OFFERS,
+  name: Namespace.OFFERS,
   initialState,
   reducers: {
-    loadOffersAction: (state, action: PayloadAction<{ offers: Offers }>) => {
-      state.offers = action.payload.offers;
+    loadOffersAction: (state, action: PayloadAction<Offers>) => {
+      state.offers = action.payload;
     },
     setOffersLoadingStatus: (state, action: PayloadAction<boolean>) => {
       state.isOffersLoading = action.payload;
@@ -22,6 +22,12 @@ export const offersDataProcess = createSlice({
     updateOffersListAction: (state, action: PayloadAction<Offer>) => {
       const newOffer = action.payload;
       state.offers = state.offers.map((offer: Offer) => (offer.id === newOffer.id) ? newOffer : offer);
+    },
+    clearOffersFavoriteStatus: (state) => {
+      state.offers = state.offers.map((offer: Offer) => {
+        offer.isFavorite = false;
+        return offer;
+      });
     }
   },
   extraReducers(builder) {
@@ -38,4 +44,4 @@ export const offersDataProcess = createSlice({
   }
 });
 
-export const { loadOffersAction, setOffersLoadingStatus, updateOffersListAction } = offersDataProcess.actions;
+export const { loadOffersAction, setOffersLoadingStatus, updateOffersListAction, clearOffersFavoriteStatus } = offersDataProcess.actions;

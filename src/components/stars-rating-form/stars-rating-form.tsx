@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { getStarTextByNum } from '../../utils/common';
 
 type StartRatingProps = {
   rating: number;
@@ -16,7 +17,7 @@ export default function StarsRatingForm({ rating, disabledState, onRatingChange 
   }
 
   return (
-    <div className="reviews__rating-form form__rating">
+    <div className="reviews__rating-form form__rating" data-testid="starsRatingElem">
       {
         stars.map((star) => (
           <Fragment key={ star } >
@@ -28,8 +29,9 @@ export default function StarsRatingForm({ rating, disabledState, onRatingChange 
               defaultChecked={star <= rating}
               onChange={ handleRatingChange }
               disabled={ disabledState }
+              data-testid="starsRatingInputElem"
             />
-            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title="perfect">
+            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title={ getStarTextByNum(star) } data-testid="starsRatingLabelElem">
               <svg className="form__star-image" width={ 37 } height={ 33 }>
                 <use xlinkHref="#icon-star"></use>
               </svg>

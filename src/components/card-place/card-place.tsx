@@ -62,6 +62,7 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
       ) }
       onMouseEnter={ onMouseEnter }
       onMouseLeave={ onMouseLeave }
+      data-testid="cardPlaceElem"
     >
       {
         isPremium && (
@@ -83,6 +84,7 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
             width={ imgWidth }
             height={ imgHeight }
             alt="Place image"
+            data-testid="cardPlaceImgElem"
           />
         </Link>
       </div>
@@ -92,7 +94,7 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
           { [CSSClasses.FAVORITE_CARD_INFO]: isCompact }
         ) }
       >
-        <div className="place-card__price-wrapper">
+        <div className="place-card__price-wrapper" data-testid="cardPlacePriceElem">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{ price }</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
@@ -111,15 +113,15 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
             <span className="visually-hidden">{ bookmarkText }</span>
           </button>
         </div>
-        <div className="place-card__rating rating">
+        <div className="place-card__rating rating" data-testid="cardPlaceRatingElem">
           <div className="place-card__stars rating__stars">
             <StarsRating rating={ rating } />
           </div>
         </div>
-        <h2 className="place-card__name">
+        <h2 className="place-card__name" data-testid="cardPlaceNameElem">
           <Link to={`${AppRoute.OFFER}/${ id }`}>{ title }</Link>
         </h2>
-        <p className="place-card__type">{ type }</p>
+        <p className="place-card__type" data-testid="cardPlaceTypeElem">{ type }</p>
       </div>
     </article>
   );
