@@ -13,6 +13,20 @@ import { AuthorizationStatus, DEFAULT_CITY, Namespace, SEND_DATA_STATUS } from '
 
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
 
+export function setMockBrowserHistory() {
+  vi.mock('../browser-history', () => ({
+    default: {
+      location: { pathname: ''},
+      push(path: string) {
+        this.location.pathname = path;
+      },
+      back() {
+        this.location.pathname = '';
+      }
+    }
+  }));
+}
+
 export function extractActionsTypes(actions: Action<string>[]) {
   return actions.map((action) => action.type);
 }
