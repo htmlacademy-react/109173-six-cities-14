@@ -59,3 +59,10 @@ export function getOffersByCities(offers: Offers) {
 
   return offersByCities;
 }
+
+export function getStarTextByNum(number: number): string {
+  const starsText = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
+  const index = number - 1;
+
+  return starsText.at(index) || '';
+}
