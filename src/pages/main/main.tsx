@@ -35,7 +35,7 @@ export default function Main({
   return (
     <>
       <Helmet>
-        <title>6 cities - Main</title>
+        <title>6 cities</title>
       </Helmet>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">

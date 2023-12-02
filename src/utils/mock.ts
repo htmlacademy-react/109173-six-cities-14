@@ -48,7 +48,6 @@ export function makeMockStoreState(initialState?: Partial<State>) {
       isOffersLoading: false,
     },
     [Namespace.USER]: {
-      favorites: [],
       authorizationStatus: AuthorizationStatus.UNKNOWN,
       userInfo: null,
     },

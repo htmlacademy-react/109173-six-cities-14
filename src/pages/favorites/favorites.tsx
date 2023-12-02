@@ -15,7 +15,7 @@ export default function Favorites(): JSX.Element {
   return (
     <div className="page__favorites-container container">
       <Helmet>
-        <title>6 cities - Favorites</title>
+        <title>6 cities: favorites</title>
       </Helmet>
 
       {(favorites?.length <= 0

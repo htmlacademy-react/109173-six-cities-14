@@ -25,10 +25,10 @@ export default function Login(): React.ReactElement {
   return (
     <div className="page__login-container container">
       <Helmet>
-        <title>6 cities - Login</title>
+        <title>6 cities: authorization</title>
       </Helmet>
       <section className="login">
-        <h1 className="login__title">Sign in</h1>
+        <h1 className="login__title" data-testid="signInTitleElem">Sign in</h1>
         <form className="login__form form" action="#" method="post" onSubmit={ handleFormSubmit }>
           <div className="login__input-wrapper form__input-wrapper">
             <label className="visually-hidden">E-mail</label>
@@ -38,9 +38,10 @@ export default function Login(): React.ReactElement {
             <label className="visually-hidden">Password</label>
             <input className="login__input form__input" type="password" name="password" placeholder="Password" required ref={ userPassword } />
           </div>
-          <button className="login__submit form__submit button" type="submit">Sign in</button>
+          <button className="login__submit form__submit button" type="submit" data-testid="signInBtnElem">Sign in</button>
         </form>
       </section>
+      {/* TODO: Переделать на компонент рандомного вывода городов и ссылок на них */}
       <section className="locations locations--login locations--current">
         <div className="locations__item">
           <a className="locations__item-link" href="#">

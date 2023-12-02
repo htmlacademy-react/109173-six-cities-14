@@ -6,7 +6,6 @@ import { checkAuthAction, loginAction, logoutAction } from '../../api-action';
 import { getToken } from '../../../services/token';
 
 const initialState: UserProcess = {
-  favorites: [],
   authorizationStatus: AuthorizationStatus.UNKNOWN,
   userInfo: null,
 };

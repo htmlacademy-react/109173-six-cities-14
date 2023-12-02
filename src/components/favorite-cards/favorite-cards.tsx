@@ -11,7 +11,7 @@ export default function FavoriteCards({ offers }: FavoritesProps): React.ReactEl
         {
           (favoriteCities?.length > 0)
             && favoriteCities.map((city) =>
-              <FavoriteLocation key={ city } city={ city } offers={ offers.get(city) } />)
+              <FavoriteLocation key={ city } city={ city } offers={ offers?.get(city) } />)
         }
       </ul>
     </section>

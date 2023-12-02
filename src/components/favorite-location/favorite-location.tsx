@@ -8,7 +8,7 @@ type FavoriteLocationProps = {
 
 export default function FavoriteLocation({ city, offers }: FavoriteLocationProps): React.ReactElement {
   return (
-    <li className="favorites__locations-items">
+    <li className="favorites__locations-items" data-testid="favoritesItemElem">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
           <a className="locations__item-link" href="#">
