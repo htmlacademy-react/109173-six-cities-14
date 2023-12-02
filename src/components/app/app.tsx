@@ -20,8 +20,6 @@ export default function App(): React.ReactElement {
   const offers = useAppSelector(getOffers);
   const itHasOffers = (offers?.length > 0);
 
-  // TODO: Надо опираться не на количество офферов, а на какой-нибудь статус типа isOffersLoading,
-  // чтобы в случае неудачи - показывать пустую страницу с возможностью перезагрузить офферы (может быть)
   if(isOffersLoading) {
     return <Spinner />;
   }

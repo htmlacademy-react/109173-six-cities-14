@@ -3,10 +3,11 @@ import { makeMockOffer } from '../../utils/mock';
 import FavoriteCards from './favorite-cards';
 import { getOffersByCities } from '../../utils/common';
 import { widthHistoryStore } from '../../utils/mock-components';
+import { Offers } from '../../types/offer';
 
 describe('[Component Favorite-cards:]:', () => {
   it('Should render correct', () => {
-    const offers = getOffersByCities([ makeMockOffer() ]);
+    const offers: Map<string, Offers> = getOffersByCities([ makeMockOffer() ]);
     const FavoritesElem = {
       CONTAINER: 'favoritesElem',
       LIST: 'favoritesElem'

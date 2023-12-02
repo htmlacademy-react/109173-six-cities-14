@@ -20,8 +20,8 @@ export default function PrivateRoute({
 
   return (
     (
-      (isUserLoggedIn && !isLoginPage) || // Авторизованного пользователя с login редиректим на main
-      (!isUserLoggedIn && isLoginPage) // Неавторизованному - показываем Login page
+      (isUserLoggedIn && !isLoginPage) || // Авторизованного пользователя при переходе на Login-page - редиректим на redirectTo
+      (!isUserLoggedIn && isLoginPage) // Неавторизованному при переходе на Login-page - показываем children (Login page)
     )
       ? children
       : <Navigate to={redirectTo} />

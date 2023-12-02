@@ -92,6 +92,7 @@ export default function Map({ offers, selectedPoint, currentOfferPoint }: MapPro
         {[CSSClasses.OFFER_MAP]: isNotMainPage}
       ) }
       ref={ mapRef }
+      data-testid="mapContainerElem"
     />
   );
 }
