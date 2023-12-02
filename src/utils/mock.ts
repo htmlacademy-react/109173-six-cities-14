@@ -90,12 +90,16 @@ export function makeMockLocation() {
   };
 }
 
+export function makeMockCity() {
+  return {
+    name: address.cityName(),
+    location: makeMockLocation(),
+  };
+}
+
 export function makeMockOffer() {
   return {
-    city: {
-      name: address.cityName(),
-      location: makeMockLocation(),
-    },
+    city: makeMockCity(),
     previewImage: image.imageUrl(),
     images: [],
     title: lorem.words(20),
