@@ -13,7 +13,7 @@ export default function Places({ offers, onSelectPoint }: PlacesProps): React.Re
   const [sortedOffers, currentSort, handleSortChange] = useSortOffers(offers);
 
   return (
-    <section className="cities__places places">
+    <section className="cities__places places" data-testid="placesElem">
       <h2 className="visually-hidden">Places</h2>
       <b className="places__found">{ offers.length } { getRightPluralForm('place', offers.length) } to stay in { currentCity }</b>
 
