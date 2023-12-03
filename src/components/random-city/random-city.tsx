@@ -4,11 +4,15 @@ import { useAppDispatch } from '../../hooks';
 import { setCityAction } from '../../store/slices/city-process/city-process';
 import { getRandomInRange } from '../../utils/common';
 
-export default function RandomCity(): React.ReactElement {
+type RandomCityProps = {
+  city?: string;
+};
+
+export default function RandomCity({ city }: RandomCityProps): React.ReactElement {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const randomIndex = getRandomInRange(0, cities.length - 1);
-  const randomCity = cities.at(randomIndex);
+  const randomCity = (city) ? city : cities.at(randomIndex);
 
   function handleCityClick() {
     if(!randomCity) {
@@ -22,7 +26,7 @@ export default function RandomCity(): React.ReactElement {
   return (
     <section className="locations locations--login locations--current" data-testid="randomCityElem">
       <div className="locations__item">
-        <a className="locations__item-link" href="#" onClick={ handleCityClick } data-testid="randimCityLinkElem">
+        <a className="locations__item-link" href="#" onClick={ handleCityClick } data-testid="randomCityLinkElem">
           <span>{ randomCity }</span>
         </a>
       </div>

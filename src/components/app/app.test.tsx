@@ -16,7 +16,7 @@ describe('[Component App]:', () => {
 
   describe('[Main page]:', () => {
     it('Should render "Spinner" when offers are not loaded yet', () => {
-      const component = withMockStore(preparedComponent, {
+      const { withStoreComponent } = withMockStore(preparedComponent, {
         OFFERS: {
           offers: [],
           isOffersLoading: true
@@ -25,7 +25,7 @@ describe('[Component App]:', () => {
       const spinnerId = 'spinnerElem';
       mockHistory.push(AppRoute.MAIN);
 
-      render(component);
+      render(withStoreComponent);
 
       expect(screen.getByTestId(spinnerId)).toBeInTheDocument();
     });
@@ -37,11 +37,11 @@ describe('[Component App]:', () => {
           isOffersLoading: false
         }
       });
-      const component = withMockStore(preparedComponent, initialMockStoreState);
+      const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
       const spinnerId = 'spinnerElem';
       mockHistory.push(AppRoute.MAIN);
 
-      render(component);
+      render(withStoreComponent);
 
       expect(screen.queryByTestId(spinnerId)).not.toBeInTheDocument();
     });
@@ -55,13 +55,13 @@ describe('[Component App]:', () => {
           isOffersLoading: false
         }
       });
-      const component = withMockStore(preparedComponent, initialMockStoreState);
+      const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
       const citiesListId = 'citiesListElement';
       const placesId = 'placesElem';
       const mapId = 'mapContainerElem';
       mockHistory.push(AppRoute.MAIN);
 
-      render(component);
+      render(withStoreComponent);
 
       expect(screen.getByTestId(citiesListId)).toBeInTheDocument();
       expect(screen.getByTestId(placesId)).toBeInTheDocument();
@@ -75,13 +75,13 @@ describe('[Component App]:', () => {
           isOffersLoading: false
         }
       });
-      const component = withMockStore(preparedComponent, initialMockStoreState);
+      const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
       const citiesListId = 'citiesListElement';
       const expectedStatusText = 'No places to stay available';
       const expectedDescriptionText = 'We could not find any property available at the moment in Paris';
       mockHistory.push(AppRoute.MAIN);
 
-      render(component);
+      render(withStoreComponent);
 
       expect(screen.getByTestId(citiesListId)).toBeInTheDocument();
       expect(screen.getByText(expectedStatusText)).toBeInTheDocument();
@@ -97,13 +97,13 @@ describe('[Component App]:', () => {
           userInfo: null,
         }
       });
-      const component = withMockStore(preparedComponent, initialMockStoreState);
+      const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
       const expectedTitleText = 'Favorites (empty)';
       const expectedStatusText = 'Nothing yet saved.';
       const expectedDescriptionText = 'Save properties to narrow down search or plan your future trips.';
       mockHistory.push(AppRoute.FAVORITES);
 
-      render(component);
+      render(withStoreComponent);
 
       expect(screen.getByText(expectedTitleText)).toBeInTheDocument();
       expect(screen.getByText(expectedStatusText)).toBeInTheDocument();
@@ -122,14 +122,14 @@ describe('[Component App]:', () => {
           favorites: [ offerOne, offerTwo ],
         }
       });
-      const component = withMockStore(preparedComponent, initialMockStoreState);
+      const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
       const expectedFavoritesCount = 2;
       const favoritesItemId = 'favoritesItemElem';
       const expectedTitleText = 'Saved listing';
       const notExpectedTitleText = 'Favorites (empty)';
       mockHistory.push(AppRoute.FAVORITES);
 
-      render(component);
+      render(withStoreComponent);
       const favoritesItems = screen.getAllByTestId(favoritesItemId);
 
       expect(screen.getByText(expectedTitleText)).toBeInTheDocument();
@@ -141,11 +141,11 @@ describe('[Component App]:', () => {
   describe('[Page 404]:', () => {
     it('Should render "Page 404" when user navigate to Unexistable page', () => {
       const initialMockStoreState = makeMockStoreState();
-      const component = withMockStore(preparedComponent, initialMockStoreState);
+      const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
       const expectedTitleText = '404 Requested page Not Found';
       mockHistory.push('/some/unknown/page');
 
-      render(component);
+      render(withStoreComponent);
 
       expect(screen.getByText(expectedTitleText)).toBeInTheDocument();
     });

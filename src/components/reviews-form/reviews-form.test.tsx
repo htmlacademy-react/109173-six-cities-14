@@ -21,9 +21,9 @@ describe('[Component Reviews-form]:', () => {
       COMMENT_LENGTH: '50 characters',
       BTN: 'Submit'
     };
-    const component = withMockStore(<ReviewsForm />, initialMockStoreState);
+    const { withStoreComponent } = withMockStore(<ReviewsForm />, initialMockStoreState);
 
-    render(component);
+    render(withStoreComponent);
     const submitBtn = screen.getByText(ExpectedText.BTN);
 
     expect(screen.getByText(ExpectedText.TITLE)).toBeInTheDocument();
@@ -38,9 +38,9 @@ describe('[Component Reviews-form]:', () => {
   it('Should call "handleFormSubmit" when form submitted', () => {
     const reviewsFormId = 'reviewsFormElem';
     const handleFormSubmit = vi.fn();
-    const component = withMockStore(<ReviewsForm />, initialMockStoreState);
+    const { withStoreComponent } = withMockStore(<ReviewsForm />, initialMockStoreState);
 
-    render(component);
+    render(withStoreComponent);
     const reviewsForm = screen.getByTestId(reviewsFormId);
     reviewsForm.addEventListener('submit', handleFormSubmit);
     fireEvent.submit(reviewsForm);
@@ -55,9 +55,9 @@ describe('[Component Reviews-form]:', () => {
     const submitBtnText = 'Submit';
     const testText = `The deluxe room was a quite comfortable one with all the adequate facilities.
     The only thing that made me feel uncomfortable was the rude behavior of an impolite staff at the reception desk.`;
-    const component = withMockStore(<ReviewsForm />, initialMockStoreState);
+    const { withStoreComponent } = withMockStore(<ReviewsForm />, initialMockStoreState);
 
-    render(component);
+    render(withStoreComponent);
     const textarea = screen.getByTestId(textareaId);
     const submitBtn = screen.getByText(submitBtnText);
     await user.type(textarea, testText);

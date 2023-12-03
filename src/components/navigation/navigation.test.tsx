@@ -9,10 +9,10 @@ describe('[Component ]:', () => {
 
   it('Should render correct if user is not authorized', () => {
     const initialMockStore = makeMockStoreState();
-    const preparedComponent = withMockStore(component, initialMockStore);
+    const { withStoreComponent } = withMockStore(component, initialMockStore);
     const sighInTextElem = 'Sign in';
 
-    render(preparedComponent);
+    render(withStoreComponent);
     const sighInText = screen.getByText(sighInTextElem);
 
     expect(sighInText).toBeInTheDocument();
@@ -26,10 +26,10 @@ describe('[Component ]:', () => {
         userInfo: user,
       }
     });
-    const preparedComponent = withMockStore(component, initialMockStore);
+    const { withStoreComponent } = withMockStore(component, initialMockStore);
     const signOutTextElem = 'Sign out';
 
-    render(preparedComponent);
+    render(withStoreComponent);
     const signOutText = screen.getByText(signOutTextElem);
     const userEmail = screen.getByText(user.email);
 

@@ -15,9 +15,9 @@ describe('[Component Cities-item]:', () => {
 
   it('Should render correct', () => {
     const citiesListItemId = 'citiesItemElement';
-    const component = withMockStore(<CitiesItem city={ city } onSelectCity={ mockOnSelectCity }/>, initialMockState);
+    const { withStoreComponent } = withMockStore(<CitiesItem city={ city } onSelectCity={ mockOnSelectCity }/>, initialMockState);
 
-    render(component);
+    render(withStoreComponent);
     const citiesListItem = screen.getAllByTestId(citiesListItemId);
 
     expect(citiesListItem.length).toBe(1);
@@ -26,9 +26,9 @@ describe('[Component Cities-item]:', () => {
   it('Should have className tabs__item tabs__item--active when isSelectedCity = true;', () => {
     const expectedClassName = 'tabs__item--active';
     const citiesListItemLinkId = 'citiesItemLinkElement';
-    const component = withMockStore(<CitiesItem city={ city } isSelectedCity onSelectCity={ mockOnSelectCity }/>, initialMockState);
+    const { withStoreComponent } = withMockStore(<CitiesItem city={ city } isSelectedCity onSelectCity={ mockOnSelectCity }/>, initialMockState);
 
-    render(component);
+    render(withStoreComponent);
 
     const citiesListItem = screen.getByTestId(citiesListItemLinkId);
 
@@ -37,9 +37,9 @@ describe('[Component Cities-item]:', () => {
 
   it('Should correct react onSelectCity', async () => {
     const user = userEvent.setup();
-    const component = withMockStore(<CitiesItem city={ city } onSelectCity={ mockOnSelectCity }/>, initialMockState);
+    const { withStoreComponent } = withMockStore(<CitiesItem city={ city } onSelectCity={ mockOnSelectCity }/>, initialMockState);
 
-    render(component);
+    render(withStoreComponent);
 
     const citiesItem = screen.getByTestId('citiesItemElement');
     await user.click(citiesItem);

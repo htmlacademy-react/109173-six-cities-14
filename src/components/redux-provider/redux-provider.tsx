@@ -4,7 +4,7 @@ import { Store } from '@reduxjs/toolkit';
 import { store } from '../../store';
 
 type ReduxProviderProps = {
-  children: React.ReactElement;
+  children?: React.ReactElement;
   reduxStore: Store;
 };
 

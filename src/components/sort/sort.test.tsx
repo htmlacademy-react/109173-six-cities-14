@@ -7,9 +7,9 @@ describe('[Component Sort]:', () => {
   it('Should render correct', () => {
     const currentSortName = upperCaseFirst('unknown sort name');
     const onSortChange = vi.fn();
-    const component = withMockStore(<Sort currentSort={ currentSortName } onSortChange={ onSortChange } />);
+    const { withStoreComponent } = withMockStore(<Sort currentSort={ currentSortName } onSortChange={ onSortChange } />);
 
-    render(component);
+    render(withStoreComponent);
 
     expect(screen.getByText('Sort by')).toBeInTheDocument();
     expect(screen.getByText('Unknown sort name')).toBeInTheDocument();
