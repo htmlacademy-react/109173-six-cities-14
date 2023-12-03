@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Navigate } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import cn from 'classnames';
@@ -18,6 +17,7 @@ import ReviewsForm from '../reviews-form/reviews-form';
 import Map from '../map/map';
 import NearbyOffers from '../nearby-offers/nearby-offers';
 import useFavorite from '../../hooks/useFavorite';
+import { getRightPluralForm } from '../../utils/common';
 
 const CSSClasses = {
   FAVORITE_ACTIVE: 'offer__bookmark-button--active',
@@ -35,7 +35,6 @@ type CurrentOfferProps = {
 };
 
 export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferProps): React.ReactElement {
-  const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
   const id = offer.id;
   const authStatus = useAppSelector(getAuthStatus);
   const currentOfferPoint = {id: offer.id, lat: offer.location.latitude, long: offer.location.longitude,};
@@ -56,10 +55,12 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
   const {
     title,
     description,
+    type,
     rating,
     price,
     images,
     goods,
+    bedrooms,
     isPremium,
     maxAdults,
     host
@@ -84,9 +85,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
               </div>
             ))}
             <div className="offer__name-wrapper">
-              <h1 className="offer__name" data-testid="offerTitleElem">
-                { title }
-              </h1>
+              <h1 className="offer__name" data-testid="offerTitleElem">{ title }</h1>
               <button
                 className={ cn(
                   'offer__bookmark-button button',
@@ -109,15 +108,9 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
               <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
             <ul className="offer__features" data-testid="offerFeaturesElem">
-              <li className="offer__feature offer__feature--entire">
-                Apartment
-              </li>
-              <li className="offer__feature offer__feature--bedrooms">
-                3 Bedrooms
-              </li>
-              <li className="offer__feature offer__feature--adults">
-                Max { maxAdults } adults
-              </li>
+              <li className="offer__feature offer__feature--entire">{ type }</li>
+              <li className="offer__feature offer__feature--bedrooms">{ bedrooms } { getRightPluralForm('Bedroom', bedrooms) }</li>
+              <li className="offer__feature offer__feature--adults">Max { maxAdults } { getRightPluralForm('adult', maxAdults) }</li>
             </ul>
             <div className="offer__price" data-testid="offerPriceElem">
               <b className="offer__price-value">&euro;{ price }</b>
@@ -143,15 +136,11 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
                 </span>
 
                 {host.isPro && (
-                  <span className="offer__user-status">
-                    Pro
-                  </span>
+                  <span className="offer__user-status">Pro</span>
                 )}
               </div>
               <div className="offer__description" data-testid="offerDescriptionElem">
-                <p className="offer__text">
-                  { description }
-                </p>
+                <p className="offer__text">{ description }</p>
               </div>
             </div>
 
@@ -165,11 +154,11 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
           </div>
         </div>
         {/* Карта */}
-        { itHasNearbyOffers && <Map offers={ nearby } selectedPoint={ selectedPoint } currentOfferPoint={ currentOfferPoint }/> }
+        { itHasNearbyOffers && <Map offers={ nearby } selectedPoint={ null } currentOfferPoint={ currentOfferPoint }/> }
       </section>
       <div className="container" data-testid="offerNearbyElem">
         {/* Места поблизости */}
-        { itHasNearbyOffers && <NearbyOffers offers={ nearby } onSelectPoint={ setSelectedPoint }/> }
+        { itHasNearbyOffers && <NearbyOffers offers={ nearby } onSelectPoint={ () => {} }/> }
       </div>
     </>
   );
