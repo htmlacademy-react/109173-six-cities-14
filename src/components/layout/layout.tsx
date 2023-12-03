@@ -35,6 +35,8 @@ export default function Layout(): React.ReactElement {
 
   const offers = useAppSelector(getOffers);
   const isMainEmpty = (offers?.length <= 0);
+  const currentOfferRexExp = new RegExp('/offer/[\\d\\w-]*', 'gm');
+  const isOfferPage = currentOfferRexExp.test(location.pathname);
 
   let pageWrapperClassName = String(CSSClasses.PAGE_WRAPPER);
   let mainClassName = String(CSSClasses.MAIN_BASE);
@@ -47,10 +49,6 @@ export default function Layout(): React.ReactElement {
       if(isMainEmpty) {
         mainClassName += CSSClasses.MAIN_EMPTY_MODE;
       }
-      break;
-    }
-    case AppRoute.OFFER: {
-      mainClassName += CSSClasses.OFFER_MODE;
       break;
     }
     case AppRoute.FAVORITES: {
@@ -68,6 +66,10 @@ export default function Layout(): React.ReactElement {
       mainClassName += CSSClasses.LOGIN_MODE;
       break;
     }
+  }
+
+  if(isOfferPage) {
+    mainClassName += CSSClasses.OFFER_MODE;
   }
 
   return (
