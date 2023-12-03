@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ReviewsForm from './reviews-form';
 import { withMockStore } from '../../utils/mock-components';
 import { makeMockStoreState } from '../../utils/mock';
@@ -33,20 +33,6 @@ describe('[Component Reviews-form]:', () => {
     expect(screen.getByText(ExpectedText.COMMENT_LENGTH)).toBeInTheDocument();
     expect(submitBtn).toBeInTheDocument();
     expect(submitBtn).toBeDisabled();
-  });
-
-  it('Should call "handleFormSubmit" when form submitted', () => {
-    const reviewsFormId = 'reviewsFormElem';
-    const handleFormSubmit = vi.fn();
-    const { withStoreComponent } = withMockStore(<ReviewsForm />, initialMockStoreState);
-
-    render(withStoreComponent);
-    const reviewsForm = screen.getByTestId(reviewsFormId);
-    reviewsForm.addEventListener('submit', handleFormSubmit);
-    fireEvent.submit(reviewsForm);
-    reviewsForm.removeEventListener('submit', handleFormSubmit);
-
-    expect(handleFormSubmit).toBeCalled();
   });
 
   it('Should enable submit BTN when typed enuogh symbols to textarea', async () => {

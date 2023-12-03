@@ -16,7 +16,7 @@ export const AppRoute = {
   FAVORITES: '/favorites',
   OFFER: '/offer',
   PAGE_404: '/page404',
-};
+} as const;
 export const APIRoute = {
   OFFERS: '/six-cities/offers',
   NEAREST: '/nearby',
@@ -46,13 +46,13 @@ export const SEND_DATA_STATUS = {
   LOADING: 'LOADING',
   LOADED: 'LOADED',
   ERROR: 'ERROR',
-};
+} as const;
 
 // OTHERS
 export const DateFormat = {
   MONTH_YEAR: 'MONTH_YEAR',
   DATE_TIME: 'DATE_TIME'
-};
+} as const;
 
 export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 

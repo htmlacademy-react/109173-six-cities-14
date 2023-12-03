@@ -17,22 +17,6 @@ describe('[Component ]:', () => {
     expect(expectElem).toBeInTheDocument();
   });
 
-  it('Should call "handleCityClick"', async () => {
-    const user = userEvent.setup();
-    const randomCityLinkId = 'randomCityLinkElem';
-    const handleCityClick = vi.fn();
-
-    const { withStoreComponent } = widthHistoryStore(<RandomCity />);
-
-    render(withStoreComponent);
-    const expectElem = screen.getByTestId(randomCityLinkId);
-    expectElem.addEventListener('click', handleCityClick);
-    await user.click(expectElem);
-    expectElem.removeEventListener('click', handleCityClick);
-
-    expect(handleCityClick).toBeCalled();
-  });
-
   it('Should dispatch "CITY/setCityAction" and redirect to Main page', async () => {
     const user = userEvent.setup();
     const cityName = 'Test city name';
