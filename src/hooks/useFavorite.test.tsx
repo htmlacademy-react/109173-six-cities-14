@@ -14,7 +14,7 @@ describe('[Hook: useFavorite]:', () => {
 
   beforeAll(() => {
     initialMockHistory = createMemoryHistory();
-    useNavigateFunc = (route: string) => initialMockHistory.push(route);
+    useNavigateFunc = () => initialMockHistory.push(AppRoute.LOGIN);
     vi.spyOn(navigate, 'useNavigate').mockReturnValue(useNavigateFunc);
   });
 
