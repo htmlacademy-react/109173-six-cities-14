@@ -8,9 +8,9 @@ describe('[Component: Cities-list:]', () => {
   it('Should render correct', () => {
     const citiesListContainerId = 'citiesListElement';
     const citiesListItemId = 'citiesItemElement';
-    const component = widthHistoryStore(<CitiesList />);
+    const { withStoreComponent } = widthHistoryStore(<CitiesList />);
 
-    render(component);
+    render(withStoreComponent);
     const citiesListContainer = screen.getByTestId(citiesListContainerId);
     const citiesListItems = screen.getAllByTestId(citiesListItemId);
 

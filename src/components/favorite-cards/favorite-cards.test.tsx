@@ -12,9 +12,9 @@ describe('[Component Favorite-cards:]:', () => {
       CONTAINER: 'favoritesElem',
       LIST: 'favoritesElem'
     };
-    const component = widthHistoryStore(<FavoriteCards offers={ offers } />);
+    const { withStoreComponent } = widthHistoryStore(<FavoriteCards offers={ offers } />);
 
-    render(component);
+    render(withStoreComponent);
     const ExpectElem = {
       CONTAINER: screen.getByTestId(FavoritesElem.CONTAINER),
       LIST: screen.getByTestId(FavoritesElem.LIST),

@@ -15,9 +15,9 @@ describe('[Component: Card-place:]', () => {
       NAME: 'cardPlaceNameElem',
       TYPE: 'cardPlaceTypeElem',
     };
-    const component = widthHistoryStore(<CardPlace offerItem={ mockOffer } />);
+    const { withStoreComponent } = widthHistoryStore(<CardPlace offerItem={ mockOffer } />);
 
-    render(component);
+    render(withStoreComponent);
     const ExpectElem = {
       CONTAINER: screen.getByTestId(CardPlaceElem.CONTAINER),
       IMG: screen.getByTestId(CardPlaceElem.IMG),
@@ -40,9 +40,9 @@ describe('[Component: Card-place:]', () => {
     const mockOffer = makeMockOffer();
     const onMouseEnter = vi.fn();
     const onMouseLeave = vi.fn();
-    const component = widthHistoryStore(<CardPlace offerItem={ mockOffer } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave} />);
+    const { withStoreComponent } = widthHistoryStore(<CardPlace offerItem={ mockOffer } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave} />);
 
-    render(component);
+    render(withStoreComponent);
     const cardPlace = screen.getByTestId('cardPlaceElem');
     await user.hover(cardPlace);
     await user.unhover(cardPlace);
