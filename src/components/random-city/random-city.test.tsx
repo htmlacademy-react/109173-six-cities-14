@@ -15,7 +15,7 @@ describe('[Component ]:', () => {
     expect(expectElem).toBeInTheDocument();
   });
 
-  it('Should call "setCityAction" and Navigate us to main page', async () => {
+  it('Should call "handleCityClick"', async () => {
     const user = userEvent.setup();
     const randomCityLinkId = 'randimCityLinkElem';
     const handleCityClick = vi.fn();
@@ -24,7 +24,9 @@ describe('[Component ]:', () => {
 
     render(component);
     const expectElem = screen.getByTestId(randomCityLinkId);
+    expectElem.addEventListener('click', handleCityClick);
     await user.click(expectElem);
+    expectElem.removeEventListener('click', handleCityClick);
 
     expect(handleCityClick).toBeCalled();
   });

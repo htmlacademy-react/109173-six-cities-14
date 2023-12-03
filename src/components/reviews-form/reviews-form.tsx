@@ -91,6 +91,7 @@ export default function ReviewsForm(): React.ReactNode {
       action="#" method="post"
       onSubmit={ handleFormSubmit }
       ref={ form }
+      data-testid="reviewsFormElem"
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
@@ -106,6 +107,7 @@ export default function ReviewsForm(): React.ReactNode {
         onInput={ handleTextareaChange }
         ref={ userReview }
         disabled={ textareaDisabled }
+        data-testid="reviewsTextElem"
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

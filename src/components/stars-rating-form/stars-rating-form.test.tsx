@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import StarsRatingForm from './stars-rating-form';
+import userEvent from '@testing-library/user-event';
 
 describe('[Component Stars-rating-form]:', () => {
   it('Should render correct', () => {
@@ -24,5 +25,21 @@ describe('[Component Stars-rating-form]:', () => {
     expect(starInputs.at(1)).not.toBeChecked();
     expect(starInputs.at(0)).not.toBeChecked();
     expect(starLabels.at(2)?.title).toBe(expectedStarText);
+  });
+
+  it('Should check 2 Star when click on it (3 don`t be checked)', async () => {
+    const user = userEvent.setup();
+    const rating = 3;
+    const onRatingChange = vi.fn();
+    const starsRatingInputId = 'starsRatingInputElem';
+    const component = <StarsRatingForm rating={ rating } onRatingChange={ onRatingChange }/>;
+
+    render(component);
+    const starInputs = screen.getAllByTestId(starsRatingInputId);
+
+    await user.click(starInputs.at(1) as HTMLElement);
+
+    expect(starInputs.at(1)).toBeChecked();
+    expect(starInputs.at(2)).not.toBeChecked();
   });
 });
