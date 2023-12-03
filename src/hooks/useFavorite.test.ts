@@ -4,6 +4,7 @@ import useFavorite from './useFavorite';
 import { makeMockOffer } from '../utils/mock';
 import * as navigate from 'react-router-dom';
 
+// TODO: Пока не работает и не понятно, что с этим делать
 describe('[Hook: useFavorite]:', () => {
   it('Should return "handleFavoriteClick" callback', () => {
     const offer = makeMockOffer();
