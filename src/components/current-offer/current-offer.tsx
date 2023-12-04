@@ -103,7 +103,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
             </div>
             <div className="offer__rating rating" data-testid="offerRatingElem">
               <div className="offer__stars rating__stars">
-                <StarsRating rating={ rating } />
+                <StarsRating rating={ Math.round(rating) } />
               </div>
               <span className="offer__rating-value rating__value">{ rating }</span>
             </div>

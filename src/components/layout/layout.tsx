@@ -37,6 +37,7 @@ export default function Layout(): React.ReactElement {
   const cityOffers = useCityOffers();
   const isMainEmpty = (cityOffers?.length <= 0);
   const currentOfferRexExp = new RegExp('/offer/[\\d\\w-]*', 'gm');
+  const isMainPage = (location.pathname === AppRoute.MAIN);
   const isOfferPage = currentOfferRexExp.test(location.pathname);
 
   let pageWrapperClassName = String(CSSClasses.PAGE_WRAPPER);
@@ -78,12 +79,18 @@ export default function Layout(): React.ReactElement {
       <Header />
 
       <main className={`${mainClassName}`}>
-        <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            { cities && <CitiesList /> }
-          </section>
-        </div>
+        {
+          isMainPage && (
+            <>
+              <h1 className="visually-hidden">Cities</h1>
+              <div className="tabs">
+                <section className="locations container">
+                  { cities && <CitiesList /> }
+                </section>
+              </div>
+            </>
+          )
+        }
 
         <Outlet />
       </main>
