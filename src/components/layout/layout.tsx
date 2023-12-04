@@ -1,12 +1,13 @@
 import { Outlet, useLocation } from 'react-router-dom';
 
+import { getFavorites } from '../../store/slices/favorites-data-process/selectors';
 import { useAppSelector } from '../../hooks';
-import { AppRoute } from '../../const';
+import { AppRoute, cities } from '../../const';
 
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import { getFavorites } from '../../store/slices/favorites-data-process/selectors';
-import { getOffers } from '../../store/slices/offers-data-process/selectors';
+import CitiesList from '../cities-list/cities-list';
+import useCityOffers from '../../hooks/useCityOffers';
 
 const CSSClasses = {
   PAGE_WRAPPER: 'page',
@@ -33,8 +34,8 @@ export default function Layout(): React.ReactElement {
   const favorites = useAppSelector(getFavorites);
   const isFavoritesEmpty = (favorites?.length <= 0);
 
-  const offers = useAppSelector(getOffers);
-  const isMainEmpty = (offers?.length <= 0);
+  const cityOffers = useCityOffers();
+  const isMainEmpty = (cityOffers?.length <= 0);
   const currentOfferRexExp = new RegExp('/offer/[\\d\\w-]*', 'gm');
   const isOfferPage = currentOfferRexExp.test(location.pathname);
 
@@ -77,6 +78,13 @@ export default function Layout(): React.ReactElement {
       <Header />
 
       <main className={`${mainClassName}`}>
+        <h1 className="visually-hidden">Cities</h1>
+        <div className="tabs">
+          <section className="locations container">
+            { cities && <CitiesList /> }
+          </section>
+        </div>
+
         <Outlet />
       </main>
 

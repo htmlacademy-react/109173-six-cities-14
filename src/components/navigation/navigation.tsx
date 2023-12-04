@@ -35,9 +35,7 @@ export default function Navigation(): React.ReactElement {
                   </div>
                   <span className="header__user-name user__name">{ userInfo ? userInfo.email : '' }</span>
                   {
-                    (favorites && favorites.length > 0) && (
-                      <span className="header__favorite-count">{ favorites.length }</span>
-                    )
+                    favorites && <span className="header__favorite-count">{ favorites.length }</span>
                   }
 
                 </Link>
