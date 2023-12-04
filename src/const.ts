@@ -2,6 +2,7 @@
 export const DEFAULT_CITY = 'Paris';
 export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
+export const GALLERY_IMAGES_MAX_COUNT = 6;
 
 // MAP
 export const PIN_ICON_URL = '../markup/img/pin.svg';

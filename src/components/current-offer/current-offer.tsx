@@ -21,6 +21,7 @@ import { getRightPluralForm } from '../../utils/common';
 
 const CSSClasses = {
   FAVORITE_ACTIVE: 'offer__bookmark-button--active',
+  USER_IS_PRO: 'offer__avatar-wrapper--pro',
 };
 
 const BOOKMARK_TEXT = {
@@ -103,7 +104,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
             </div>
             <div className="offer__rating rating" data-testid="offerRatingElem">
               <div className="offer__stars rating__stars">
-                <StarsRating rating={ Math.round(rating) } />
+                <StarsRating rating={ rating } />
               </div>
               <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
@@ -128,8 +129,12 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
             <div className="offer__host">
               <h2 className="offer__host-title" data-testid="offerHostTitleElem">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width={ 74 } height={ 74 } alt="Host avatar" data-testid="offerHostImgElem"/>
+                <div className={ cn(
+                  'offer__avatar-wrapper user__avatar-wrapper',
+                  {[CSSClasses.USER_IS_PRO]: host.isPro}
+                ) }
+                >
+                  <img className="offer__avatar user__avatar" src={ host.avatarUrl } width={ 74 } height={ 74 } alt="Host avatar" data-testid="offerHostImgElem"/>
                 </div>
                 <span className="offer__user-name" data-testid="offerHostNameElem">
                   { host.name }
@@ -158,7 +163,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
       </section>
       <div className="container" data-testid="offerNearbyElem">
         {/* Места поблизости */}
-        { itHasNearbyOffers && <NearbyOffers offers={ nearby } onSelectPoint={ () => {} }/> }
+        { itHasNearbyOffers && <NearbyOffers offers={ nearby } isNearby onSelectPoint={ () => {} }/> }
       </div>
     </>
   );
