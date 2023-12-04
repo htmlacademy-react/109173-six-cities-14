@@ -31,4 +31,9 @@ export const favoritesDataProcess = createSlice({
   },
 });
 
-export const { loadFavoritesAction, clearFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction } = favoritesDataProcess.actions;
+export const {
+  loadFavoritesAction,
+  clearFavoritesAction,
+  addFavoriteItemAction,
+  removeFavoriteItemAction
+} = favoritesDataProcess.actions;

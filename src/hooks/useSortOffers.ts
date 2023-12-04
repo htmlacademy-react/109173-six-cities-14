@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Offers } from '../types/offer';
-import { SortType } from '../components/sort/sort';
 
-const DEFAULT_SORT = 'POPULAR';
+import { DEFAULT_SORT } from '../const';
+import { SortType } from '../components/sort-item/sort-item';
 
 type ResultSortOffers = [
   Offers,

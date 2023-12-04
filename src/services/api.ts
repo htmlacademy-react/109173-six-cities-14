@@ -7,7 +7,7 @@ const BASE_URL = 'https://14.design.pages.academy';
 const TIMEOUT = 5000;
 const ERROR_TEXT = {
   NOT_AUTHORIZED: 'You aren`t authorized',
-};
+} as const;
 
 const StatusCodesMap = [
   StatusCodes.BAD_REQUEST,

@@ -1,7 +1,8 @@
 import { Map, TileLayer } from 'leaflet';
 import { useState, useRef, useEffect } from 'react';
-import { City } from '../types/city';
+
 import { MAP_COPYRIGHT, TILE_LAYER_URL } from '../const';
+import { City } from '../types/city';
 
 type MapProps = {
   cityInfo: City;

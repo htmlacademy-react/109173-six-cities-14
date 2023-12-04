@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { fetchOfferItemAction } from '../store/api-action';
 import { useAppDispatch, useAppSelector } from '.';
+import { fetchOfferItemAction } from '../store/api-action';
 import { getOffer } from '../store/slices/offer-item-data-process/selectors';
 
 type UseOfferItemProps = {

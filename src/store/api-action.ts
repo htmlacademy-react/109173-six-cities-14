@@ -43,16 +43,16 @@ const APIAction = {
   USER_LOGIN: 'user/login',
   USER_LOGOUT: 'user/logout',
   USER_CHECK_AUTH: 'user/checkAuth',
-};
+} as const;
 
 const SUCCESS_TEXT = {
   ADD_COMMENT: 'Thank you for opinion! Your comment successfully added!',
-};
+} as const;
 
 const ERROR_TEXT = {
   ADD_COMMENT: 'Sorry! Can`t add you comment! Please, try again.',
   ADD_FAVORITE: 'Sorry! Can`t add this offer to favorites. Please, try again later.',
-};
+} as const;
 
 type AsyncOptions = {
   dispatch: AppDispatch;

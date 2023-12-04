@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+
+import { AppRoute } from '../../const';
 import Header from '../../components/header/header';
 
 // Добавим стилей (просто пощупать typescript-plugin-css-modules)
@@ -17,7 +19,7 @@ export default function Page404(): React.ReactElement {
       <main className="page__main page__main--favorites">
         <div className={`container ${styles.container}`}>
           <h1>404 Requested page Not Found</h1>
-          <Link to="/">{'<- Return to main page'}</Link>
+          <Link to={ AppRoute.MAIN }>{'<- Return to main page'}</Link>
         </div>
       </main>
     </div>

@@ -49,7 +49,6 @@ export function makeMockStoreState(initialState?: Partial<State>) {
     [Namespace.FAVORITES]: {
       favorites: [],
     },
-    [Namespace.MAIN]: {/* Something about main */},
     [Namespace.OFFER]: {
       offer: null,
       nearbyOffers: [],

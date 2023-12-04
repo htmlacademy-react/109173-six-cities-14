@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import StarsRatingForm from '../stars-rating-form/stars-rating-form';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCommentAction } from '../../store/api-action';
 import { getAddCommentsStatus } from '../../store/slices/offer-item-data-process/selectors';
 
 import { BASE_RATING, REVIEW_MAX_LENGTH, REVIEW_MIN_LENGTH, SEND_DATA_STATUS } from '../../const';
-import { fetchCommentAction } from '../../store/api-action';
 
 type Rating = number;
 

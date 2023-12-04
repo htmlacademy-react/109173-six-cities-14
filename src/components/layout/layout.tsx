@@ -25,7 +25,7 @@ const CSSClasses = {
   FAVORITES_EMPTY_MODE: ' page__main--favorites-empty',
   OFFER_MODE: ' page__main--offer',
   LOGIN_MODE: ' page__main--login',
-};
+} as const;
 
 export default function Layout(): React.ReactElement {
   const location = useLocation();
@@ -35,9 +35,10 @@ export default function Layout(): React.ReactElement {
   const isFavoritesEmpty = (favorites?.length <= 0);
 
   const cityOffers = useCityOffers();
-  const isMainEmpty = (cityOffers?.length <= 0);
   const currentOfferRexExp = new RegExp('/offer/[\\d\\w-]*', 'gm');
+
   const isMainPage = (location.pathname === AppRoute.MAIN);
+  const isMainEmpty = (cityOffers?.length <= 0);
   const isOfferPage = currentOfferRexExp.test(location.pathname);
 
   let pageWrapperClassName = String(CSSClasses.PAGE_WRAPPER);

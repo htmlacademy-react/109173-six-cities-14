@@ -1,6 +1,7 @@
 import { useAppDispatch } from '.';
-import { cities } from '../const';
 import { setCityAction } from '../store/slices/city-process/city-process';
+
+import { cities } from '../const';
 
 export default function useCitySelection() {
   const dispatch = useAppDispatch();

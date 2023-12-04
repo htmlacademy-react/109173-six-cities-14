@@ -23,7 +23,8 @@ export default function StarsRatingForm({ rating, disabledState, onRatingChange 
           <Fragment key={ star } >
             <input
               className="form__rating-input visually-hidden"
-              name="rating" defaultValue={ star }
+              name="rating"
+              value={ star }
               id={`${ star }-${getRightPluralForm('star', star)}`}
               type="radio"
               checked={(star <= rating)}

@@ -1,11 +1,14 @@
 // MAIN
 export const DEFAULT_CITY = 'Paris';
+export const DEFAULT_SORT = 'POPULAR';
 export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
 export const GALLERY_IMAGES_MAX_COUNT = 6;
 export const BASE_RATING = 0;
+export const MAX_COMMENTS_COUNT = 10;
 export const REVIEW_MIN_LENGTH = 50;
 export const REVIEW_MAX_LENGTH = 300;
+export const PASSWORD_MIN_LENGTH = 2;
 
 // MAP
 export const PIN_ICON_URL = '../markup/img/pin.svg';

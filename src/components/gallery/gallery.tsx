@@ -1,7 +1,9 @@
 import { GALLERY_IMAGES_MAX_COUNT } from '../../const';
 
+type Images = string[];
+
 type GalleryProps = {
-  images: string[];
+  images: Images;
 };
 
 export default function Gallery({ images }: GalleryProps) {

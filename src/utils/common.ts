@@ -1,11 +1,15 @@
 import { DateFormat, months } from '../const';
 import { Offers } from '../types/offer';
 
+type PadedNumResult = string | number;
+type DateFormatType = typeof DateFormat[keyof typeof DateFormat];
+type MappedOfers = Map<string, Offers>;
+
 export function getRatingPercent(rating: number) {
   return (100 / 5) * rating;
 }
 
-export function getPaddedNum(num: number): string | number {
+export function getPaddedNum(num: number): PadedNumResult {
   return (num < 10) ? `0${num}` : num;
 }
 
@@ -13,7 +17,7 @@ export function getMonthName(monthNum: number): string {
   return months[monthNum];
 }
 
-export function getFormattedDate(date: Date, format: typeof DateFormat[keyof typeof DateFormat]): string {
+export function getFormattedDate(date: Date, format: DateFormatType): string {
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = date.getDay();
@@ -39,7 +43,7 @@ export function getRightPluralForm(phrase: string, itemsCount: number) {
 }
 
 export function getOffersByCities(offers: Offers) {
-  const offersByCities: Map<string, Offers> = new Map();
+  const offersByCities: MappedOfers = new Map();
 
   offers.map((offer) => {
     const city = offer.city.name;
@@ -61,10 +65,10 @@ export function getOffersByCities(offers: Offers) {
 }
 
 export function getStarTextByNum(number: number): string {
-  const starsText = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
+  const ratings = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
   const index = number - 1;
 
-  return starsText.at(index) || '';
+  return ratings.at(index) || '';
 }
 
 export function getRandomInRange(min: number = 0, max: number = 100) {
