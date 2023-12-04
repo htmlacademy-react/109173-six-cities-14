@@ -210,14 +210,16 @@ export const fetchComments = createAsyncThunk<void, OfferId, AsyncOptions>(
 export const fetchCommentAction = createAsyncThunk<void, CommentData, AsyncOptions>(
   APIAction.FETCH_COMMENT,
   async ({ offerId, rating, comment }, { dispatch, extra: api }) => {
+    dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.LOADING));
+
     try {
       const { data } = await api.post<Comment>(
         `${APIRoute.COMMENTS}/${offerId}`,
         {rating, comment}
       );
 
-      dispatch(addCommentAction(data));
       dispatch(setAddCommentStatusAction(SEND_DATA_STATUS.LOADED));
+      dispatch(addCommentAction(data));
 
       toast.success(SUCCESS_TEXT.ADD_COMMENT);
     } catch(err) {

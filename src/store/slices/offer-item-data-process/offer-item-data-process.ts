@@ -4,8 +4,6 @@ import { OfferItemDataProcess } from '../../../types/state';
 import { Offer, Offers } from '../../../types/offer';
 import { Comment, Comments } from '../../../types/comment';
 
-const CLEAR_COMMENT_STATUS_TIMEOUT = 3000;
-
 const initialState: OfferItemDataProcess = {
   offer: null,
   nearbyOffers: [],
@@ -40,11 +38,6 @@ export const offerItemDataProcess = createSlice({
     },
     setAddCommentStatusAction: (state, action: PayloadAction<string>) => {
       state.addCommentStatus = action.payload;
-
-      const timeoutId = setTimeout(() => {
-        state.addCommentStatus = SEND_DATA_STATUS.NONE;
-        clearTimeout(timeoutId);
-      }, CLEAR_COMMENT_STATUS_TIMEOUT);
     },
 
     // NEARBY

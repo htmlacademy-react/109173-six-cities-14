@@ -228,8 +228,9 @@ describe('[API async actions]:', () => {
       mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(200);
       const expectedActions = [
         fetchCommentAction.pending.type,
-        addCommentAction.type,
         setAddCommentStatusAction.type,
+        setAddCommentStatusAction.type,
+        addCommentAction.type,
         fetchCommentAction.fulfilled.type,
       ];
 
@@ -244,6 +245,7 @@ describe('[API async actions]:', () => {
       mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(400);
       const expectedActions = [
         fetchCommentAction.pending.type,
+        setAddCommentStatusAction.type,
         setAddCommentStatusAction.type,
         fetchCommentAction.fulfilled.type,
       ];

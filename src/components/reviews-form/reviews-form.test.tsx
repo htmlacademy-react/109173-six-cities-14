@@ -35,8 +35,9 @@ describe('[Component Reviews-form]:', () => {
     expect(submitBtn).toBeDisabled();
   });
 
-  it('Should enable submit BTN when typed enuogh symbols to textarea', async () => {
+  it('Should enable submit BTN when rating selected and typed enuogh symbols to textarea', async () => {
     const user = userEvent.setup();
+    const starsRatingInputId = 'starsRatingInputElem';
     const textareaId = 'reviewsTextElem';
     const submitBtnText = 'Submit';
     const testText = `The deluxe room was a quite comfortable one with all the adequate facilities.
@@ -44,8 +45,10 @@ describe('[Component Reviews-form]:', () => {
     const { withStoreComponent } = withMockStore(<ReviewsForm />, initialMockStoreState);
 
     render(withStoreComponent);
+    const startRatingInput = screen.getAllByTestId(starsRatingInputId);
     const textarea = screen.getByTestId(textareaId);
     const submitBtn = screen.getByText(submitBtnText);
+    await user.click(startRatingInput.at(0) as HTMLElement);
     await user.type(textarea, testText);
 
     expect(submitBtn).toBeEnabled();

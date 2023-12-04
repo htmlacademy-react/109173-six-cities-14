@@ -32,14 +32,16 @@ describe('[Component Stars-rating-form]:', () => {
     const rating = 3;
     const onRatingChange = vi.fn();
     const starsRatingInputId = 'starsRatingInputElem';
+    const starsRatingLabelId = 'starsRatingLabelElem';
     const component = <StarsRatingForm rating={ rating } onRatingChange={ onRatingChange }/>;
 
     render(component);
-    const starInputs = screen.getAllByTestId(starsRatingInputId);
+    const starsInputs = screen.getAllByTestId(starsRatingInputId);
+    const starsLabels = screen.getAllByTestId(starsRatingLabelId);
+    await user.click(starsLabels.at(3) as HTMLElement); // Select Label for 2-stars
 
-    await user.click(starInputs.at(1) as HTMLElement);
-
-    expect(starInputs.at(1)).toBeChecked();
-    expect(starInputs.at(2)).not.toBeChecked();
+    expect(starsInputs.at(3)).toBeChecked();
+    expect(starsInputs.at(2)).not.toBeChecked();
+    expect(starsInputs.at(4)).not.toBeChecked();
   });
 });

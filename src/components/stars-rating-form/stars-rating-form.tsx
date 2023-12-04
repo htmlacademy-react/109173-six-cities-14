@@ -26,7 +26,7 @@ export default function StarsRatingForm({ rating, disabledState, onRatingChange 
               name="rating" defaultValue={ star }
               id={`${ star }-${getRightPluralForm('star', star)}`}
               type="radio"
-              defaultChecked={(rating > 0) && (star <= rating)}
+              checked={(star <= rating)}
               onChange={ handleRatingChange }
               disabled={ disabledState }
               data-testid="starsRatingInputElem"
