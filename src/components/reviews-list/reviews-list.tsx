@@ -23,7 +23,9 @@ export default function ReviewsList({ comments }: ReviewListProps): React.ReactE
 
   return (
     <>
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{ slicedComments.length }</span></h2>
+      {/* Выводим comments.length вместо sortedComments.length т.к. того требует ТЗ
+      (хотя без пагинации логичнее показывать отображаемое количество комментариев, ИМХО) */}
+      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{ comments.length }</span></h2>
       <ul className="reviews__list">
         { slicedComments?.length > 0 &&
           slicedComments.map((comment) => <ReviewsItem key={comment.id} comment={ comment } />) }

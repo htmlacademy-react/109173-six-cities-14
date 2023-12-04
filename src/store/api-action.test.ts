@@ -7,6 +7,7 @@ import { clearOffersFavoriteStatus, loadOffersAction, updateOffersListAction } f
 import { addCommentAction, setAddCommentStatusAction, setCommentsAction, setCommentsLoadedStatusAction, setNearbyAction, setOfferItemAction, updateOfferItemFavoriteAction } from './slices/offer-item-data-process/offer-item-data-process';
 import { redirectToRoute } from './action';
 import { addFavoriteItemAction, clearFavoritesAction, loadFavoritesAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
+import browserHistory from '../browser-history';
 
 setMockBrowserHistory();
 
@@ -19,7 +20,7 @@ describe('[API async actions]:', () => {
   });
 
   describe('[Auth actions]:', () => {
-    it('Should dispatch "loginAction.pending" & "loginAction.fulfilled" & "setUserInfoAction" when "loginAction"', async () => {
+    it('Should dispatch "loginAction.pending" & "loginAction.fulfilled" & "setUserInfoAction" and redirect to previous page (back) when "loginAction"', async () => {
       const mockUser = { email: 'test@test.me', password: 'Af2egf24t4' };
       const mockServerReply = { token: 'some_secret_token' };
       const mockSaveToken = vi.spyOn(tokenStorage, 'setToken');
@@ -29,6 +30,7 @@ describe('[API async actions]:', () => {
         setUserInfoAction.type,
         loginAction.fulfilled.type,
       ];
+      browserHistory.push('/login');
 
       await store.dispatch(loginAction(mockUser));
       const actions = extractActionsTypes(store.getActions());
@@ -37,6 +39,7 @@ describe('[API async actions]:', () => {
       expect(actions).toEqual(expectedActions);
       expect(mockSaveToken).toBeCalledTimes(1);
       expect(mockSaveToken).toBeCalledWith(mockServerReply.token);
+      expect(browserHistory.location.pathname).toBe('');
     });
 
     it('Should remove token from localStorage, setUserInfo to "null" and dispatch "clearFavoritesAction" when "logoutAction"', async () => {
@@ -49,6 +52,7 @@ describe('[API async actions]:', () => {
         clearOffersFavoriteStatus.type,
         logoutAction.fulfilled.type
       ];
+      vi.spyOn(browserHistory, 'push');
 
       await store.dispatch(logoutAction());
       const actions = extractActionsTypes(store.getActions());
@@ -56,6 +60,7 @@ describe('[API async actions]:', () => {
       expect(mockDeleteToken).toBeCalledTimes(1);
       expect(tokenStorage.getToken()).toBe('');
       expect(actions).toEqual(expectedActions);
+      expect(browserHistory.push).toBeCalled();
     });
 
     it('Should dispatch "setUserInfoAction" when "checkAuthAction.fulfilled"', async () => {

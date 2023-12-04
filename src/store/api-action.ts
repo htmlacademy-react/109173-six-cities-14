@@ -129,11 +129,17 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
 export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
   APIAction.USER_LOGOUT,
   async (_arg, { dispatch, extra: api }) => {
+    const currentPage = browserHistory.location.pathname;
+
     await api.delete(APIRoute.LOGOUT);
     deleteToken();
     dispatch(setUserInfoAction(null));
     dispatch(clearFavoritesAction());
     dispatch(clearOffersFavoriteStatus());
+
+    /* Сделано чисто для ТЗ (чтобы при log-out, если мы на закрытой страничке,
+      нас редиректило на Login-page вместо главной) */
+    browserHistory.push(currentPage);
   }
 );
 
