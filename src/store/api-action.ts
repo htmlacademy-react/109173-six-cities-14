@@ -43,16 +43,16 @@ const APIAction = {
   USER_LOGIN: 'user/login',
   USER_LOGOUT: 'user/logout',
   USER_CHECK_AUTH: 'user/checkAuth',
-};
+} as const;
 
 const SUCCESS_TEXT = {
   ADD_COMMENT: 'Thank you for opinion! Your comment successfully added!',
-};
+} as const;
 
 const ERROR_TEXT = {
   ADD_COMMENT: 'Sorry! Can`t add you comment! Please, try again.',
   ADD_FAVORITE: 'Sorry! Can`t add this offer to favorites. Please, try again later.',
-};
+} as const;
 
 type AsyncOptions = {
   dispatch: AppDispatch;
@@ -129,11 +129,17 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
 export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
   APIAction.USER_LOGOUT,
   async (_arg, { dispatch, extra: api }) => {
+    const currentPage = browserHistory.location.pathname;
+
     await api.delete(APIRoute.LOGOUT);
     deleteToken();
     dispatch(setUserInfoAction(null));
     dispatch(clearFavoritesAction());
     dispatch(clearOffersFavoriteStatus());
+
+    /* Сделано чисто для ТЗ (чтобы при log-out, если мы на закрытой страничке,
+      нас редиректило на Login-page вместо главной) */
+    browserHistory.push(currentPage);
   }
 );
 

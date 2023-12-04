@@ -10,21 +10,9 @@ import 'leaflet/dist/leaflet.css';
 import { adaptOffersToPoints } from '../../utils/offer';
 
 const CSSClasses = {
-  'CITIES_MAP': 'cities__map',
-  'OFFER_MAP': 'offer__map'
-};
-
-const pinIcon = new Icon({
-  iconUrl: PIN_ICON_URL,
-  iconSize: [27, 39],
-  iconAnchor: [13.5, 39],
-});
-
-const pinActiveIcon = new Icon({
-  iconUrl: PIN_ACTIVE_ICON_URL,
-  iconSize: [27, 39],
-  iconAnchor: [13.5, 39],
-});
+  CITIES_MAP: 'cities__map',
+  OFFER_MAP: 'offer__map'
+} as const;
 
 type MapProps = {
   offers: Offers;
@@ -50,6 +38,18 @@ export default function Map({ offers, selectedPoint, currentOfferPoint }: MapPro
 
   const mapRef = useRef(null);
   const map = useMap({ cityInfo, mapRef });
+
+  const pinIcon = new Icon({
+    iconUrl: PIN_ICON_URL,
+    iconSize: [27, 39],
+    iconAnchor: [13.5, 39],
+  });
+
+  const pinActiveIcon = new Icon({
+    iconUrl: PIN_ACTIVE_ICON_URL,
+    iconSize: [27, 39],
+    iconAnchor: [13.5, 39],
+  });
 
   useEffect(() => {
     if(!map) {
@@ -86,11 +86,13 @@ export default function Map({ offers, selectedPoint, currentOfferPoint }: MapPro
 
   return (
     <section
-      className={ cn(
+      className={cn(
         'map',
-        {[CSSClasses.CITIES_MAP]: isMainPage},
-        {[CSSClasses.OFFER_MAP]: isNotMainPage}
-      ) }
+        {
+          [CSSClasses.CITIES_MAP]: isMainPage,
+          [CSSClasses.OFFER_MAP]: isNotMainPage
+        }
+      )}
       ref={ mapRef }
       data-testid="mapContainerElem"
     />

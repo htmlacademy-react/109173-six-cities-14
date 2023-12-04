@@ -44,4 +44,9 @@ export const offersDataProcess = createSlice({
   }
 });
 
-export const { loadOffersAction, setOffersLoadingStatus, updateOffersListAction, clearOffersFavoriteStatus } = offersDataProcess.actions;
+export const {
+  loadOffersAction,
+  setOffersLoadingStatus,
+  updateOffersListAction,
+  clearOffersFavoriteStatus
+} = offersDataProcess.actions;

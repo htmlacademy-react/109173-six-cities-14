@@ -1,6 +1,14 @@
-import { NEARBY_OFFERS_COUNT } from '../../const';
-import { NearbyOffersProps } from './nearby-offers-props';
+import { Offer, Offers } from '../../types/offer';
 import OffersList from '../offers-list/offers-list';
+
+import { NEARBY_OFFERS_COUNT } from '../../const';
+
+type NearbyOffersProps = {
+  offers: Offers;
+  isNearby?: boolean;
+  onSelectPoint: (offer: Offer | null) => void;
+};
+
 
 export default function NearbyOffers({ offers, isNearby, onSelectPoint }: NearbyOffersProps): React.ReactElement {
   const nearbyOffers = offers.slice(0, NEARBY_OFFERS_COUNT);

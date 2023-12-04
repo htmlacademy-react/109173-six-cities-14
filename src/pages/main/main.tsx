@@ -10,9 +10,9 @@ import Map from '../../components/map/map';
 import useCityOffers from '../../hooks/useCityOffers';
 
 const CSSCLasses = {
-  PlacesContainer: 'cities__places-container container',
-  NoPlaces: 'cities__places-container--empty'
-};
+  PLACES_CONTAINER: 'cities__places-container container',
+  NO_PLACES: 'cities__places-container--empty'
+} as const;
 
 export default function Main(): React.ReactNode {
   const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
@@ -26,8 +26,8 @@ export default function Main(): React.ReactNode {
       </Helmet>
       <div className="cities">
         <div className={ cn(
-          CSSCLasses.PlacesContainer,
-          {[CSSCLasses.NoPlaces]: isMainEmpty}
+          CSSCLasses.PLACES_CONTAINER,
+          {[CSSCLasses.NO_PLACES]: isMainEmpty}
         ) }
         >
           { (isMainEmpty && <MainEmpty />)

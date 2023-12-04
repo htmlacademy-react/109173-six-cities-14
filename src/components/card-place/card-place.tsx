@@ -2,24 +2,25 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 
 import { AppRoute } from '../../const';
-import { CardPlaceProps } from './card-place-props';
+import { Offer } from '../../types/offer';
+
 import StarsRating from '../stars-rating/stars-rating';
 import useFavorite from '../../hooks/useFavorite';
 
-const CARD_IMG = {
+const CardImg = {
   WIDTH: 260,
   HEIGHT: 200,
-};
+} as const;
 
-const FAVORITE_CARD_IMG = {
+const FavoriteCardImg = {
   WIDTH: 150,
   HEIGHT: 110,
-};
+} as const;
 
-const BOOKMARK_TEXT = {
+const BokmarkText = {
   IN_BOOKMARKS: 'In bookmarks',
   TO_BOOKMARKS: 'To bookmarks',
-};
+} as const;
 
 const CSSClasses = {
   FAVORITE_ACTIVE: 'place-card__bookmark-button--active',
@@ -27,7 +28,16 @@ const CSSClasses = {
   FAVORITE_CARD_IMG: 'favorites__image-wrapper',
   FAVORITE_CARD_INFO: 'favorites__card-info',
   NEARBY_CARD: 'near-places__card',
-};
+} as const;
+
+type CardPlaceProps = {
+  offerItem: Offer;
+  isNearby?: boolean;
+  isCompact?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}
+
 
 export default function CardPlace({ offerItem, isNearby, isCompact, onMouseEnter, onMouseLeave }: CardPlaceProps): React.ReactNode {
   const {
@@ -42,16 +52,16 @@ export default function CardPlace({ offerItem, isNearby, isCompact, onMouseEnter
   } = offerItem;
 
   const imgWidth = !isCompact
-    ? CARD_IMG.WIDTH
-    : FAVORITE_CARD_IMG.WIDTH;
+    ? CardImg.WIDTH
+    : FavoriteCardImg.WIDTH;
 
   const imgHeight = !isCompact
-    ? CARD_IMG.HEIGHT
-    : FAVORITE_CARD_IMG.HEIGHT;
+    ? CardImg.HEIGHT
+    : FavoriteCardImg.HEIGHT;
 
   const bookmarkText = !isCompact
-    ? BOOKMARK_TEXT.TO_BOOKMARKS
-    : BOOKMARK_TEXT.IN_BOOKMARKS;
+    ? BokmarkText.TO_BOOKMARKS
+    : BokmarkText.IN_BOOKMARKS;
 
   const handleFavoriteClick = useFavorite({ id, isFavorite });
 

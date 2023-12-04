@@ -1,12 +1,17 @@
-import { getRightPluralForm } from '../../utils/common';
-
-import OffersList from '../offers-list/offers-list';
-import Sort from '../sort/sort';
-
-import { PlacesProps } from './places-props';
 import { useAppSelector } from '../../hooks';
 import useSortOffers from '../../hooks/useSortOffers';
 import { getCity } from '../../store/slices/city-process/selectors';
+
+import { getRightPluralForm } from '../../utils/common';
+import OffersList from '../offers-list/offers-list';
+import Sort from '../sort/sort';
+
+import { Offer, Offers } from '../../types/offer';
+
+export type PlacesProps = {
+  offers: Offers;
+  onSelectPoint: (offer: Offer | null) => void;
+};
 
 export default function Places({ offers, onSelectPoint }: PlacesProps): React.ReactNode {
   const currentCity = useAppSelector(getCity);

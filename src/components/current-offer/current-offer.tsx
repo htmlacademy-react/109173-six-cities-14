@@ -22,12 +22,12 @@ import { getRightPluralForm } from '../../utils/common';
 const CSSClasses = {
   FAVORITE_ACTIVE: 'offer__bookmark-button--active',
   USER_IS_PRO: 'offer__avatar-wrapper--pro',
-};
+} as const;
 
-const BOOKMARK_TEXT = {
+const BookmarkText = {
   IN_BOOKMARKS: 'In bookmarks',
   TO_BOOKMARKS: 'To bookmarks',
-};
+} as const;
 
 type CurrentOfferProps = {
   offer: Offer;
@@ -46,8 +46,8 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
   const handleFavoriteClick = useFavorite({ id, isFavorite });
 
   const bookmarkText = !isFavorite
-    ? BOOKMARK_TEXT.TO_BOOKMARKS
-    : BOOKMARK_TEXT.IN_BOOKMARKS;
+    ? BookmarkText.TO_BOOKMARKS
+    : BookmarkText.IN_BOOKMARKS;
 
   if(!offer) {
     return <Navigate to={AppRoute.PAGE_404} />;
@@ -74,9 +74,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
       </Helmet>
       <section className="offer">
         {/* Галерея */}
-        {images?.length > 0 && (
-          <Gallery images={ images }></Gallery>
-        )}
+        { (images?.length > 0) && <Gallery images={ images } /> }
 
         <div className="offer__container container" data-testid="offerElem">
           <div className="offer__wrapper">
@@ -140,9 +138,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
                   { host.name }
                 </span>
 
-                {host.isPro && (
-                  <span className="offer__user-status">Pro</span>
-                )}
+                { host.isPro && <span className="offer__user-status">Pro</span> }
               </div>
               <div className="offer__description" data-testid="offerDescriptionElem">
                 <p className="offer__text">{ description }</p>
@@ -154,7 +150,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
               { <ReviewsList comments={ comments }/> }
 
               {/* Форма написания отзыва */}
-              {isUserLoggedIn && <ReviewsForm />}
+              { isUserLoggedIn && <ReviewsForm /> }
             </section>
           </div>
         </div>

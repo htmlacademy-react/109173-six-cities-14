@@ -10,7 +10,7 @@ export default function StarsRating({ rating }: StarsRatingProp): React.ReactEle
 
   return (
     <>
-      <span style={{ width: currentRatingPercent, }} data-testid="starsRatingElem">({roundedRating})</span>
+      <span style={{ width: currentRatingPercent, }} data-testid="starsRatingElem">({ roundedRating })</span>
       <span className="visually-hidden">Rating</span>
     </>
   );

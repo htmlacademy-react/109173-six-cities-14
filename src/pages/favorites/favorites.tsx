@@ -1,16 +1,18 @@
 import { Helmet } from 'react-helmet-async';
-
-import FavoritesEmpty from '../favorites-empty/favorites-empty';
-import FavoriteCards from '../../components/favorite-cards/favorite-cards';
 import { useAppSelector } from '../../hooks';
-import { getFavorites } from '../../store/slices/favorites-data-process/selectors';
+
 import { Offers } from '../../types/offer';
 import { getOffersByCities } from '../../utils/common';
 
+import FavoritesEmpty from '../favorites-empty/favorites-empty';
+import FavoriteCards from '../../components/favorite-cards/favorite-cards';
+import { getFavorites } from '../../store/slices/favorites-data-process/selectors';
 
-export default function Favorites(): JSX.Element {
+type MappedFavoriteOffers = Map<string, Offers>
+
+export default function Favorites(): React.ReactElement {
   const favorites = useAppSelector(getFavorites);
-  const favoritesByCities: Map<string, Offers> = getOffersByCities(favorites);
+  const favoritesByCities: MappedFavoriteOffers = getOffersByCities(favorites);
 
   return (
     <div className="page__favorites-container container">
