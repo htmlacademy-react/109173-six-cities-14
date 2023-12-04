@@ -5,11 +5,12 @@ type StarsRatingProp = {
 };
 
 export default function StarsRating({ rating }: StarsRatingProp): React.ReactElement {
-  const currentRatingPercent = getRatingPercent(rating);
+  const roundedRating = Math.round(rating);
+  const currentRatingPercent = `${getRatingPercent(roundedRating)}%`;
 
   return (
     <>
-      <span style={{ width: currentRatingPercent, }} data-testid="starsRatingElem" />
+      <span style={{ width: currentRatingPercent, }} data-testid="starsRatingElem">({roundedRating})</span>
       <span className="visually-hidden">Rating</span>
     </>
   );

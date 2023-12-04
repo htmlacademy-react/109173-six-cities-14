@@ -53,6 +53,7 @@ export default function Sort({ currentSort, onSortChange }: SortProps): React.Re
 
     if(selectedSortType) {
       onSortChange(selectedSortType);
+      setSortOpened(false);
     }
   }
 

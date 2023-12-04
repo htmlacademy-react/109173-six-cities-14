@@ -1,7 +1,7 @@
 import { OffersListProps } from './offers-list-props';
 import CardPlace from '../card-place/card-place';
 
-export default function OffersList({ offers, onSelectPoint }: OffersListProps): React.ReactElement[] {
+export default function OffersList({ offers, isNearby, onSelectPoint }: OffersListProps): React.ReactElement[] {
   return (
     offers.map((offer): React.ReactElement => {
       const offerId = offer.id;
@@ -12,6 +12,7 @@ export default function OffersList({ offers, onSelectPoint }: OffersListProps): 
           onMouseLeave={() => onSelectPoint(null)}
           key={ offerId }
           offerItem={ offer }
+          isNearby={ isNearby }
         />
       );
     })

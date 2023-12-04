@@ -9,9 +9,9 @@ describe('[Component Nearby-Offers]:', () => {
     const onSelectPoint = vi.fn();
     const nearbyTitleText = 'Other places in the neighbourhood';
     const nearbyListElem = 'nearbyListElem';
-    const component = widthHistoryStore(<NearbyOffers offers={ offers } onSelectPoint={ onSelectPoint }/>);
+    const { withStoreComponent } = widthHistoryStore(<NearbyOffers offers={ offers } onSelectPoint={ onSelectPoint }/>);
 
-    render(component);
+    render(withStoreComponent);
     const nearbyTitle = screen.getByText(nearbyTitleText);
     const nearbyList = screen.getByTestId(nearbyListElem);
 

@@ -8,9 +8,9 @@ describe('[Component Footer]:', () => {
       CONTAINER: 'headerElem',
       IMG: 'headerLogoElem'
     };
-    const component = widthHistoryStore(<Header />);
+    const { withStoreComponent } = widthHistoryStore(<Header />);
 
-    render(component);
+    render(withStoreComponent);
     const ExpectElem = {
       CONTAINER: screen.getByTestId(HeaderElem.CONTAINER),
       IMG: screen.getByTestId(HeaderElem.IMG),

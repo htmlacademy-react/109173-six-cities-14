@@ -9,9 +9,9 @@ describe('[Component Places]:', () => {
     const onSelectPoint = vi.fn();
     const placesTitleTextElem = 'Places';
     const placesFoundTextElem = /1 place to stay in Paris/i;
-    const component = widthHistoryStore(<Places offers={ offers } onSelectPoint={ onSelectPoint } />);
+    const { withStoreComponent } = widthHistoryStore(<Places offers={ offers } onSelectPoint={ onSelectPoint } />);
 
-    render(component);
+    render(withStoreComponent);
     const placesTitle = screen.getByText(placesTitleTextElem);
     const placesFoundText = screen.getByText(placesFoundTextElem);
 

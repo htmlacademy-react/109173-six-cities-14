@@ -25,9 +25,9 @@ describe('[Component Current-offer]:', () => {
       COMMENTS: 'offerCommentsElem',
       NEARBY: 'offerNearbyElem',
     };
-    const component = widthHistoryStore(< CurrentOffer offer={ offer } comments={ comments } nearby={ nearby }/>);
+    const { withStoreComponent } = widthHistoryStore(< CurrentOffer offer={ offer } comments={ comments } nearby={ nearby }/>);
 
-    render(component);
+    render(withStoreComponent);
     const ExpectElem = {
       CONTAINER: screen.getByTestId(OfferElem.CONTAINER),
       TITLE: screen.getByTestId(OfferElem.TITLE),
@@ -71,9 +71,9 @@ describe('[Component Current-offer]:', () => {
       }
     });
     const preparedComponent = withMockHistory(< CurrentOffer offer={ offer } comments={ comments } nearby={ nearby }/>);
-    const component = withMockStore(preparedComponent, initialMockStoreState);
+    const { withStoreComponent } = withMockStore(preparedComponent, initialMockStoreState);
 
-    render(component);
+    render(withStoreComponent);
     expect(screen.getByText(commentFormTitle)).toBeInTheDocument();
   });
 });

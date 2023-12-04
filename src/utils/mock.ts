@@ -13,6 +13,20 @@ import { AuthorizationStatus, DEFAULT_CITY, Namespace, SEND_DATA_STATUS } from '
 
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
 
+export function setMockBrowserHistory() {
+  vi.mock('../browser-history', () => ({
+    default: {
+      location: { pathname: ''},
+      push(path: string) {
+        this.location.pathname = path;
+      },
+      back() {
+        this.location.pathname = '';
+      }
+    }
+  }));
+}
+
 export function extractActionsTypes(actions: Action<string>[]) {
   return actions.map((action) => action.type);
 }
@@ -76,12 +90,16 @@ export function makeMockLocation() {
   };
 }
 
+export function makeMockCity() {
+  return {
+    name: address.cityName(),
+    location: makeMockLocation(),
+  };
+}
+
 export function makeMockOffer() {
   return {
-    city: {
-      name: address.cityName(),
-      location: makeMockLocation(),
-    },
+    city: makeMockCity(),
     previewImage: image.imageUrl(),
     images: [],
     title: lorem.words(20),

@@ -2,6 +2,10 @@
 export const DEFAULT_CITY = 'Paris';
 export const NEARBY_OFFERS_COUNT = 3;
 export const FAVORITES_COUNT = 3;
+export const GALLERY_IMAGES_MAX_COUNT = 6;
+export const BASE_RATING = 0;
+export const REVIEW_MIN_LENGTH = 50;
+export const REVIEW_MAX_LENGTH = 300;
 
 // MAP
 export const PIN_ICON_URL = '../markup/img/pin.svg';
@@ -16,7 +20,7 @@ export const AppRoute = {
   FAVORITES: '/favorites',
   OFFER: '/offer',
   PAGE_404: '/page404',
-};
+} as const;
 export const APIRoute = {
   OFFERS: '/six-cities/offers',
   NEAREST: '/nearby',
@@ -46,13 +50,13 @@ export const SEND_DATA_STATUS = {
   LOADING: 'LOADING',
   LOADED: 'LOADED',
   ERROR: 'ERROR',
-};
+} as const;
 
 // OTHERS
 export const DateFormat = {
   MONTH_YEAR: 'MONTH_YEAR',
   DATE_TIME: 'DATE_TIME'
-};
+} as const;
 
 export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 

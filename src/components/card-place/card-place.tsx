@@ -26,9 +26,10 @@ const CSSClasses = {
   FAVORITE_CARD_: 'favorites__card',
   FAVORITE_CARD_IMG: 'favorites__image-wrapper',
   FAVORITE_CARD_INFO: 'favorites__card-info',
+  NEARBY_CARD: 'near-places__card',
 };
 
-export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseLeave }: CardPlaceProps): React.ReactNode {
+export default function CardPlace({ offerItem, isNearby, isCompact, onMouseEnter, onMouseLeave }: CardPlaceProps): React.ReactNode {
   const {
     id,
     previewImage,
@@ -58,7 +59,10 @@ export default function CardPlace({ offerItem, isCompact, onMouseEnter, onMouseL
     <article
       className={ cn(
         'cities__card place-card',
-        { [CSSClasses.FAVORITE_CARD_]: isCompact }
+        {
+          [CSSClasses.FAVORITE_CARD_]: isCompact,
+          [CSSClasses.NEARBY_CARD]: isNearby,
+        }
       ) }
       onMouseEnter={ onMouseEnter }
       onMouseLeave={ onMouseLeave }

@@ -1,5 +1,5 @@
 import { APIRoute } from '../const';
-import { extractActionsTypes, getFakeStore, makeMockComment } from '../utils/mock';
+import { extractActionsTypes, getFakeStore, makeMockComment, setMockBrowserHistory } from '../utils/mock';
 import { checkAuthAction, fetchCommentAction, fetchComments, fetchFavoritesAction, fetchNeabyOffers, fetchOfferItemAction, fetchOffersAction, loginAction, logoutAction, toggleFavoriteAction } from './api-action';
 import { setUserInfoAction } from './slices/user-process/user-process';
 import * as tokenStorage from '../services/token';
@@ -8,17 +8,7 @@ import { addCommentAction, setAddCommentStatusAction, setCommentsAction, setComm
 import { redirectToRoute } from './action';
 import { addFavoriteItemAction, clearFavoritesAction, loadFavoritesAction, removeFavoriteItemAction } from './slices/favorites-data-process/favorites-data-process';
 
-vi.mock('../browser-history', () => ({
-  default: {
-    location: { pathname: ''},
-    push(path: string) {
-      this.location.pathname = path;
-    },
-    back() {
-      this.location.pathname = '';
-    }
-  }
-}));
+setMockBrowserHistory();
 
 describe('[API async actions]:', () => {
   const { mockAxiosAdapter, mockStoreCreator } = getFakeStore();
@@ -238,8 +228,9 @@ describe('[API async actions]:', () => {
       mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(200);
       const expectedActions = [
         fetchCommentAction.pending.type,
-        addCommentAction.type,
         setAddCommentStatusAction.type,
+        setAddCommentStatusAction.type,
+        addCommentAction.type,
         fetchCommentAction.fulfilled.type,
       ];
 
@@ -254,6 +245,7 @@ describe('[API async actions]:', () => {
       mockAxiosAdapter.onPost(`${ APIRoute.COMMENTS }/${ offerId }`).reply(400);
       const expectedActions = [
         fetchCommentAction.pending.type,
+        setAddCommentStatusAction.type,
         setAddCommentStatusAction.type,
         fetchCommentAction.fulfilled.type,
       ];

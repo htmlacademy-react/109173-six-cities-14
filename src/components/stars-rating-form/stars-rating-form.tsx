@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
-import { getStarTextByNum } from '../../utils/common';
+import { getRightPluralForm, getStarTextByNum } from '../../utils/common';
 
 type StartRatingProps = {
   rating: number;
   disabledState?: boolean;
-  onRatingChange: React.Dispatch<React.SetStateAction<number>>;
+  onRatingChange: (rating: number) => void;
 };
 
 export default function StarsRatingForm({ rating, disabledState, onRatingChange }: StartRatingProps): React.ReactElement {
@@ -24,14 +24,14 @@ export default function StarsRatingForm({ rating, disabledState, onRatingChange 
             <input
               className="form__rating-input visually-hidden"
               name="rating" defaultValue={ star }
-              id={`${ star }-stars`}
+              id={`${ star }-${getRightPluralForm('star', star)}`}
               type="radio"
-              defaultChecked={star <= rating}
+              checked={(star <= rating)}
               onChange={ handleRatingChange }
               disabled={ disabledState }
               data-testid="starsRatingInputElem"
             />
-            <label htmlFor={`${ star }-stars`} className="reviews__rating-label form__rating-label" title={ getStarTextByNum(star) } data-testid="starsRatingLabelElem">
+            <label htmlFor={`${ star }-${getRightPluralForm('star', star)}`} className="reviews__rating-label form__rating-label" title={ getStarTextByNum(star) } data-testid="starsRatingLabelElem">
               <svg className="form__star-image" width={ 37 } height={ 33 }>
                 <use xlinkHref="#icon-star"></use>
               </svg>

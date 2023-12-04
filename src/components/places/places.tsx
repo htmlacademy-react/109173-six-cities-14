@@ -3,7 +3,7 @@ import { getRightPluralForm } from '../../utils/common';
 import OffersList from '../offers-list/offers-list';
 import Sort from '../sort/sort';
 
-import { PlacesProps } from '../../pages/main/main-props';
+import { PlacesProps } from './places-props';
 import { useAppSelector } from '../../hooks';
 import useSortOffers from '../../hooks/useSortOffers';
 import { getCity } from '../../store/slices/city-process/selectors';

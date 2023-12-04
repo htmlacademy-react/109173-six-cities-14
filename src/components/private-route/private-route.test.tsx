@@ -35,9 +35,9 @@ describe('[Component Private-route]:', () => {
       </Routes>,
       mockHistory
     );
-    const component = withMockStore(preparedComponent, initialMockStore);
+    const { withStoreComponent } = withMockStore(preparedComponent, initialMockStore);
 
-    render(component);
+    render(withStoreComponent);
 
     expect(screen.getByText(expectedText)).toBeInTheDocument();
     expect(screen.queryByText(notExpectedText)).not.toBeInTheDocument();
@@ -64,10 +64,10 @@ describe('[Component Private-route]:', () => {
       </Routes>,
       mockHistory
     );
-    const component = withMockStore(preparedComponent, initialMockStore);
+    const { withStoreComponent } = withMockStore(preparedComponent, initialMockStore);
     mockHistory.push(AppRoute.LOGIN);
 
-    render(component);
+    render(withStoreComponent);
 
     expect(screen.getByText(expectedText)).toBeInTheDocument();
     expect(screen.queryByText(notExpectedText)).not.toBeInTheDocument();
@@ -94,9 +94,9 @@ describe('[Component Private-route]:', () => {
       </Routes>,
       mockHistory
     );
-    const component = withMockStore(preparedComponent, initialMockStore);
+    const { withStoreComponent } = withMockStore(preparedComponent, initialMockStore);
 
-    render(component);
+    render(withStoreComponent);
 
     expect(screen.getByText(expectedText)).toBeInTheDocument();
     expect(screen.queryByText(notExpectedChildren)).not.toBeInTheDocument();
