@@ -1,47 +1,69 @@
-import { FormEvent, useEffect, useRef, useState } from 'react';
-import StarsRatingForm from '../stars-rating-form/stars-rating-form';
+import { FormEvent, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-
+import StarsRatingForm from '../stars-rating-form/stars-rating-form';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchCommentAction } from '../../store/api-action';
 import { getAddCommentsStatus } from '../../store/slices/offer-item-data-process/selectors';
 
-import { SEND_DATA_STATUS } from '../../const';
+import { BASE_RATING, REVIEW_MAX_LENGTH, REVIEW_MIN_LENGTH, SEND_DATA_STATUS } from '../../const';
+import { fetchCommentAction } from '../../store/api-action';
 
-const BASE_RATING = 1;
-const REVIEW_MIN_LENGTH = 50;
-const REVIEW_MAX_LENGTH = 300;
+type Rating = number;
 
 export default function ReviewsForm(): React.ReactNode {
   const dispatch = useAppDispatch();
   const offerId = String(useParams().id);
-
-  const form = useRef<HTMLFormElement>(null);
-  const userReview = useRef<HTMLTextAreaElement>(null);
-
-  const [userRate, setUserRate] = useState(BASE_RATING);
-  const [starsDisabled, setStarsDisabled] = useState(false);
-  const [submitDisabled, setSubmitDisabled] = useState(true);
-  const [textareaDisabled, setTextareaDisabled] = useState(false);
-
   const addCommentStatus = useAppSelector(getAddCommentsStatus);
 
+  const [rating, setRating] = useState(BASE_RATING);
+  const [review, setReview] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const [fieldsDisabled, setFieldsDisabled] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  function resetForm() {
+    setRating(BASE_RATING);
+    setReview('');
+    setIsFormValid(false);
+  }
+
   function disableForm(state: boolean = false) {
-    setStarsDisabled(state);
-    setTextareaDisabled(state);
+    setFieldsDisabled(state);
     setSubmitDisabled(state);
   }
 
-  function handleTextareaChange(evt: FormEvent<HTMLTextAreaElement>) {
-    const target = evt.target as HTMLTextAreaElement;
-    const reviewLength = target.value.length;
+  function validateForm() {
+    const reviewLength = userReview.current.length;
 
-    if(reviewLength >= REVIEW_MIN_LENGTH && reviewLength <= REVIEW_MAX_LENGTH) {
-      setSubmitDisabled(false);
-      return null;
+    console.log('REVIEW: ', reviewLength, '(', REVIEW_MIN_LENGTH, (reviewLength < REVIEW_MIN_LENGTH), ') RATING: ', userRate.current);
+
+    if(!userReview.current.length || reviewLength < REVIEW_MIN_LENGTH) {
+      return false;
     }
 
-    setSubmitDisabled(true);
+    if(userRate.current <= 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function handleTextareaInput(evt: FormEvent<HTMLTextAreaElement>) {
+    const target = evt.target as HTMLTextAreaElement;
+    userReview = target.value;
+
+    setSubmitDisabled(!validateForm());
+
+    if(userReview.length >= REVIEW_MAX_LENGTH) {
+      return false;
+    }
+  }
+
+  function handleRatingChange(rating: Rating) {
+    userRate.current = rating;
+
+    setSubmitDisabled(!validateForm());
   }
 
   function handleFormSubmit(evt: FormEvent<HTMLFormElement>) {
@@ -53,30 +75,30 @@ export default function ReviewsForm(): React.ReactNode {
 
     disableForm(true);
 
-    const review = {
+    dispatch(fetchCommentAction({
       offerId,
-      rating: userRate,
-      comment: userReview.current.value
-    };
-
-    dispatch(fetchCommentAction(review));
+      rating: userRate.current,
+      comment: userReview.current
+    }));
   }
 
   useEffect(() => {
     let isMounted = true;
 
     if(isMounted) {
-      switch(addCommentStatus) {
-        case SEND_DATA_STATUS.LOADED: {
-          form.current?.reset();
-          disableForm(false);
-          break;
-        }
+      return;
+    }
 
-        case SEND_DATA_STATUS.ERROR: {
-          disableForm(false);
-          break;
-        }
+    switch(addCommentStatus) {
+      case SEND_DATA_STATUS.LOADED: {
+        resetForm();
+        disableForm(false);
+        break;
+      }
+
+      case SEND_DATA_STATUS.ERROR: {
+        disableForm(false);
+        break;
       }
     }
 
@@ -95,8 +117,8 @@ export default function ReviewsForm(): React.ReactNode {
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
-      <StarsRatingForm rating={ userRate } onRatingChange={ setUserRate } disabledState={ starsDisabled }/>
-
+      <StarsRatingForm rating={ userRate.current } onRatingChange={ handleRatingChange } disabledState={ fieldsDisabled }/>
+setUserRate
       <textarea
         id="review"
         className="reviews__textarea form__textarea"
@@ -104,9 +126,8 @@ export default function ReviewsForm(): React.ReactNode {
         minLength={ REVIEW_MIN_LENGTH }
         maxLength={ REVIEW_MAX_LENGTH }
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onInput={ handleTextareaChange }
-        ref={ userReview }
-        disabled={ textareaDisabled }
+        onInput={ handleTextareaInput }
+        disabled={ fieldsDisabled }
         data-testid="reviewsTextElem"
       />
       <div className="reviews__button-wrapper">
