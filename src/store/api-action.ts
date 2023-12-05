@@ -130,6 +130,7 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
       setToken(token);
     }
 
+    dispatch(fetchFavoritesAction());
     dispatch(setUserInfoAction(data));
     browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
   }

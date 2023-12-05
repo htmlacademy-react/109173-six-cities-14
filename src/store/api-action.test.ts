@@ -27,6 +27,7 @@ describe('[API async actions]:', () => {
       mockAxiosAdapter.onPost(APIRoute.LOGIN).reply(200, mockServerReply);
       const expectedActions = [
         loginAction.pending.type,
+        fetchFavoritesAction.pending.type,
         setUserInfoAction.type,
         loginAction.fulfilled.type,
       ];
