@@ -17,7 +17,11 @@ import { redirectToRoute } from './action';
 
 // SLICES
 import { setUserInfoAction } from './slices/user-process/user-process';
-import { clearOffersFavoriteStatus, loadOffersAction, updateOffersListAction } from './slices/offers-data-process/offers-data-process';
+import {
+  clearOffersFavoriteStatus,
+  loadOffersAction,
+  updateOffersListAction
+} from './slices/offers-data-process/offers-data-process';
 import {
   setOfferItemAction,
   setCommentsAction,
@@ -27,7 +31,12 @@ import {
   setNearbyAction,
   updateOfferItemFavoriteAction
 } from './slices/offer-item-data-process/offer-item-data-process';
-import { loadFavoritesAction, addFavoriteItemAction, removeFavoriteItemAction, clearFavoritesAction } from './slices/favorites-data-process/favorites-data-process';
+import {
+  loadFavoritesAction,
+  addFavoriteItemAction,
+  removeFavoriteItemAction,
+  clearFavoritesAction
+} from './slices/favorites-data-process/favorites-data-process';
 import browserHistory from '../browser-history';
 import { FavoriteData } from '../types/favorite-data';
 
@@ -121,6 +130,7 @@ export const loginAction = createAsyncThunk<void, AuthData, AsyncOptions>(
       setToken(token);
     }
 
+    dispatch(fetchFavoritesAction());
     dispatch(setUserInfoAction(data));
     browserHistory.back(); // Реализуем возврат на страницу, с которой пришли авторизоваться
   }
@@ -133,13 +143,18 @@ export const logoutAction = createAsyncThunk<void, void, AsyncOptions>(
 
     await api.delete(APIRoute.LOGOUT);
     deleteToken();
+
     dispatch(setUserInfoAction(null));
     dispatch(clearFavoritesAction());
     dispatch(clearOffersFavoriteStatus());
+    dispatch(updateOfferItemFavoriteAction(false));
 
     /* Сделано чисто для ТЗ (чтобы при log-out, если мы на закрытой страничке,
       нас редиректило на Login-page вместо главной) */
-    browserHistory.push(currentPage);
+    if(currentPage !== AppRoute.LOGIN) {
+      browserHistory.push(currentPage);
+    }
+
   }
 );
 

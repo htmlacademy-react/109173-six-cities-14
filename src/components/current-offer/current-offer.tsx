@@ -18,6 +18,7 @@ import Map from '../map/map';
 import NearbyOffers from '../nearby-offers/nearby-offers';
 import useFavorite from '../../hooks/useFavorite';
 import { getRightPluralForm } from '../../utils/common';
+import { upperCaseFirst } from '../../utils/offer';
 
 const CSSClasses = {
   FAVORITE_ACTIVE: 'offer__bookmark-button--active',
@@ -107,7 +108,7 @@ export default function CurrentOffer({ offer, comments, nearby }: CurrentOfferPr
               <span className="offer__rating-value rating__value">{ rating }</span>
             </div>
             <ul className="offer__features" data-testid="offerFeaturesElem">
-              <li className="offer__feature offer__feature--entire">{ type }</li>
+              <li className="offer__feature offer__feature--entire">{ upperCaseFirst(type) }</li>
               <li className="offer__feature offer__feature--bedrooms">{ bedrooms } { getRightPluralForm('Bedroom', bedrooms) }</li>
               <li className="offer__feature offer__feature--adults">Max { maxAdults } { getRightPluralForm('adult', maxAdults) }</li>
             </ul>

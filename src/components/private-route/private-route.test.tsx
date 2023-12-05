@@ -5,6 +5,7 @@ import { makeMockStoreState } from '../../utils/mock';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { withMockHistory, withMockStore } from '../../utils/mock-components';
 import { Route, Routes } from 'react-router-dom';
+import Login from '../../pages/login/login';
 
 describe('[Component Private-route]:', () => {
   let mockHistory: MemoryHistory;
@@ -45,22 +46,21 @@ describe('[Component Private-route]:', () => {
 
   it('Should render "Main page" when user loggen in and page AppRoute.LOGIN', () => {
     const expectedText = 'Main page';
-    const notExpectedText = 'Login page';
+    const notExpectedText = {
+      EMAIL: 'E-mail',
+      PASSROWD: 'Password',
+    };
     const initialMockStore = makeMockStoreState({
       [Namespace.USER]: {
         authorizationStatus: AuthorizationStatus.AUTH,
         userInfo: null,
       }
     });
+    screen.debug();
     const preparedComponent = withMockHistory(
       <Routes>
         <Route path={ AppRoute.MAIN } element={ <span> { expectedText } </span> } />
-        <Route path={ AppRoute.LOGIN } element={
-          <PrivateRoute redirectTo={ AppRoute.MAIN }>
-            <span>{ notExpectedText }</span>
-          </PrivateRoute>
-        }
-        />
+        <Route path={ AppRoute.LOGIN } element={ <Login /> } />
       </Routes>,
       mockHistory
     );
@@ -70,7 +70,8 @@ describe('[Component Private-route]:', () => {
     render(withStoreComponent);
 
     expect(screen.getByText(expectedText)).toBeInTheDocument();
-    expect(screen.queryByText(notExpectedText)).not.toBeInTheDocument();
+    expect(screen.queryByText(notExpectedText.EMAIL)).not.toBeInTheDocument();
+    expect(screen.queryByText(notExpectedText.PASSROWD)).not.toBeInTheDocument();
   });
 
   it('Should render "Favorites page" when user is logged in and page is "AppRoute.FAVORITES"', () => {

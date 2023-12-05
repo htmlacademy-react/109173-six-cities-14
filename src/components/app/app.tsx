@@ -39,14 +39,7 @@ export default function App(): React.ReactElement {
             }
           />
           <Route path={`${ AppRoute.OFFER }/:id`} element={ <OfferItem /> } />
-          <Route
-            path={ AppRoute.LOGIN }
-            element={
-              <PrivateRoute redirectTo={ AppRoute.MAIN }>
-                <Login />
-              </PrivateRoute>
-            }
-          />
+          <Route path={ AppRoute.LOGIN } element={ <Login /> } />
         </Route>
         <Route path="*" element={ <Page404 /> } />
       </Routes>

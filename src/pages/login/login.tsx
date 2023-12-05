@@ -1,16 +1,22 @@
 import { useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useAppDispatch } from '../../hooks';
+import { Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-action';
+import { getAuthStatus } from '../../store/slices/user-process/selectors';
 
-import { PASSWORD_MIN_LENGTH } from '../../const';
+import { AppRoute, AuthorizationStatus, PASSWORD_MIN_LENGTH } from '../../const';
 import RandomCity from '../../components/random-city/random-city';
 
 export default function Login(): React.ReactElement {
+  const userAuthStatus = useAppSelector(getAuthStatus);
   const dispatch = useAppDispatch();
   const userLogin = useRef<HTMLInputElement>(null);
   const userPassword = useRef<HTMLInputElement>(null);
 
+  if(userAuthStatus === AuthorizationStatus.AUTH) {
+    return <Navigate to={ AppRoute.MAIN } />;
+  }
 
   function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
