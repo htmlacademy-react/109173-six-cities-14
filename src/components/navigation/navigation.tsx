@@ -19,7 +19,9 @@ export default function Navigation(): React.ReactElement {
   const isUserLoggedIn = (authStatus === AuthorizationStatus.AUTH);
   const isLoginPage = (location === AppRoute.LOGIN);
 
-  function handleLogoutClick() {
+  function handleLogoutClick(evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    evt.preventDefault();
+
     dispatch(logoutAction());
   }
 
@@ -41,9 +43,9 @@ export default function Navigation(): React.ReactElement {
                 </Link>
               </li>
               <li className="header__nav-item">
-                <Link className="header__nav-link" to={AppRoute.LOGIN}>
-                  <span className="header__signout" onClick={ handleLogoutClick }>Sign out</span>
-                </Link>
+                <a className="header__nav-link" href="#" onClick={ handleLogoutClick }>
+                  <span className="header__signout">Sign out</span>
+                </a>
               </li>
             </>
           )

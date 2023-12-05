@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import HistoryRouter from './history-route';
+import HistoryRouter from './history-router';
 import { createMemoryHistory } from 'history';
 
 describe('[Component History-router]:', () => {

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { checkAuthAction, fetchOffersAction } from './store/api-action';
 import browserHistory from './browser-history';
 
-import HistoryRouter from './components/history-route/history-route';
+import HistoryRouter from './components/history-router/history-router';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 import App from './components/app/app';
 

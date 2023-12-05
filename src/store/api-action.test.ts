@@ -50,6 +50,7 @@ describe('[API async actions]:', () => {
         setUserInfoAction.type,
         clearFavoritesAction.type,
         clearOffersFavoriteStatus.type,
+        updateOfferItemFavoriteAction.type,
         logoutAction.fulfilled.type
       ];
       vi.spyOn(browserHistory, 'push');
